@@ -2,6 +2,9 @@ import './App.css';
 
 import React, { useState, useEffect } from 'react'
 import FoodTruck from './Components/FoodTruck';
+import { useNavigate, BrowserRouter, Route, Switch } from "react-router-dom";
+import TrucksList from './Components/TrucksList';
+
 function App() {
   //
   //data fetching here for foodTruck and menuItems
@@ -18,11 +21,7 @@ function App() {
       </header>
 
       <div>
-        {foodTrucks.map(foodTruck => {
-          const specificMenu = menuItems.filter(item => item.foodTruckId === foodTruck.id);
-          
-          return <FoodTruck key={foodTruck.id} foodTruck={foodTruck} menuItems={specificMenu} />
-        })}
+        <TrucksList />
       </div>
 
     </div>

@@ -1,12 +1,10 @@
 import React from 'react';
-import Menu from './Components/Menu';
+import Menu from './Menu';
 // import './styles/FoodTruck.scss';
-import { useNavigate } from "react-router-dom";
-
 
 function FoodTruck(props) {
   
-  const { foodTruck, menuItems } = props;
+  const { foodTruck, menuItems, useNavigate } = props;
 
   const navigate = useNavigate();
   
@@ -19,6 +17,8 @@ function FoodTruck(props) {
       <div className='food-truck' onClick={handleClick}>
         <h1>{foodTruck.name}</h1>
         <p>{foodTruck.description}</p>
+        {/* location thumbnail */}
+        <p>{foodTruck.address}</p>
       </div>
       <Menu menu={menuItems} />
     </div>
