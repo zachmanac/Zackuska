@@ -4,8 +4,8 @@ CREATE TABLE schedules (
   truck_id INTEGER REFERENCES trucks(truck_id) ON DELETE CASCADE,
   date DATE,
   address VARCHAR(255) NOT NULL,
-  latitude  VARCHAR(30),/*look into GEOGRAPHY*/
-  longitude VARCHAR(30),
+  latitude  DECIMAL(9,6),
+  longitude DECIMAL(9,6),
   start_time TIME NOT NULL,
   end_time TIME NOT NULL,
   place_name VARCHAR(255)
