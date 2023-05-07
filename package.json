@@ -1,0 +1,30 @@
+{
+  "name": "zackuska",
+  "version": "1.0.0",
+  "description": "- View a list of food trucks and their menus\r - Sort the list of food trucks by location, name, and ratings\r - View the details of a food truck, including its menu, location, and hours of operation\r - Place an order from a food truck's menu\r - Make a payment for my order\r - View my order history\r - Write a review for a food truck",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "local": "./node_modules/.bin/nodemon -L --ignore public/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zachmanac/Zackuska.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zachmanac/Zackuska/issues"
+  },
+  "homepage": "https://github.com/zachmanac/Zackuska#readme",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.22",
+    "pg": "^8.10.0"
+  }
+}
