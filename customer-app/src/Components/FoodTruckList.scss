@@ -1,0 +1,29 @@
+.food-trucks-container {
+  margin: 0 auto;
+  text-align: center;
+
+  p {
+    color: royalblue
+  }
+}
+
+.food-trucks-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 50px;
+}
+
+.food-truck {
+  width: 300px;
+  flex-basis: 25%;
+  border: 3px solid #ccc;
+  border-radius: 20px;
+  padding: 1rem;
+  margin: 0.5rem;
+  cursor: pointer;
+}
+
+.food-truck-orange {
+  color: orange;
+}

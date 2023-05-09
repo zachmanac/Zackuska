@@ -1,0 +1,38 @@
+.food-truck-menu {
+  display: flex;
+  align-items: center;
+  color: orange;
+  
+  .menu-left-side {
+    padding-left: 100px;
+    padding-right: 100px;
+
+    h2 {
+      color:lightgray;
+    }
+
+    p {
+      text-align: center;
+    }
+  }
+
+  
+  .menu-right-side {
+    color: royalblue;
+    padding-right: 100px;
+    
+  }
+  
+  .menu-item-description {
+    color: lightgray;
+  }
+  
+  .menu-item-title-price {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: relative;
+    margin-bottom: 5px;
+  }
+  
+}
