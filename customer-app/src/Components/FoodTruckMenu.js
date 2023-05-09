@@ -28,21 +28,24 @@ function FoodTruckMenu(props) {
             <div className="menu-item-title-price">
               <div>
                 <h3>{menuItem.item_name}</h3>
-                <Button
-                  variant="primary"
-                  onClick={() =>
-                    setAllergensOpenIndex(allergensOpenIndex === index ? -1 : index)
-                  }
-                >
-                  Allergens
-                </Button>
-                {allergensOpenIndex === index && (
-                  <div className="menu-item-allergens">
-                    {menuItem.allergens.split(", ").map((allergen, index) => (
-                      <div key={index}>{allergen}</div>
-                    ))}
+                  <div className="menu-calories-and-allergens">
+                    <p>{menuItem.calories} Calories</p>
+                    <Button
+                      variant="primary"
+                      onClick={() =>
+                        setAllergensOpenIndex(allergensOpenIndex === index ? -1 : index)
+                      }
+                    >
+                      Allergens
+                    </Button>
+                    {allergensOpenIndex === index && (
+                      <div className="menu-item-allergens">
+                        {menuItem.allergens.split(", ").map((allergen, index) => (
+                          <div key={index}>{allergen}</div>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                )}
               </div>
               <div className="menu-price-and-cart">
                 <p>${menuItem.price}</p>
@@ -54,7 +57,7 @@ function FoodTruckMenu(props) {
                 </Button>
               </div>
             </div>
-            <p className="menu-item-description">{menuItem.description}</p>
+            <p className={`menu-item-description ${allergensOpenIndex === index ? 'allergens-open' : ''}`}>{menuItem.description}</p>
           </div>
         ))}
       </div>
