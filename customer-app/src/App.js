@@ -4,7 +4,7 @@ import Navbar from './Components/Navbar';
 import FoodTruckList from './Components/FoodTruckList';
 import FoodTruckMenu from './Components/FoodTruckMenu';
 import Cart from './Components/Cart';
-import './App.css';
+import './App.scss';
 
 function App() {
   // const { isAuthenticated } = useAuth0();

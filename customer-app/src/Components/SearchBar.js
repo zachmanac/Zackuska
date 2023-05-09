@@ -1,9 +1,14 @@
+import React from 'react';
+import { Button } from 'react-bootstrap';
+import './SearchBar.scss';
+
+
 function SearchBar() {
 
   return (
-    <form>
-      <input type="text" placeholder="Search function"/>
-      <button type="submit">Search</button>
+    <form className="search-bar-form">
+      <input type="text" placeholder="Search function" className="search-bar-text"/>
+      <Button variant="primary" type="submit" className="search-bar-button">Search</Button>
     </form>
   );
 }

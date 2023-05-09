@@ -21,7 +21,11 @@
   border-radius: 20px;
   padding: 1rem;
   margin: 0.5rem;
-  cursor: pointer;
+}
+
+.food-truck:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
 }
 
 .food-truck-orange {

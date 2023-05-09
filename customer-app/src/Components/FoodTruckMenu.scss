@@ -11,16 +11,15 @@
       color:lightgray;
     }
 
-    p {
-      text-align: center;
-    }
   }
-
   
   .menu-right-side {
     color: royalblue;
     padding-right: 100px;
-    
+  }
+
+  .menu-item-individual:hover {
+    background-color: #f1f1f1;
   }
   
   .menu-item-description {
@@ -33,6 +32,10 @@
     justify-content: space-between;
     position: relative;
     margin-bottom: 5px;
+  }
+
+  .menu-price-and-cart {
+    text-align: right;
   }
   
 }

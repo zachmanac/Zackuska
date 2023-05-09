@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import './FoodTruckMenu.scss';
+import { Button } from 'react-bootstrap';
 
 function FoodTruckMenu(props) {
   const { menuItems, foodTruck, handleAddToCart } = props;
@@ -23,17 +24,18 @@ function FoodTruckMenu(props) {
       </div>
       <div className="menu-right-side">
         {truckMenu.map((menuItem, index) => (
-          <div key={menuItem.id}>
+          <div key={menuItem.id} className="menu-item-individual">
             <div className="menu-item-title-price">
               <div>
                 <h3>{menuItem.item_name}</h3>
-                <button
+                <Button
+                  variant="primary"
                   onClick={() =>
                     setAllergensOpenIndex(allergensOpenIndex === index ? -1 : index)
                   }
                 >
                   Allergens
-                </button>
+                </Button>
                 {allergensOpenIndex === index && (
                   <div className="menu-item-allergens">
                     {menuItem.allergens.split(", ").map((allergen, index) => (
@@ -42,11 +44,14 @@ function FoodTruckMenu(props) {
                   </div>
                 )}
               </div>
-              <div>
-                <p>Price: ${menuItem.price}</p>
-                <button onClick={() => handleAddToCart(menuItem)}>
-                  Add to Cart
-                </button>
+              <div className="menu-price-and-cart">
+                <p>${menuItem.price}</p>
+                <Button 
+                  variant="primary" 
+                  onClick={() => handleAddToCart(menuItem)}
+                  >
+                    Add to Cart
+                </Button>
               </div>
             </div>
             <p className="menu-item-description">{menuItem.description}</p>
