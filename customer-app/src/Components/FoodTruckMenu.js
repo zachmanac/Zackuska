@@ -17,6 +17,10 @@ function FoodTruckMenu(props) {
     <div className="food-truck-menu">
       <div className="menu-left-side">
         <h1>{foodTruck.truck_name}</h1>
+        <p>{foodTruck.phone_number}</p>
+        <p>Facebook: {foodTruck.facebook}</p>
+        <p>Instagram: {foodTruck.instagram}</p>
+        <p>Da cuisine: {foodTruck.cuisine}</p>
         <h2>Food truck description</h2>
         <img src={foodTruck.picture} alt={foodTruck.truck_name} />
         <p>Reviews</p>
