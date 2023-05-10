@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS order_detail CASCADE;
+DROP TABLE IF EXISTS order_details CASCADE;
 CREATE TABLE order_details (
   order_detail_id SERIAL PRIMARY KEY NOT NULL,
   item_id INTEGER REFERENCES menu_items(item_id) ON DELETE CASCADE,

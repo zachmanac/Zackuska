@@ -1,20 +1,17 @@
 const db = require('../connection');
-//needs validation
 
-const add_new_truck = function (owner_id, truck_name, phone_number, cuisine, instagram, facebook, picture) {
-  const queryParam = [owner_id, truck_name, phone_number, cuisine, instagram, facebook, picture];
+const add_new_truck = async function (owner_id, truck_name, phone_number, cuisine, instagram, facebook, picture, city) {
+  const queryParam = [owner_id, truck_name, phone_number, cuisine, instagram, facebook, picture, city];
 
-  return db.query(` INSERT INTO trucks(owner_id, truck_name, phone_number, cuisine,instagram, facebook, picture)
+  try {
+    await db.query(` INSERT INTO trucks(owner_id, truck_name, phone_number, cuisine,instagram, facebook, picture, city)
   VALUES
-    ($1,$2,$3,$4,$5, $6, $7)`, queryParam)
+    ($1,$2,$3,$4,$5, $6, $7, $8)`, queryParam);
+    console.log("Truck added");
 
-    .then(() => {
-      console.log("Truck added")
-
-    })
-    .catch((err) => {
-      console.log("Error", err);
-    });
+  } catch (err) {
+    console.log("Error", err);
+  }
 };
 
 module.exports = add_new_truck;

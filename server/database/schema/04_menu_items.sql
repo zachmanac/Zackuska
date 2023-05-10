@@ -8,6 +8,8 @@ CREATE TABLE menu_items (
   allergens VARCHAR(255) NOT NULL,
   halal BOOLEAN NOT NULL DEFAULT FALSE,
   picture VARCHAR(255),
-  description TEXT NOT NULL
-  
+  description TEXT NOT NULL,
+  item_label VARCHAR(100) NOT NULL,/*in case of multiple labels*/
+  active BOOLEAN NOT NULL DEFAULT FALSE,
+  quantity INTEGER NOT NULL DEFAULT 0
 );

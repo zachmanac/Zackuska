@@ -1,16 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const add_new_truck = require('../database/queries/add_new_truck');
+const query = require('../../database/queries/add_new_truck');
 
 //need to validate the truck before adding
 router.post('/api/trucks', (req, res) => {
   console.log("new truck params", req.body)
   const new_truck = req.body;
 
-  add_new_truck(new_truck.owner_id, new_truck.truck_name, new_truck.phone_number, new_truck.cuisine, new_truck.instagram, new_truck.facebook, new_truck.picture)
+  query(new_truck.owner_id, new_truck.truck_name, new_truck.phone_number, new_truck.cuisine, new_truck.instagram, new_truck.facebook, new_truck.picture, new_truck.city)
 
     .then(() => {
       console.log("Truck added sucessfully")
+      res.send("Truck added");
 
     })
     .catch(e => {
