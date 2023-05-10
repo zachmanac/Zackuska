@@ -164,5 +164,7 @@ router.put('/promotions/:id', [
   ], reviewController.updateReview);
   
   router.delete('/reviews/:id', reviewController.deleteReview);
-  
+
+  router.delete('/foodtrucks/:id/admin', adminController.deleteFoodTruckAdmin);
+
   module.exports = router;

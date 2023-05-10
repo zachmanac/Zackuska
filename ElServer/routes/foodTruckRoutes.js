@@ -1,6 +1,7 @@
 const express = require('express');
 const { body } = require('express-validator');
 const foodTruckController = require('../controllers/foodTruckController');
+const adminController = require('../controllers/adminController');
 
 const router = express.Router();
 
@@ -23,5 +24,7 @@ router.get('/foodTrucks/:id', foodTruckController.getFoodTruckById);
 router.put('/foodTrucks/:id', validateFoodTruckInput, foodTruckController.updateFoodTruck);
 
 router.delete('/foodTrucks/:id', foodTruckController.deleteFoodTruck);
+
+
 
 module.exports = router;

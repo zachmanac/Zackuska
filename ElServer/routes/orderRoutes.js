@@ -24,3 +24,24 @@ router.put('/orders/:id', [
 router.delete('/orders/:id', orderController.deleteOrder);
 
 module.exports = router;
+
+// Routes for orders
+router.post('/orders', [
+    body('customerId').notEmpty().isString(),
+    body('foodTruckId').notEmpty().isString(),
+    body('items').notEmpty().isArray(),
+    body('totalPrice').notEmpty().isNumeric(),
+    body('status').notEmpty().isString(),
+    ], orderController.createOrder);
+    
+    router.get('/orders', orderController.getAllOrders);
+    
+    router.get('/orders/:id', orderController.getOrderById);
+    
+    router.put('/orders/:id', [
+    body('status').notEmpty().isString(),
+    ], orderController.updateOrder);
+    
+    router.delete('/orders/:id', orderController.deleteOrder);
+    
+    
