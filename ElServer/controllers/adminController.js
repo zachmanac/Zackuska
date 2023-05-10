@@ -1,6 +1,10 @@
-const User = require('../models/user');
+const User = require('../models/customer');
 const FoodTruck = require('../models/foodTruck');
 const Order = require('../models/order');
+const Promo = require('../models/promotion');
+const Review = require('../models/review');
+const Label = require('../models/label');
+const MenuItem = require('../models/menuItem');
 const logger = require('morgan');
 
 exports.getStats = async (req, res) => {
@@ -9,12 +13,20 @@ exports.getStats = async (req, res) => {
     const truckCount = await FoodTruck.countDocuments({});
     const orderCount = await Order.countDocuments({});
     const activeTruckCount = await FoodTruck.countDocuments({ approved: true });
+    const promoCount = await Promo.countDocuments({});
+    const reviewCount = await Review.countDocuments({});
+    const labelCount = await Label.countDocuments({});
+    const itemsCount = await MenuItem.countDocuments({});
 
     const stats = {
       userCount,
       truckCount,
       orderCount,
-      activeTruckCount
+      activeTruckCount,
+      promoCount,
+      reviewCount,
+      labelCount,
+      itemsCount
     };
 
     res.json(stats);
@@ -41,22 +53,23 @@ exports.approveTruck = async (req, res) => {
   }
 };
 
-exports.deleteUser = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const user = await User.findById(id);
-
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+exports.deleteFoodTruckAdmin = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const foodTruck = await FoodTruck.findById(id);
+  
+      if (!foodTruck) {
+        return res.status(404).json({ error: 'Food Truck not found' });
+      }
+  
+      await foodTruck.remove();
+  
+      res.json({ message: 'Food Truck deleted' });
+    } catch (error) {
+      res.status(500).json({ error: 'Error deleting Food Truck' });
     }
-
-    await user.remove();
-
-    res.json({ message: 'User deleted' });
-  } catch (error) {
-    res.status(500).json({ error: 'Error deleting user' });
-  }
-};
+  };
+  
 
 // Logging middleware
 exports.loggingMiddleware = logger('tiny');
