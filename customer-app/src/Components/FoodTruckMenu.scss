@@ -1,0 +1,73 @@
+.food-truck-menu {
+  display: flex;
+  // align-items: center;
+  color: orange;
+  padding-top: 50px;
+  
+  .menu-left-side {
+    padding-left: 100px;
+    padding-right: 100px;
+
+    h2 {
+      color:lightgray;
+    }
+
+  }
+  
+  .menu-right-side {
+    color: royalblue;
+    padding-right: 100px;
+  }
+
+  .menu-item-individual {
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 10px;
+  }
+
+  .menu-item-individual:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .menu-item-title-price {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: relative;
+    margin-bottom: 5px;
+  }
+
+  .menu-price-and-cart {
+    text-align: right;
+  }
+
+  .menu-item-allergens {
+    position: absolute;
+    top: 70px;
+    left: 94px;
+    padding: 10px;
+  }
+
+  .menu-item-description {
+    color: lightgray;
+    margin-top: 0;
+    max-height: none;
+  
+    &.allergens-open {
+      padding-top: 40px;
+      top: 30px;
+    }
+  }
+
+  .menu-calories-and-allergens {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    p {
+      margin: 0;
+      padding-right: 10px;
+    }
+  }
+  
+}
