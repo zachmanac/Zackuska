@@ -2,10 +2,10 @@ import React from "react";
 import CartItem from "./CartItem";
 
 function Cart(props) {
-  const { cartItems, onRemoveFromCart } = props;
+  const { cartItems, handleRemoveFromCart } = props;
 
   const handleRemoveClick = (item) => {
-    onRemoveFromCart(item);
+    handleRemoveFromCart(item);
   };
 
   return (
@@ -13,7 +13,7 @@ function Cart(props) {
       <h2>Cart</h2>
       {cartItems && cartItems.length === 0 && <div>Cart is empty</div>}
       {cartItems && cartItems.map((item) => (
-        <CartItem key={item.id} item={item} />
+        <CartItem key={item.id} item={item} handleRemoveClick={handleRemoveClick} />
       ))}
   </div>
   );

@@ -1,11 +1,11 @@
 import React from 'react';
 import './Navbar.scss';
-import { useAuth0 } from '@auth0/auth0-react';
 import SearchBar from './SearchBar';
 import Cart from './Cart';
 
-function Navbar() {
-  const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
+function Navbar(props) {
+
+  const { cartItems, handleRemoveFromCart } = props
 
   return (
     <nav className='nav-bar'>
@@ -20,22 +20,9 @@ function Navbar() {
 
       <div className='nav-bar-right'>
       <div>
-        <Cart />
+        <Cart cartItems={cartItems} handleRemoveFromCart={handleRemoveFromCart} />
       </div>
-        {isAuthenticated ? (
-          <div>
-            <div>
-              <a href="/profile">{user.name}</a>
-            </div>
-            <div>
-              <a href="#" onClick={() => logout()}>Logout</a>
-            </div>
-          </div>
-        ) : (
-          <div>
-            <a href="#" onClick={() => loginWithRedirect()}>Login</a>
-          </div>
-        )}
+        Login stuff
       </div>
     </nav>
   );

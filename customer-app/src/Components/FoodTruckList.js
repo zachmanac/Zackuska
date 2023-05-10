@@ -1,5 +1,6 @@
 import React from "react";
 import './FoodTruckList.scss';
+import MapGoogle from "./MapGoogle";
 
 function FoodTruckList(props) {
   const { foodTrucks, setActiveFoodTruck } = props;
@@ -19,6 +20,7 @@ function FoodTruckList(props) {
             <p>Facebook: {truck.facebook}</p>
             <p>Instagram: {truck.instagram}</p>
             <p>Da cuisine: {truck.cuisine}</p>
+            <MapGoogle />
           </div>
         ))}
       </div>

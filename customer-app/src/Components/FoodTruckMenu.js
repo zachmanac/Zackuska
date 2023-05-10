@@ -3,7 +3,7 @@ import './FoodTruckMenu.scss';
 import { Button } from 'react-bootstrap';
 
 function FoodTruckMenu(props) {
-  const { menuItems, foodTruck, handleAddToCart } = props;
+  const { menuItems, foodTruck, onAddToCart } = props;
   const [allergensOpenIndex, setAllergensOpenIndex] = useState(-1);
 
   const truckMenu = menuItems.filter(
@@ -16,13 +16,13 @@ function FoodTruckMenu(props) {
   return (
     <div className="food-truck-menu">
       <div className="menu-left-side">
+        <img src={foodTruck.picture} alt={foodTruck.truck_name} />
         <h1>{foodTruck.truck_name}</h1>
         <p>{foodTruck.phone_number}</p>
         <p>Facebook: {foodTruck.facebook}</p>
         <p>Instagram: {foodTruck.instagram}</p>
         <p>Da cuisine: {foodTruck.cuisine}</p>
         <h2>Food truck description</h2>
-        <img src={foodTruck.picture} alt={foodTruck.truck_name} />
         <p>Reviews</p>
         <p>Hours of operation</p>
       </div>
@@ -55,7 +55,7 @@ function FoodTruckMenu(props) {
                 <p>${menuItem.price}</p>
                 <Button 
                   variant="primary" 
-                  onClick={() => handleAddToCart(menuItem)}
+                  onClick={() => onAddToCart(menuItem)}
                   >
                     Add to Cart
                 </Button>
