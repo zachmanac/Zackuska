@@ -41,10 +41,10 @@ function App() {
         <FoodTruckMenu
           foodTruck={activeFoodTruck}
           onAddToCart={handleAddToCart}
-          menuItems={dummyMenuItems}
+          menuItems={trucks}
         />
       ) : (
-        <FoodTruckList foodTrucks={dummyTrucks} setActiveFoodTruck={setActiveFoodTruck} />
+        <FoodTruckList foodTrucks={menu} setActiveFoodTruck={setActiveFoodTruck} />
       )}
     </div>
   );
