@@ -167,5 +167,4 @@ router.put('/promotions/:id', [
 
   router.delete('/foodtrucks/:id/admin', adminController.deleteFoodTruckAdmin);
 
-  
   module.exports = router;
