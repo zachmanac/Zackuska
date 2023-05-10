@@ -3,6 +3,7 @@ import { Button } from 'react-bootstrap';
 
 function CartItem(props) {
   const { item, handleRemoveClick } = props;
+  console.log("item", item);
 
   return (
     <div>

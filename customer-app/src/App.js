@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './Components/Navbar';
 import FoodTruckList from './Components/FoodTruckList';
 import FoodTruckMenu from './Components/FoodTruckMenu';
 import Cart from './Components/Cart';
 import './App.scss';
-import * as api from './ApiCalls';
+import ApiCalls from './ApiCalls';
 
 function App() {
 
@@ -18,35 +19,48 @@ function App() {
   };
 
   const handleRemoveFromCart = (menuItem) => {
-    console.log("HANDLEREMOVE MENUITEM", menuItem, " HANDLEREMOVE CARTITEMS", cartItems)
     setCartItems((prevCartItems) =>
-      prevCartItems.filter((item) => item.id !== menuItem.id)
+      prevCartItems.filter((item) => item.item_id !== menuItem.item_id)
     );
   };
 
-  api.getTrucks((trucks) => {
-    // console.log(trucks);
-    setTrucks(trucks);
-  });
+  useEffect(() => {
+    ApiCalls.getTrucks((trucks) => {
+      setTrucks(trucks);
+    });
 
-  api.getMenu((menu) => {
-    // console.log(menu);
-    setMenu(menu);
-  })
+    const truckId = activeFoodTruck ? activeFoodTruck.truck_id : null;
+
+    if (truckId) {
+      ApiCalls.getMenu(truckId, (menu) => {
+        setMenu(menu);
+      })
+    }
+  }, [activeFoodTruck]);
 
   return (
-    <div>
-      <Navbar cartItems={cartItems} handleRemoveFromCart={handleRemoveFromCart} />
-      {activeFoodTruck ? (
-        <FoodTruckMenu
-          foodTruck={activeFoodTruck}
-          onAddToCart={handleAddToCart}
-          menuItems={trucks}
-        />
-      ) : (
-        <FoodTruckList foodTrucks={menu} setActiveFoodTruck={setActiveFoodTruck} />
-      )}
-    </div>
+    <Router>
+      <div>
+        <Navbar cartItems={cartItems} handleRemoveFromCart={handleRemoveFromCart} />
+        <Routes>
+          <Route exact path="/" element=
+            {activeFoodTruck ? (
+              <FoodTruckMenu
+                foodTruck={activeFoodTruck}
+                onAddToCart={handleAddToCart}
+                menuItems={menu}
+              />
+            ) : (
+              <FoodTruckList foodTrucks={trucks} setActiveFoodTruck={setActiveFoodTruck} />
+            )}
+          />
+          <Route path="/cart" element={
+            <Cart cartItems={cartItems} handleRemoveFromCart={handleRemoveFromCart} />
+            } 
+          />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

@@ -1,20 +1,30 @@
 import axios from 'axios';
 
-const getTrucks = function () {
-  axios.get('api/trucks').then(function (response) {
-    console.log(response.data);
-    return response.data;
+const getTrucks = function (cb) {
+  axios.get('http://localhost:8080/api/trucks').then(function (response) {
+    cb(response.data);
   })
 }
 
-const getMenu = function () {
-  axios.get('api/:truck_id/menu').then(function (response) {
-    console.log(response.data)
-    return response.data;
+const getMenu = function (truckId, cb) {
+  axios.get(`http://localhost:8080/api/trucks/${truckId}/menu_items`).then(function (response) {
+    cb(response.data);
   })
 }
+
+const sendCart = function (cartItems, cb) {
+  axios.post(`https://localhost:8080/api/cart`, {cartItems})
+      .then(res => {
+        // console.log(res);
+        console.log(res.data);
+
+      })
+}
+
+
 
 export default {
   getTrucks,
-  getMenu
+  getMenu,
+  sendCart
 }

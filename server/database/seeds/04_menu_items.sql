@@ -16,4 +16,4 @@ VALUES
   (2,'Rice and Beans',18,768,'gluten, oats','True', 'Category of dishes from many cultures around the world, whereby the staple foods of rice and beans are combined in some manner', 'mexican', 'True', 100),
   (3,'Seafood',23,272,'crab, lobster','False', 'Seafood comprises all bony fishes and the more primitive sharks, skates, rays, sawfish, sturgeons, and lampreys','vegetarian', 'True', 100),
   (4,'Fried Rice',19,266,'seasame, soybeans','False', 'The most important sauces to add are soy sauce, oyster sauce, and fish sauce in fried rice','asian', 'True', 100),
-  (5,'Quesadillas',14,32,'mustard, egg','False', 'Grilled tortilla with melted cheese inside. Its the Mexican grilled cheese, if you will, and you can add additional fillings if youd like','mexican'), 'True', 100;
+  (5,'Quesadillas',14,32,'mustard, egg','False', 'Grilled tortilla with melted cheese inside. Its the Mexican grilled cheese, if you will, and you can add additional fillings if youd like','mexican', 'True', 100);

@@ -6,13 +6,6 @@ function FoodTruckMenu(props) {
   const { menuItems, foodTruck, onAddToCart } = props;
   const [allergensOpenIndex, setAllergensOpenIndex] = useState(-1);
 
-  const truckMenu = menuItems.filter(
-    (menuItem) => menuItem.truck_id === foodTruck.owner_id
-  );
-
-  console.log("menuitems", menuItems)
-  console.log("foodtruck", foodTruck);
-
   return (
     <div className="food-truck-menu">
       <div className="menu-left-side">
@@ -27,7 +20,7 @@ function FoodTruckMenu(props) {
         <p>Hours of operation</p>
       </div>
       <div className="menu-right-side">
-        {truckMenu.map((menuItem, index) => (
+        {menuItems.map((menuItem, index) => (
           <div key={menuItem.id} className="menu-item-individual">
             <div className="menu-item-title-price">
               <div>

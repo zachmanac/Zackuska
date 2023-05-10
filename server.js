@@ -3,6 +3,7 @@ const express = require('express');
 const morgan = require('morgan');
 const PORT = process.env.PORT || 8080;
 const session = require('express-session');
+const cors = require('cors');
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(session({
   saveUninitialized: false
 }));
 
+app.use(cors());
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
