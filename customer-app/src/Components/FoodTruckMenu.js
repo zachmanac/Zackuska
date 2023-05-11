@@ -21,7 +21,7 @@ function FoodTruckMenu(props) {
       </div>
       <div className="menu-right-side">
         {menuItems.map((menuItem, index) => (
-          <div key={menuItem.id} className="menu-item-individual">
+          <div key={index} className="menu-item-individual">
             <div className="menu-item-title-price">
               <div>
                 <h3>{menuItem.item_name}</h3>
