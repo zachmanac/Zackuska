@@ -69,9 +69,23 @@ app.post('/api/cart/checkout', new_order);
 app.get('/api/labels/:label_id/trucks', menu_items_by_label);//NOT Fetch menu_items from the database with that label maybe NOT*/
 
 
+// Import individual cart routes
+const get_cart = require('./server/routes/api/get_cart_route');
+const add_items_to_cart = require('./server/routes/api/add_items_to_cart_route');
+const retire_menu_item = require('./server/routes/api/retire_menu_item_route');
+const new_order = require('./server/routes/api/new_order_route');
 
-
+// Cart Routes
+app.get('/api/cart', get_cart);
+app.put('/api/cart', add_items_to_cart);
+app.put('/api/menu_items/:menu_id', retire_menu_item);
+app.post('/api/cart/checkout', new_order);
 
 app.listen(PORT, () => {
   console.log(`Express server listening on port ${PORT}`);
 });
+
+
+
+
+
