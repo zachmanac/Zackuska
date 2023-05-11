@@ -1,3 +1,5 @@
+const db = require('../connection');
+
 // Function to insert a cart item into the database
 const insert_cart_item = (cart_id, food_truck_id, item_id, quantity) => {
     return new Promise((resolve, reject) => {

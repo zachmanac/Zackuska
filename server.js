@@ -70,8 +70,8 @@ app.get('/api/labels/:label_id/trucks', menu_items_by_label);//NOT Fetch menu_it
 
 
 // Cart Routes
-const get_cart = require('./server/routes/api/get_cart_route');
-const add_items_to_cart = require('./server/routes/api/add_items_to_cart_route');
+const get_cart = require('./server/routes/api/get_cart_for_user'); //get the cart for a given user_id
+const add_items_to_cart = require('./server/routes/api/add_new_cart_for_user');
 const delete_item_cart = require('./server/routes/api/delete_item_cart_for_user');
 const update_cart_item = require('./server/routes/api/update_item_quantity_cart_for_user');
 

@@ -1,3 +1,5 @@
+const db = require('../connection');
+
 // Function to fetch the cart items with quantities for a user
 const get_cart_items = (user_id) => {
   return new Promise((resolve, reject) => {

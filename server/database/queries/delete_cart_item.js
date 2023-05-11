@@ -1,5 +1,5 @@
 // deleting an Item in cart
-const db = require('../dbConfig');
+const db = require('../connection');
 
 const delete_cart_item = (cart_item_id) => {
     const query = `
