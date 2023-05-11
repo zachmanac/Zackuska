@@ -1,17 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const queryGetReviewsForItem= require('../../database/queries/get_reviews_for_items');
-
+const deleteCartItem = require('../../database/queries/delete_cart_item');
+const getCartItems = require('../../database/queries/get_cart_items');
 
 // DELETE route to remove a cart item
-router.delete('/api/cart/:cart_id', (req, res) => {
-    const { cart_id } = req.params;
+router.delete('/api/cart/:cart_id/item/:cart_item_id', (req, res) => {
+    const { cart_id, cart_item_id } = req.params;
   
     // Perform necessary operations to remove the cart item from the database
-    deleteCartItem(cart_id)
+    deleteCartItem(cart_item_id)
       .then(() => {
         // Retrieve the updated cart items after deleting the item
-        return getCartItems(user_id);
+        return getCartItems(cart_id);
       })
       .then(cartItems => {
         // Send the updated cart items as the response
@@ -22,5 +22,6 @@ router.delete('/api/cart/:cart_id', (req, res) => {
         console.error('Failed to delete cart item:', error);
         res.status(500).send('Failed to delete cart item');
       });
-  });
-  
+});
+
+module.exports = router;

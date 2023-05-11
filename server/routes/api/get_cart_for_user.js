@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-// Assuming you have a database connection, import the necessary functions to interact with the cart in the database
-const getCartItems = require('../database/cart');
+const getCartItems = require ('../../database/queries/get_cart_items');
 
 
 // GET route to fetch cart items for a user
