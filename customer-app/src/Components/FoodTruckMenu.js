@@ -1,10 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import './FoodTruckMenu.scss';
 import { Button } from 'react-bootstrap';
+import ApiCalls from "../ApiCalls";
 
-function FoodTruckMenu(props) {
-  const { menuItems, foodTruck, onAddToCart } = props;
+
+function FoodTruckMenu({ onAddToCart, truckId, trucks }) {
   const [allergensOpenIndex, setAllergensOpenIndex] = useState(-1);
+  const [menuItems, setMenuItems] = useState([]);
+  const foodTruck = trucks.find(truck => truck.truck_id === Number(truckId));
+
+  useEffect(() => {
+    const fetchMenu = async () => {
+      try {
+        const fetchedMenu = await ApiCalls.getMenu2(truckId);
+        console.log(fetchedMenu);
+        setMenuItems(fetchedMenu);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchMenu();
+  }, [truckId]);
+
+  if (!foodTruck) {
+    return <div>Loading...</div>;
+  }
+
 
   return (
     <div className="food-truck-menu">

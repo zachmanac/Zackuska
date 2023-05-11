@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom';
 import Navbar from './Components/Navbar';
 import FoodTruckList from './Components/FoodTruckList';
 import FoodTruckMenu from './Components/FoodTruckMenu';
@@ -7,8 +7,19 @@ import Cart from './Components/Cart';
 import './App.scss';
 import ApiCalls from './ApiCalls';
 
-function App() {
+function FoodTruckMenuWrapper({ trucks, onAddToCart }) {
+  const { truckId } = useParams();
+  
+  return (
+    <FoodTruckMenu
+      truckId={truckId}
+      trucks={trucks}
+      onAddToCart={onAddToCart}
+    />
+  );
+}
 
+function App() {
   const [activeFoodTruck, setActiveFoodTruck] = useState(null);
   const [cartItems, setCartItems] = useState([]);
   const [trucks, setTrucks] = useState([]);
@@ -24,40 +35,44 @@ function App() {
     );
   };
 
+  // Fetch trucks only once when component mounts
   useEffect(() => {
-    ApiCalls.getTrucks((trucks) => {
-      setTrucks(trucks);
-    });
+    const fetchTrucks = async () => {
+      const trucksData = await ApiCalls.getTrucks();
+      setTrucks(trucksData);
+    };
 
-    const truckId = activeFoodTruck ? activeFoodTruck.truck_id : null;
+    fetchTrucks();
+  }, []); 
 
-    if (truckId) {
-      ApiCalls.getMenu(truckId, (menu) => {
-        setMenu(menu);
-      })
-    }
-  }, [activeFoodTruck]);
+  // Fetch menu for the active truck when activeFoodTruck changes
+  useEffect(() => {
+    const fetchMenu = async () => {
+      if (activeFoodTruck) {
+        const menuData = await ApiCalls.getMenu(activeFoodTruck);
+        setMenu(menuData);
+      }
+    };
+
+    fetchMenu();
+  }, [activeFoodTruck]); 
 
   return (
     <Router>
       <div>
         <Navbar cartItems={cartItems} handleRemoveFromCart={handleRemoveFromCart} />
         <Routes>
-          <Route exact path="/" element=
-            {activeFoodTruck ? (
-              <FoodTruckMenu
-                foodTruck={activeFoodTruck}
+          <Route path="/" element={<FoodTruckList foodTrucks={trucks} setActiveFoodTruck={setActiveFoodTruck} />} />
+          <Route
+            path="/:truckId/menu"
+            element={
+              <FoodTruckMenuWrapper
+                trucks={trucks}
                 onAddToCart={handleAddToCart}
-                menuItems={menu}
               />
-            ) : (
-              <FoodTruckList foodTrucks={trucks} setActiveFoodTruck={setActiveFoodTruck} />
-            )}
+            }
           />
-          <Route path="/cart" element={
-            <Cart cartItems={cartItems} handleRemoveFromCart={handleRemoveFromCart} />
-            } 
-          />
+          <Route path="/cart" element={<Cart cartItems={cartItems} handleRemoveFromCart={handleRemoveFromCart} />} />
         </Routes>
       </div>
     </Router>

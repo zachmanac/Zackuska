@@ -1,30 +1,49 @@
 import axios from 'axios';
 
-const getTrucks = function (cb) {
-  axios.get('http://localhost:8080/api/trucks').then(function (response) {
-    cb(response.data);
-  })
-}
+const getTrucks = function () {
+  return axios.get('http://localhost:8080/api/trucks')
+    .then(function (response) {
+      return response.data;
+    });
+};
 
-const getMenu = function (truckId, cb) {
-  axios.get(`http://localhost:8080/api/trucks/${truckId}/menu_items`).then(function (response) {
-    cb(response.data);
-  })
-}
+const getTruck = async function (truckId) {
+  const response = await axios.get(`http://localhost:8080/api/trucks/${truckId}`);
+  return response.data;
+};
+
+const getMenu = function (truckId) {
+  return axios.get(`http://localhost:8080/api/trucks/${truckId}/menu_items`)
+    .then(function (response) {
+      return response.data;
+    });
+};
+
+
+
+const getMenu2 = async function (truckId) {
+  const response = await axios.get(`http://localhost:8080/api/trucks/${truckId}/menu_items`);
+  return response.data;
+};
+
 
 const sendCart = function (cartItems, cb) {
-  axios.post(`https://localhost:8080/api/cart`, {cartItems})
+  axios.post(`http://localhost:8080/api/cart`, {cartItems})
       .then(res => {
         // console.log(res);
         console.log(res.data);
 
-      })
-}
+      });
+};
 
 
 
-export default {
+const ApiCalls = {
   getTrucks,
+  getTruck,
   getMenu,
+  getMenu2,
   sendCart
-}
+};
+
+export default ApiCalls;
