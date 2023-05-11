@@ -4,7 +4,7 @@ const deleteCartItem = require('../../database/queries/delete_cart_item');
 const getCartItems = require('../../database/queries/get_cart_items');
 
 // DELETE route to remove a cart item
-router.delete('/api/cart/:cart_id/item/:cart_item_id', (req, res) => {
+router.delete('/api/cart/:cart_id/items/:cart_item_id', (req, res) => {
     const { cart_id, cart_item_id } = req.params;
   
     // Perform necessary operations to remove the cart item from the database

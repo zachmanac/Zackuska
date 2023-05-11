@@ -1,11 +1,10 @@
-// cartRoutes.js
 const express = require('express');
 const router = express.Router();
 const update_quantity_cart_item = require('../../database/queries/update_quantity_cart_item');
 
 // PUT route to update the quantity of a cart item
-router.put('/api/cart/item/:cart_item_id', (req, res) => {
-  const { cart_item_id } = req.params;
+router.put('/api/cart/:cart_id/cart_items/:cart_item_id', (req, res) => {
+  const { cart_id, cart_item_id } = req.params;
   const { quantity } = req.body;
   
   update_quantity_cart_item(cart_item_id, quantity)
