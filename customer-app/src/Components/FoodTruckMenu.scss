@@ -10,7 +10,29 @@
 
     h2 {
       color:lightgray;
+      margin-bottom: 10px;
     }
+
+    .hours-container {
+      display: flex;
+      flex-direction: column;
+
+      .hours-title {
+        margin-bottom: 5px; // Adjust the top margin to move the title closer to the start time
+      }
+
+      .hours {
+        color: royalblue;
+        margin-left: 10px;
+        margin-top: 0%;
+        margin-bottom: 0%;
+      }
+
+      .end {
+        margin-bottom: 10px;
+      }
+    }
+
 
   }
   

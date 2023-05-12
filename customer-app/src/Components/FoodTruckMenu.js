@@ -40,7 +40,11 @@ function FoodTruckMenu({ onAddToCart, truckId, trucks }) {
         <p>Da cuisine: {foodTruck.cuisine}</p>
         <h2>Food truck description</h2>
         <p>Reviews</p>
-        <p>Hours of operation</p>
+        <div className="hours-container">
+          <p className="hours-title">Hours of operation</p>
+          <p className="hours">Start time: {foodTruck.start_time}</p>
+          <p className="hours end">End time: {foodTruck.end_time}</p>
+        </div>
         < MapGoogle address={foodTruck.address} />
       </div>
       <div className="menu-right-side">
