@@ -5,9 +5,6 @@
   p {
     color: royalblue
   }
-}
-
-.food-trucks-wrapper {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -19,8 +16,8 @@
   flex-basis: 25%;
   border: 3px solid #ccc;
   border-radius: 20px;
-  padding: 1rem;
-  margin: 0.5rem;
+  // padding: 1rem;
+  margin: 1.5rem;
 }
 
 .food-truck:hover {
@@ -30,4 +27,15 @@
 
 .food-truck-orange {
   color: orange;
+  padding: 10px;
+}
+
+.food-truck a {
+  text-decoration: none;
+}
+
+.food-truck-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
 }

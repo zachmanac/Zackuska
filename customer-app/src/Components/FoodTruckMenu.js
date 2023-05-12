@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import './FoodTruckMenu.scss';
 import { Button } from 'react-bootstrap';
 import ApiCalls from "../ApiCalls";
+import MapGoogle from "./MapGoogle";
 
 
 function FoodTruckMenu({ onAddToCart, truckId, trucks }) {
@@ -40,43 +41,49 @@ function FoodTruckMenu({ onAddToCart, truckId, trucks }) {
         <h2>Food truck description</h2>
         <p>Reviews</p>
         <p>Hours of operation</p>
+        < MapGoogle address={foodTruck.address} />
       </div>
       <div className="menu-right-side">
         {menuItems.map((menuItem, index) => (
           <div key={index} className="menu-item-individual">
-            <div className="menu-item-title-price">
-              <div>
-                <h3>{menuItem.item_name}</h3>
-                  <div className="menu-calories-and-allergens">
-                    <p>{menuItem.calories} Calories</p>
-                    <Button
-                      variant="primary"
-                      onClick={() =>
-                        setAllergensOpenIndex(allergensOpenIndex === index ? -1 : index)
-                      }
-                    >
-                      Allergens
-                    </Button>
-                    {allergensOpenIndex === index && (
-                      <div className="menu-item-allergens">
-                        {menuItem.allergens.split(", ").map((allergen, index) => (
-                          <div key={index}>{allergen}</div>
-                        ))}
-                      </div>
-                    )}
+            <div className="menu-item-content">
+              <img src={menuItem.image} alt="Item Image" className="menu-item-image" />
+              <div className="menu-item-details">
+                <div className="menu-item-title-price">
+                  <div>
+                    <h3>{menuItem.item_name}</h3>
+                    <div className="menu-calories-and-allergens">
+                      <p>{menuItem.calories} Calories</p>
+                      <Button
+                        variant="primary"
+                        onClick={() =>
+                          setAllergensOpenIndex(allergensOpenIndex === index ? -1 : index)
+                        }
+                      >
+                        Allergens
+                      </Button>
+                      {allergensOpenIndex === index && (
+                        <div className="menu-item-allergens">
+                          {menuItem.allergens.split(", ").map((allergen, index) => (
+                            <div key={index}>{allergen}</div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
-              </div>
-              <div className="menu-price-and-cart">
-                <p>${menuItem.price}</p>
-                <Button 
-                  variant="primary" 
-                  onClick={() => onAddToCart(menuItem)}
-                  >
-                    Add to Cart
-                </Button>
+                  <div className="menu-price-and-cart">
+                    <p>${menuItem.price}</p>
+                    <Button 
+                      variant="primary" 
+                      onClick={() => onAddToCart(menuItem)}
+                    >
+                      Add to Cart
+                    </Button>
+                  </div>
+                </div>
+                <p className={`menu-item-description ${allergensOpenIndex === index ? 'allergens-open' : ''}`}>{menuItem.description}</p>
               </div>
             </div>
-            <p className={`menu-item-description ${allergensOpenIndex === index ? 'allergens-open' : ''}`}>{menuItem.description}</p>
           </div>
         ))}
       </div>
