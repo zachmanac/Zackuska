@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const query= require('../../database/queries/get_menu_items_given_food');
 
-
+//*****it changed the path */
 router.get('/api/:label/menu_items', (req, res) => {
   
   query(req.params.label)

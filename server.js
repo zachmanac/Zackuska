@@ -34,6 +34,8 @@ const order_for_user = require('./server/routes/api/get_order_for_users_route');
 const order_for_truck = require('./server/routes/api/get_order_for_trucks_route');
 const reviews_for_truck = require('./server/routes/api/get_reviews_for_trucks_route');
 const reviews_for_items = require('./server/routes/api/get_reviews_for_items_route');
+const schedule = require('./server/routes/api/get_schedule_route');
+const new_schedule = require('./server/routes/api/add_schedule_route');
 /*
 const menu_items_by_label= require('./server/routes/api/get_menu_items_given_food_route'); items by label*/
 
@@ -50,23 +52,15 @@ app.get('/api/trucks', trucks);//Fetch all trucks from the database
 app.post('/api/trucks', new_truck);//Create a new truck record in the database
 app.get('/api/trucks/:trucks_id/menu_items', menu);// Get the menu of a given truck
 //need to add active and stock for inventory
-app.post('/api/trucks/:trucks_id/menu_items', new_menu_item);//Create a new menu item record in the database 
+app.post('/api/trucks/:truck_id/menu_items', new_menu_item);//Create a new menu item record in the database 
 app.get('/api/orders', order_for_user);//all the orders of the user given 
 app.get('/api/trucks/:truck_id/orders', order_for_truck);//all the orders of the truck given 
 app.get('/api/trucks/:truck_id/reviews', reviews_for_truck);//all the reviews of the truck given 
 app.get('/api/menu_items/:item_id/reviews', reviews_for_items);//all the reviews of the menu_item
-/*
+app.get('/api/trucks/:trucks_id/schedules', schedule);// Get the schedule of a given truck
+//need to add active and stock for inventory
+app.post('/api/trucks/:trucks_id/schedules', new_schedule);//Create a new schedule itenerary record in the database 
 
-*********STILL TO DO******************************************
-REFACTOR THE CODE OF BACK END
-app.get('/api/cart/', get_cart);//in case is done in back-end get the object with the items of the cart
-app.put('/api/menu_items/:menu_id', retire_menu_item);//retired menu item boolean colum 
-app.put('/api/cart/', add_items_to_cart);
-app.post('/api/cart/checkout', new_order);
-
-****************STRETCH*************************************
-//app.get('/api/:label/menu_items', menu_items_by_label);//STRETCH Fetch menu_items from the database with that label
-app.get('/api/labels/:label_id/trucks', menu_items_by_label);//NOT Fetch menu_items from the database with that label maybe NOT*/
 
 
 // Cart Routes
@@ -74,12 +68,27 @@ const get_cart = require('./server/routes/api/get_cart_for_user'); //get the car
 const add_items_to_cart = require('./server/routes/api/add_new_cart_for_user');
 const delete_item_cart = require('./server/routes/api/delete_item_cart_for_user');
 const update_cart_item = require('./server/routes/api/update_item_quantity_cart_for_user');
+const new_order = require('./server/routes/api/add_new_order_route');
 
 app.get('/api/cart/:cart_id', get_cart);
 app.put('/api/cart/:cart_id/cart_items/:cart_item_id', add_items_to_cart);
 app.delete('/api/cart/:cart_id/cart_items/:cart_item_id', delete_item_cart);
 app.put('/api/cart/:cart_id/cart_items/:cart_item_id', update_cart_item);
+app.post('/api/cart/checkout', new_order);
 
+
+/*
+
+*********STILL TO DO******************************************
+REFACTOR THE CODE OF BACK END
+
+app.put('/api/menu_items/:menu_id', retire_menu_item);//retired menu item boolean colum 
+
+app.post('/api/cart/checkout', new_order);
+
+****************STRETCH*************************************
+//app.get('/api/:label/menu_items', menu_items_by_label);//STRETCH Fetch menu_items from the database with that label
+app.get('/api/labels/:label_id/trucks', menu_items_by_label);//NOT Fetch menu_items from the database with that label maybe NOT*/
 
 
 app.listen(PORT, () => {
