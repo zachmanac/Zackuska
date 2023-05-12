@@ -1,0 +1,37 @@
+.cart-item-div {
+  margin-left: 400px;
+  margin-right: 300px;
+  margin-bottom: 20px;
+  color: orange;
+
+  .cart-item-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    td {
+      border: none;
+    }
+  }
+
+  .cart-item-row {
+    display: flex;
+    align-items: center;
+  }
+
+  .cart-item-data {
+    flex: 1;
+    padding: 10px;
+  }
+
+  .price {
+    color: blue;
+  }
+
+  .quantity {
+    color: blue;
+  }
+
+  .remove-button {
+    text-align: center;
+  }
+}

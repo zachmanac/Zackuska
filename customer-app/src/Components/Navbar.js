@@ -4,6 +4,7 @@ import SearchBar from './SearchBar';
 import Cart from './Cart';
 import ApiCalls from '../ApiCalls';
 import { Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 function Navbar(props) {
 
@@ -33,12 +34,14 @@ function Navbar(props) {
 
       <div className='nav-bar-right'>
       <div>
+      <Link to="/cart">
         <Button 
           variant="primary" 
           onClick={() => handleSendCarttoBackEnd(cartItems)}
         >
           Cart
         </Button>
+        </Link>
       </div>
         Login stuff
       </div>
