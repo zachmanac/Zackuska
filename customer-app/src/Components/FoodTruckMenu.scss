@@ -10,13 +10,48 @@
 
     h2 {
       color:lightgray;
+      margin-bottom: 10px;
     }
+
+    .hours-container {
+      display: flex;
+      flex-direction: column;
+
+      .hours-title {
+        margin-bottom: 5px;
+      }
+
+      .hours {
+        color: royalblue;
+        margin-left: 10px;
+        margin-top: 0%;
+        margin-bottom: 0%;
+      }
+
+      .end {
+        margin-bottom: 10px;
+      }
+    }
+
 
   }
   
   .menu-right-side {
     color: royalblue;
     padding-right: 100px;
+  }
+
+  .menu-item-content {
+    display: flex;
+    align-items: center;
+    align-items: flex-start;
+  }
+  
+  .menu-item-image {
+    width: 100px; 
+    height: 100px;
+    margin-right: 10px;
+    flex-shrink: 0;
   }
 
   .menu-item-individual {
@@ -35,13 +70,21 @@
     justify-content: space-between;
     position: relative;
     margin-bottom: 5px;
+
+     h3 {
+      text-align: left;
+     }
+
   }
 
-  .menu-price-and-cart {
-    text-align: right;
-  }
+  // .menu-price-and-cart {
+  //   text-align: right;
+  // }
 
   .menu-item-allergens {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     position: absolute;
     top: 70px;
     left: 94px;
@@ -52,6 +95,7 @@
     color: lightgray;
     margin-top: 0;
     max-height: none;
+    text-align: left;
   
     &.allergens-open {
       padding-top: 40px;
@@ -59,15 +103,21 @@
     }
   }
 
+  .menu-item-details {
+    flex-grow: 1;
+    text-align: right;
+  }
+
   .menu-calories-and-allergens {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     margin-bottom: 10px;
+    
     p {
       margin: 0;
       padding-right: 10px;
     }
+
   }
   
 }

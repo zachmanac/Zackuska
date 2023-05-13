@@ -6,6 +6,8 @@ function CartItem(props) {
   const { item, handleRemoveClick } = props;
   console.log("item", item);
 
+  const totalItemPrice = item.price * item.quantity;
+
   return (
     <div className='cart-item-div'>
       <table className='cart-item-table'>
@@ -23,6 +25,9 @@ function CartItem(props) {
               </td>
               <td className='cart-item-data price'>
                 Price: ${item.price}
+              </td>
+              <td className='cart-item-data price'>
+                Total Price: ${totalItemPrice}
               </td>
             </div>
           </tr>
