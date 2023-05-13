@@ -1,29 +1,30 @@
 const express = require('express');
 const router = express.Router();
-const query = require('../../database/queries/get_user_with_id');
+const query = require('../../database/queries/user/get_user_with_id');
 
-router.get("/api/me", (req, res) => {
-  const userId = req.session.userId;
-  console.log(userId)
-  if (!userId) {
-    res.send({message: "not logged in"});
-    return;
+// Get user from the database using the userId stored in the session
+router.get("/api/me", async (req, res) => {
+  try {
+    const userId = req.session.userId;
+    console.log(userId);
+    if (!userId) {
+      return res.status(401).json({ message: "Not logged in" });
+    }
+
+    // Get user from the database
+    const user = await query(userId);
+    console.log("User", user);
+
+    if (!user) {
+      return res.status(404).json({ error: "No user with that id" });
+    }
+
+    console.log('User info from database', user);
+    res.json(user); // Send user
+  } catch (error) {
+    console.error("Failed to retrieve user from the database", error);
+    res.status(500).json({ error: "Failed to retrieve user" });
   }
-
-  query(userId)
-    .then(user => {
-      console.log("User", user);
-      console.log('User.name', user.name);
-      
-      if (!user) {
-        res.send({error: "no user with that id"});
-        return;
-      }
-  const data= {user: {name: user.name, email: user.email, id: userId}};
-  console.log('Data', data);
-      res.send(data);
-    })
-    .catch(e => res.send(e));
 });
 
 module.exports = router;
