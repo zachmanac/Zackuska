@@ -36,7 +36,7 @@ const sendCart = function (cartItems, cb) {
       console.error('Failed to send cart:', error);
     });
 };
-
+  
 const updateCart = function (cartId, quantity, cb) {
   axios.put(`http://localhost:8080/api/cart/${cartId}`, { quantity })
     .then(res => {
@@ -63,6 +63,25 @@ const deleteCartItem = function (cartId, cb) {
     });
 };
 
+const checkoutCart = function (cartItems, totalAmount, totalCalories, cb) {
+  const cartData = {
+    items: cartItems,
+    total_amount: totalAmount,
+    total_calories: totalCalories,
+  };
+
+  axios.post('http://localhost:8080/api/cart/checkout', cartData)
+    .then(res => {
+      console.log(res.data);
+      if (cb) {
+        cb();
+      }
+    })
+    .catch(error => {
+      console.error('Failed to checkout cart:', error);
+    });
+};
+
 const ApiCalls = {
   getTrucks,
   getTruck,
@@ -70,7 +89,8 @@ const ApiCalls = {
   getMenu2,
   sendCart,
   updateCart,
-  deleteCartItem
+  deleteCartItem,
+  checkoutCart
 };
 
 export default ApiCalls;

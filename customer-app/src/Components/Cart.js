@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import CartItem from "./CartItem";
 import "./Cart.scss";
 import { Button } from "react-bootstrap";
+import ApiCalls from "../ApiCalls";
 
 function Cart(props) {
   const { cartItems, handleRemoveFromCart } = props;
@@ -38,6 +39,36 @@ function Cart(props) {
     return totalCartPrice;
   };
 
+  const calculateTotalCartCalories = () => {
+    let totalCartCalories = 0;
+    cart.forEach((item) => {
+      totalCartCalories += item.calories * item.quantity;
+    });
+    return totalCartCalories;
+  };
+
+  const handleCheckoutClick = () => {
+    const totalAmount = calculateTotalCartPrice();
+    const totalCalories = calculateTotalCartCalories();
+
+    ApiCalls.checkoutCart(cart, totalAmount, totalCalories, (response) => {
+      // Handle the response after checkout
+
+      if (response.status === 200) {
+        alert('Checkout successful!');
+        // Clear the cart for a new session
+        setCart([]);
+        console.log("response success", response);
+        window.location.href="localhost:3000/order";
+      } else {
+        // Checkout failed
+        alert('Checkout failed. Please try again or contact customer support.');
+        console.log("response fail", response);
+      }
+    });
+
+  };
+
   return (
     <div>
       <h2>My Cart</h2>
@@ -48,10 +79,11 @@ function Cart(props) {
         ))}
         {cart && cart.length > 0 && (
           <div className="cart-total-button">
-            <Button variant="primary">
+            <Button variant="primary" onClick={handleCheckoutClick}>
               Checkout
             </Button>
             <h3 className="total-cart-price">Total Cart Price: ${calculateTotalCartPrice()}</h3>
+            <h3 className="total-cart-price">Total Cart Calories: {calculateTotalCartCalories()}</h3>
           </div>
         )}
       </div>
