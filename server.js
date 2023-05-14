@@ -4,33 +4,29 @@ const morgan = require('morgan');
 const PORT = process.env.PORT || 8080;
 const session = require('express-session');
 const cors = require('cors');
-// const { auth } = require('express-openid-connect');
-
-
+const cookieParser= require('cookie-parser');
 const app = express();
-
+//app.use(cookieParser());
 app.use(session({
   secret: 'your-secret-key',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: true,
+  cookie: {
+    secure: false, // Set to true if using HTTPS
+    maxAge: 86400000 // Session expiration time (e.g., 24 hours)
+  }
 }));
+app.use((req, res, next) => {
+  console.log('Session ID:', req.sessionID);
+  console.log('Session:', req.session);
+  next();
+});
 
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use(express.json()); //parse json request bodies
-
-// const config = {
-//   authRequired: false,
-//   auth0Logout: true,
-//   secret: '7AHLd905OAehl7yk3lVMuqu1L5rZhj0nkBcXNGb2DZq1aVlzqo8j_iRQwz25N--h',
-//   baseURL: 'http://localhost:8080',
-//   clientID: 'XBhMn2bZ79yesfHTFiBJXgdKxkFVqJf3',
-//   issuerBaseURL: 'https://dev-iziq870h1o3r11lv.us.auth0.com'
-// };
-
-// app.use(auth(config));
 
 
 // Separated Routes for each Resource
@@ -118,13 +114,6 @@ const menu_items_by_label= require('./server/routes/api/get_menu_items_given_foo
 //app.get('/api/:label/menu_items', menu_items_by_label);//STRETCH Fetch menu_items from the database with that label
 app.get('/api/labels/:label_id/trucks', menu_items_by_label);//NOT Fetch menu_items from the database with that label maybe NOT*/
 
-// app.get('/', (req, res) => {
-//   res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
-// });
-
-// app.get('/login', (req, res) => {
-//   res.oidc.login();
-// });
 
 
 app.listen(PORT, () => {
