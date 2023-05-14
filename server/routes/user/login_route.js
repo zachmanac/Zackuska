@@ -1,43 +1,51 @@
 const express = require('express');
 const router = express.Router();
 const queryCheckUser = require('../../database/queries/user/get_user_with_email');
+const bcrypt = require('bcryptjs');
+const session = require('express-session');
 
-  //Check if a user exists with a given username, userType and password
+console.log('Code is executing...');
+
+
+//Check if a user exists with a given username, userType and password
   
-  const login = async function(email, password, userType) {
+  const login = async function(email, password, user_type) {
     const user = await queryCheckUser(email);
   
     if (!user) {
-      console.log('There is no user with that email');
-      return null;
+      return { error: 'There is no user with that email' };
     }
     
     if (!bcrypt.compareSync(password, user.password)) {
-      console.log("Wrong password");
-      return null;
+      return { error: "Wrong password" };
     }
     
-    if (user.user_type !== userType) {
-      console.log("Wrong user type");
-      return null;
+    if (user.user_type !== user_type) {
+      return { error: "Wrong user type" };
     }
     
     return user;
-  };
-
+};
 
 router.post('/api/session', (req, res) => {
-  const {email, password, userType} = req.body;
-    login(email, password, userType)
-    .then(user => {
-      if (!user) {
-        res.send({error: "error"});
+  const {email, password, user_type} = req.body;
+    login(email, password, user_type)
+    .then(result => {
+      console.log('Result:', result);
+      if (result.error) {
+        console.log('Result:', result); 
+        res.send(result);
         return;
       }
-      req.session.userId = user.id;
-      res.send(user);
+      req.session.userId = result.id;
+      res.send(result);
     })
-    .catch(e => res.send(e));
+    .catch(e => {
+    console.error('Error:', e); 
+
+    res.send(e)
 });
+});
+
 
 module.exports = router;

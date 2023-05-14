@@ -7,15 +7,16 @@ import Cart from './Components/Cart';
 import './App.scss';
 import ApiCalls from './ApiCalls';
 
+
 function FoodTruckMenuWrapper({ trucks, onAddToCart }) {
   const { truckId } = useParams();
-  
+
   return (
-    <FoodTruckMenu
-      truckId={truckId}
-      trucks={trucks}
-      onAddToCart={onAddToCart}
-    />
+      <FoodTruckMenu
+        truckId={truckId}
+        trucks={trucks}
+        onAddToCart={onAddToCart}
+      />
   );
 }
 
@@ -24,6 +25,7 @@ function App() {
   const [cartItems, setCartItems] = useState([]);
   const [trucks, setTrucks] = useState([]);
   const [menu, setMenu] = useState([]);
+
 
   const handleAddToCart = (menuItem) => {
     setCartItems((prevCartItems) => [...prevCartItems, menuItem]);
@@ -43,7 +45,7 @@ function App() {
     };
 
     fetchTrucks();
-  }, []); 
+  }, []);
 
   // Fetch menu for the active truck when activeFoodTruck changes
   useEffect(() => {
@@ -55,26 +57,26 @@ function App() {
     };
 
     fetchMenu();
-  }, [activeFoodTruck]); 
+  }, [activeFoodTruck]);
 
   return (
     <Router>
-      <div>
-        <Navbar cartItems={cartItems} handleRemoveFromCart={handleRemoveFromCart} />
-        <Routes>
-          <Route path="/" element={<FoodTruckList foodTrucks={trucks} setActiveFoodTruck={setActiveFoodTruck} />} />
-          <Route
-            path="/:truckId/menu"
-            element={
-              <FoodTruckMenuWrapper
-                trucks={trucks}
-                onAddToCart={handleAddToCart}
-              />
-            }
-          />
-          <Route path="/cart" element={<Cart cartItems={cartItems} handleRemoveFromCart={handleRemoveFromCart} />} />
-        </Routes>
-      </div>
+        <div>
+          <Navbar cartItems={cartItems} handleRemoveFromCart={handleRemoveFromCart} />
+          <Routes>
+            <Route path="/" element={<FoodTruckList foodTrucks={trucks} setActiveFoodTruck={setActiveFoodTruck} />} />
+            <Route
+              path="/:truckId/menu"
+              element={
+                <FoodTruckMenuWrapper
+                  trucks={trucks}
+                  onAddToCart={handleAddToCart}
+                />
+              }
+            />
+            <Route path="/cart" element={<Cart cartItems={cartItems} handleRemoveFromCart={handleRemoveFromCart} />} />
+          </Routes>
+        </div>
     </Router>
   );
 }
