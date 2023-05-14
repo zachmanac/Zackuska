@@ -1,14 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import './FoodTruckMenu.scss';
 import { Button } from 'react-bootstrap';
-import ApiCalls from "../ApiCalls";
-import MapGoogle from "./MapGoogle";
+import ApiCalls from '../ApiCalls';
+import MapGoogle from './MapGoogle';
+import { ModalContext } from './ModalContext';
+import { useContext } from 'react';
 
 
-function FoodTruckMenu({ onAddToCart, truckId, trucks }) {
+
+function FoodTruckMenu({ onAddToCart, truckId, trucks, cartItems, isLoggedIn, setShowLoginModal }) {
   const [allergensOpenIndex, setAllergensOpenIndex] = useState(-1);
   const [menuItems, setMenuItems] = useState([]);
-  const foodTruck = trucks.find(truck => truck.truck_id === Number(truckId));
+  const { setShowRegistrationModal } = useContext(ModalContext);
+
+
+
+  const foodTruck = trucks.find((truck) => truck.truck_id === Number(truckId));
 
   useEffect(() => {
     const fetchMenu = async () => {
@@ -28,6 +35,14 @@ function FoodTruckMenu({ onAddToCart, truckId, trucks }) {
     return <div>Loading...</div>;
   }
 
+  const handleAddToCart = (menuItem) => {
+    if (!isLoggedIn) {
+      setShowRegistrationModal(true); // Show the registration modal
+    } else {
+      onAddToCart(menuItem, 1); // Assuming a quantity of 1, you can modify this as per your requirement
+    }
+  };
+  
 
   return (
     <div className="food-truck-menu">
@@ -45,55 +60,63 @@ function FoodTruckMenu({ onAddToCart, truckId, trucks }) {
           <p className="hours">Start time: {foodTruck.start_time}</p>
           <p className="hours end">End time: {foodTruck.end_time}</p>
         </div>
-        < MapGoogle address={foodTruck.address} />
+        <MapGoogle address={foodTruck.address} />
       </div>
       <div className="menu-right-side">
-        {menuItems.map((menuItem, index) => (
-          <div key={index} className="menu-item-individual">
-            <div className="menu-item-content">
-              <img src={menuItem.image} alt="Item Image" className="menu-item-image" />
-              <div className="menu-item-details">
-                <div className="menu-item-title-price">
-                  <div>
-                    <h3>{menuItem.item_name}</h3>
-                    <div className="menu-calories-and-allergens">
-                      <p>{menuItem.calories} Calories</p>
-                      <Button
-                        variant="primary"
-                        onClick={() =>
-                          setAllergensOpenIndex(allergensOpenIndex === index ? -1 : index)
-                        }
-                      >
-                        Allergens
-                      </Button>
-                      {allergensOpenIndex === index && (
-                        <div className="menu-item-allergens">
-                          {menuItem.allergens.split(", ").map((allergen, index) => (
-                            <div key={index}>{allergen}</div>
-                          ))}
-                        </div>
-                      )}
+        {menuItems.map((menuItem, index) => {
+          const cartItem = cartItems.find((item) => item.item_id === menuItem.item_id);
+          const quantityInCart = cartItem ? cartItem.quantity : 0;
+
+          return (
+            <div key={index} className="menu-item-individual">
+              <div className="menu-item-content">
+                <img src={menuItem.image} alt="Item Image" className="menu-item-image" />
+                <div className="menu-item-details">
+                  <div className="menu-item-title-price">
+                    <div>
+                      <h3>{menuItem.item_name}</h3>
+                      <div className="menu-calories-and-allergens">
+                        <p>{menuItem.calories} Calories</p>
+                        <Button
+                          variant="primary"
+                          onClick={() =>
+                            setAllergensOpenIndex(allergensOpenIndex === index ? -1 : index)
+                          }
+                        >
+                          Allergens
+                        </Button>
+                        {allergensOpenIndex === index && (
+                          <div className="menu-item-allergens">
+                            {menuItem.allergens.split(', ').map((allergen, index) => (
+                              <div key={index}>{allergen}</div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <div className="menu-price-and-cart">
+                    <p>${menuItem.price}</p>
+                      <div className="cart-button-container">
+                        <span>{quantityInCart} in Cart</span>
+                        <Button 
+                          variant="primary" 
+                          onClick={() => handleAddToCart(menuItem, 1)}
+                        >
+                          Add to Cart
+                        </Button>
+                      </div>
                     </div>
                   </div>
-                  <div className="menu-price-and-cart">
-                    <p>${menuItem.price}</p>
-                    <Button 
-                      variant="primary" 
-                      onClick={() => onAddToCart(menuItem)}
-                    >
-                      Add to Cart
-                    </Button>
-                  </div>
+                  <p className={`menu-item-description ${allergensOpenIndex === index ? 'allergens-open' : ''}`}>{menuItem.description}</p>
                 </div>
-                <p className={`menu-item-description ${allergensOpenIndex === index ? 'allergens-open' : ''}`}>{menuItem.description}</p>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
-
 }
 
 export default FoodTruckMenu;
+
