@@ -34,7 +34,8 @@ router.post('/api/session', (req, res) => {
         res.send({error: "error"});
         return;
       }
-      req.session.userId = user.id;
+     
+      req.session.userId = user.user_id;
       res.send(user);
     })
     .catch(e => res.send(e));

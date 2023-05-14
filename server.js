@@ -4,14 +4,23 @@ const morgan = require('morgan');
 const PORT = process.env.PORT || 8080;
 const session = require('express-session');
 const cors = require('cors');
-
+const cookieParser= require('cookie-parser');
 const app = express();
-
+//app.use(cookieParser());
 app.use(session({
   secret: 'your-secret-key',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: true,
+  cookie: {
+    secure: false, // Set to true if using HTTPS
+    maxAge: 86400000 // Session expiration time (e.g., 24 hours)
+  }
 }));
+app.use((req, res, next) => {
+  console.log('Session ID:', req.sessionID);
+  console.log('Session:', req.session);
+  next();
+});
 
 app.use(cors());
 app.use(morgan('dev'));

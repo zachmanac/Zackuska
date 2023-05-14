@@ -6,7 +6,7 @@ const query = require('../../database/queries/user/get_user_with_id');
 router.get("/api/me", async (req, res) => {
   try {
     const userId = req.session.userId;
-    console.log(userId);
+  
     if (!userId) {
       return res.status(401).json({ message: "Not logged in" });
     }
@@ -19,7 +19,7 @@ router.get("/api/me", async (req, res) => {
       return res.status(404).json({ error: "No user with that id" });
     }
 
-    console.log('User info from database', user);
+    
     res.json(user); // Send user
   } catch (error) {
     console.error("Failed to retrieve user from the database", error);
