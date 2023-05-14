@@ -39,9 +39,9 @@ function FoodTruckList(props) {
     <div className="food-trucks-container">
       {/* <Grid container spacing={3}> */}
         {foodTrucks &&
-          foodTrucks.map((truck) => (
+          foodTrucks.map((truck, index) => (
             // <Grid item xs={12} sm={6} md={4} lg={3} key={truck.owner_id}>
-                <div className="food-truck">
+                <div className="food-truck" key={index}>
                   <Link to={`/${truck.truck_id}/menu`} onClick={() => handleFoodTruckClick(truck)} className="food-truck-link">
                     <h3 className="food-truck-orange">{truck.truck_name}</h3>
                     <p>{truck.phone_number}</p>
