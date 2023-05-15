@@ -1,61 +1,47 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import './Navbar.scss';
 import SearchBar from './SearchBar';
-import Cart from './Cart';
-import ApiCalls from '../ApiCalls';
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Modal, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import RegistrationForm from './RegistrationForm';
 import LoginForm from './LoginForm';
+import { ModalContext } from './ModalContext';
 
-function Navbar(props) {
-  const { cartItems, handleRemoveFromCart } = props;
-
-  const [showRegistrationModal, setShowRegistrationModal] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+function Navbar() {
+  const {
+    showRegistrationModal,
+    setShowRegistrationModal,
+    showLoginModal,
+    setShowLoginModal,
+    isLoggedIn,
+    setIsLoggedIn
+  } = useContext(ModalContext);
 
   useEffect(() => {
-    // Check if the user is already logged in (you can modify this logic based on your authentication implementation)
     const user = sessionStorage.getItem('user');
     if (user) {
       setIsLoggedIn(true);
     }
   }, []);
 
-  const handleSendCarttoBackEnd = function (cartArray) {
-    console.log(cartArray);
-    // once i get backend express route working, this should work
-    // ApiCalls.sendCart(cartArray).then(() => {
-    //   window.location.href ='http://localhost:3000/cart';
-    // })
-  };
-
-  const handleShowRegistrationModal = () => {
-    setShowRegistrationModal(true);
-  };
-
-  const handleCloseRegistrationModal = () => {
-    setShowRegistrationModal(false);
-  };
-
-  const handleShowLoginModal = () => {
-    setShowLoginModal(true);
-  };
-
-  const handleCloseLoginModal = () => {
-    setShowLoginModal(false);
-  };
-
-  const handleLogin = (user) => {
-    sessionStorage.setItem('user', JSON.stringify(user));
-    setIsLoggedIn(true);
-    handleCloseLoginModal();
+  const handleSendCarttoBackEnd = (event) => {
+    event.preventDefault();
+    if (!isLoggedIn) {
+      setShowLoginModal(true);
+    } else {
+      window.location.href = '/cart';
+    }
   };
 
   const handleLogout = () => {
     sessionStorage.removeItem('user');
     setIsLoggedIn(false);
+  };
+
+  const handleLogin = (user) => {
+    sessionStorage.setItem('user', JSON.stringify(user));
+    setIsLoggedIn(true);
+  setShowLoginModal(false); // Close the login modal
   };
 
   return (
@@ -69,13 +55,16 @@ function Navbar(props) {
         <SearchBar />
       </div>
 
+      {!isLoggedIn && (
+        <div className="prompt-login">
+          <Alert variant="warning">Please log in or sign up to add items to the cart.</Alert>
+        </div>
+      )}
+
       <div className="nav-bar-right">
         <div>
           <Link to="/cart">
-            <Button
-              variant="primary"
-              onClick={() => handleSendCarttoBackEnd(cartItems)}
-            >
+            <Button variant="primary" onClick={handleSendCarttoBackEnd}>
               Cart
             </Button>
           </Link>
@@ -86,49 +75,46 @@ function Navbar(props) {
           </Button>
         ) : (
           <>
-            <Button variant="primary" onClick={handleShowLoginModal}>
+            <Button variant="primary" onClick={() => setShowLoginModal(true)}>
               Login
             </Button>
-            <Button variant="secondary" onClick={handleShowRegistrationModal}>
+            <Button variant="secondary" onClick={() => setShowRegistrationModal(true)}>
               Sign Up
             </Button>
           </>
         )}
         <Modal
           show={showRegistrationModal}
-          onHide={handleCloseRegistrationModal}
+          onHide={() => setShowRegistrationModal(false)}
         >
           <Modal.Header closeButton>
             <Modal.Title>Register</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <RegistrationForm handleClose={handleCloseRegistrationModal} />
+            <RegistrationForm handleClose={() => setShowRegistrationModal(false)} />
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseRegistrationModal}>
+            <Button variant="secondary" onClick={() => setShowRegistrationModal(false)}>
               Close
             </Button>
           </Modal.Footer>
         </Modal>
-        <Modal show={showLoginModal} onHide={handleCloseLoginModal}>
+        <Modal show={showLoginModal} onHide={() => setShowLoginModal(false)}>
           <Modal.Header closeButton>
             <Modal.Title>Login</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <LoginForm handleClose={handleCloseLoginModal}
-                        handleLogin={handleLogin}
-                        />
-                      </Modal.Body>
-                      <Modal.Footer>
-                        <Button variant="secondary" onClick={handleCloseLoginModal}>
-                          Close
-                        </Button>
-                      </Modal.Footer>
-                    </Modal>
-                  </div>
-                </nav>
-              );
-              }
-              
-              export default Navbar;
-              
+            <LoginForm handleClose={() => setShowLoginModal(false)} handleLogin={handleLogin} />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowLoginModal(false)}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
+    </nav>
+  );
+}
+
+export default Navbar;
