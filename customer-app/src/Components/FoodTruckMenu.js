@@ -8,7 +8,15 @@ import { useContext } from 'react';
 
 
 
-function FoodTruckMenu({ onAddToCart, truckId, trucks, cartItems, isLoggedIn, setShowLoginModal }) {
+function FoodTruckMenu({ 
+  onAddToCart, 
+  onRemoveFromCart, 
+  truckId, 
+  trucks, 
+  cartItems, 
+  isLoggedIn, 
+  setShowLoginModal 
+}) {
   const [allergensOpenIndex, setAllergensOpenIndex] = useState(-1);
   const [menuItems, setMenuItems] = useState([]);
   const { setShowRegistrationModal } = useContext(ModalContext);
@@ -35,13 +43,28 @@ function FoodTruckMenu({ onAddToCart, truckId, trucks, cartItems, isLoggedIn, se
     return <div>Loading...</div>;
   }
 
-  const handleAddToCart = (menuItem) => {
+  const handleAddToCartClick = (menuItem) => {
     if (!isLoggedIn) {
       setShowRegistrationModal(true); // Show the registration modal
     } else {
       onAddToCart(menuItem, 1); // Assuming a quantity of 1, you can modify this as per your requirement
     }
+
   };
+  const handleRemoveFromCartClick = (menuItem) => {
+    const existingItem = cartItems.find((item) => item.item_id === menuItem.item_id);
+    
+    if (existingItem && existingItem.quantity > 1) {
+      // If item quantity is more than 1, decrease the quantity
+      const updatedCartItem = { ...existingItem, quantity: existingItem.quantity - 1 };
+      onRemoveFromCart(updatedCartItem);
+    } else {
+      // If item quantity is 1 or item does not exist in the cart, remove it
+      onRemoveFromCart(menuItem);
+    }
+  };
+  
+
   
 
   return (
@@ -95,12 +118,20 @@ function FoodTruckMenu({ onAddToCart, truckId, trucks, cartItems, isLoggedIn, se
                       </div>
                     </div>
                     <div className="menu-price-and-cart">
+                        {quantityInCart > 0 && (
+                    <Button 
+                      variant="danger"
+                      onClick={() => handleRemoveFromCartClick(menuItem)}
+                    >
+                      Remove -1
+                    </Button>
+                  )}
                     <p>${menuItem.price}</p>
                       <div className="cart-button-container">
                         <span>{quantityInCart} in Cart</span>
                         <Button 
                           variant="primary" 
-                          onClick={() => handleAddToCart(menuItem, 1)}
+                          onClick={() => handleAddToCartClick(menuItem)}
                         >
                           Add to Cart
                         </Button>
@@ -116,7 +147,7 @@ function FoodTruckMenu({ onAddToCart, truckId, trucks, cartItems, isLoggedIn, se
       </div>
     </div>
   );
-}
+};
 
 export default FoodTruckMenu;
 

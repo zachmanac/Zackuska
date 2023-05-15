@@ -1,93 +1,86 @@
-import React, { useState, useEffect } from "react";
-import CartItem from "./CartItem";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import "./Cart.scss";
-import { Button } from "react-bootstrap";
 
-function Cart(props) {
-  const { cartItems, handleRemoveFromCart } = props;
 
-  const [cart, setCart] = useState([]);
+const server = axios.create({
+  baseURL: 'http://localhost:8080',
+});
 
-  useEffect(() => {
-    const storedCart = sessionStorage.getItem("cart");
-    if (storedCart) {
-      const parsedCart = JSON.parse(storedCart);
-      setCart(parsedCart);
-    }
-  }, []);
+function Cart({ cartItems, setCartItems}) {
+  const userId = window.sessionStorage.getItem('userId');
 
   useEffect(() => {
-    sessionStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
+    window.localStorage.setItem(`cart-${userId}`, JSON.stringify(cartItems));
+  }, [cartItems]);
 
-  const handleRemoveClick = (itemToRemove) => {
-    setCart((prevCart) => {
-      const updatedCart = prevCart.filter(
-        (item) => item.item_id !== itemToRemove.item_id
-      );
-      return updatedCart;
+  const addToCart = (item) => {
+    setCartItems((prevItems) => {
+      const existingItemIndex = prevItems.findIndex((prevItem) => prevItem.item_id === item.item_id);
+      if (existingItemIndex !== -1) {
+        // If item exists in cart, update the quantity
+        return prevItems.map((prevItem, i) => i === existingItemIndex ? { ...prevItem, quantity: prevItem.quantity + 1 } : prevItem);
+      } else {
+        // If item does not exist in cart, add it
+        return [...prevItems, item];
+      }
     });
-    handleRemoveFromCart && handleRemoveFromCart(itemToRemove);
   };
 
-  const groupedItems = cart.reduce((result, item) => {
-    if (result[item.item_name]) {
-      result[item.item_name].quantity += item.quantity;
-    } else {
-      result[item.item_name] = { ...item };
-    }
-    return result;
-  }, {});
-
-  const calculateTotalCartPrice = () => {
-    let totalCartPrice = 0;
-    cart.forEach((item) => {
-      totalCartPrice += item.price * item.quantity;
+  const removeFromCart = (itemIndex) => {
+    setCartItems((prevItems) => {
+      const updatedItems = [...prevItems];
+      const itemToRemove = updatedItems[itemIndex];
+  
+      if (itemToRemove.quantity > 1) {
+        // If item quantity is more than 1, reduce the quantity
+        updatedItems[itemIndex] = { ...itemToRemove, quantity: itemToRemove.quantity - 1 };
+      } else {
+        // If item quantity is 1, remove the item from cart
+        updatedItems.splice(itemIndex, 1);
+      }
+  
+      return updatedItems;
     });
-    return totalCartPrice;
   };
 
-  const calculateTotalCartCalories = () => {
-    let totalCartCalories = 0;
-    cart.forEach((item) => {
-      totalCartCalories += item.calories * item.quantity;
-    });
-    return totalCartCalories;
+  const adjustQuantity = (index, newQuantity) => {
+    setCartItems((prevItems) =>
+      prevItems.map((item, i) => (i === index ? { ...item, quantity: newQuantity } : item))
+    );
   };
 
-  const handleCheckoutClick = () => {
-    // Handle the checkout process
-    // ...
+  const checkout = () => {
+    server
+      .post(`/api/orders`, {
+        userId,
+        cartItems,
+      })
+      .then((response) => {
+        console.log('Order placed:', response.data);
+        // Clear the cart
+        setCartItems([]);
+        window.localStorage.removeItem(`cart-${userId}`);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
   };
 
   return (
     <div>
-      <h2>My Cart</h2>
-      <div className="price-container">
-        {cart && cart.length === 0 && (
-          <div className="empty-cart">Your cart is empty</div>
-        )}
-        {Object.values(groupedItems).map((item) => (
-          <CartItem
-            key={item.item_id}
-            item={item}
-            handleRemoveClick={handleRemoveClick}
-          />
-        ))}
-        {cart && cart.length > 0 && (
-          <div className="cart-total-button">
-            <Button variant="primary" onClick={handleCheckoutClick}>
-              Checkout
-            </Button>
-            <h3 className="total-cart-price">
-              Total Cart Price: ${calculateTotalCartPrice()}
-            </h3>
-            <h3 className="total-cart-price">
-              Total Cart Calories: {calculateTotalCartCalories()}
-            </h3>
-          </div>
-        )}
-      </div>
+      <h1>Your Cart</h1>
+      {cartItems.map((item, index) => (
+        <div key={index}>
+          <h2>{item.item_name}</h2>
+          <p>Price: {item.price}</p>
+          <p>Quantity: {item.quantity}</p>
+          <button onClick={() => adjustQuantity(index, item.quantity + 1)}>+</button>
+          <button onClick={() => adjustQuantity(index, item.quantity - 1)}>-</button>
+          <button onClick={() => removeFromCart(index)}>Remove from cart</button>
+        </div>
+      ))}
+      <button onClick={checkout}>Checkout</button>
     </div>
   );
 }

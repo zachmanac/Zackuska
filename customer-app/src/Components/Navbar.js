@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import RegistrationForm from './RegistrationForm';
 import LoginForm from './LoginForm';
 import { ModalContext } from './ModalContext';
+import Cart from './Cart';
 
 function Navbar() {
   const {
@@ -14,7 +15,9 @@ function Navbar() {
     showLoginModal,
     setShowLoginModal,
     isLoggedIn,
-    setIsLoggedIn
+    setIsLoggedIn,
+    onRemoveFromCart,
+    onAddToCart
   } = useContext(ModalContext);
 
   useEffect(() => {
