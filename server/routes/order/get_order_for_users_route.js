@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const queryGetOrdersForUser= require('../../database/queries/order/get_order_for_users');
-
+//gets all the orders for a given user in the query
 
 router.get('/api/orders', (req, res) => {
   console.log("USER_ID",req.query);

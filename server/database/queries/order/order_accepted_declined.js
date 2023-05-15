@@ -10,8 +10,9 @@ const existingOrder = async function (order_id) {
   }
 };
 
-const updateStatus = function (order_id, status) {
-  return db.query('UPDATE orders SET status = $2 WHERE order_id = $1', [order_id, status]);
+const updateStatus = async function (order_id, status) {
+  const results= await db.query('UPDATE orders SET status = $2 WHERE order_id = $1 RETURNING *', [order_id, status]);
+  return results.rows;
 };
 
 const deleteOrder = function (order_id) {

@@ -4,8 +4,8 @@ const queryGetSchedule= require('../../database/queries/schedule/get_schedule');
 
 
 router.get('/api/trucks/:truck_id/schedules', (req, res) => {
-  console.log("truck_id", req.params.trucks_id)
-  queryGetSchedule(req.params.trucks_id)
+  console.log("truck_id", req.params.truck_id)
+  queryGetSchedule(req.params.truck_id)
 
 .then(menu_items=>{
   res.send(menu_items)

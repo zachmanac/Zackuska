@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const queryTrucks= require('../../database/queries/truck/get_trucks');
 
-//get the trucks from the database, need to add the map api
+//get the trucks from the database
 
 router.get('/api/trucks', (req, res) => {
   const { city, latitude, longitude, cuisine } = req.query;//maybe i also need to get the distance for the search radious from user

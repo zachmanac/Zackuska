@@ -48,10 +48,11 @@ const reviews_for_items = require('./server/routes/review/get_reviews_for_items_
 const add_reviews_for_items= require('./server/routes/review/add_reviews_for_items_route');
 const schedule = require('./server/routes/schedule/get_schedule_route');
 const new_schedule = require('./server/routes/schedule/add_schedule_route');
-const order_accepted_declined= require('./server/routes/order/order_accepted_or_declined_by_the_truck_route');
+//const order_accepted_declined= require('./server/routes/order/order_accepted_or_declined_by_the_truck_route');
 const new_order= require('./server/routes/order/add_new_order_route');
 const create_cart= require('./server/routes/cart/create_cart_route');
-const revert_order= require('./server/routes/order/revert_order_route')
+const revert_order= require('./server/routes/order/revert_order_route');
+const send_order_to_the_truck= require('./server/routes/truck/send_order_to_the_truck');
 //All resource routes
 //user
 app.post('/api/users', new_user);// Add a new user***
@@ -77,7 +78,7 @@ app.post('/api/trucks/:truck_id/schedules', new_schedule);//Create a new schedul
 app.post('/api/cart/checkout', new_order);
 app.post('/api/cart', create_cart);
 app.get('/api/cart', (req, res)=>{res.status(200).json(req.session.cart||{})});
-app.put('/api/cart/', (req,res)=>{
+app.put('/api/cart', (req,res)=>{
   if(!req.session.cart){
   req.session.cart={};
 }
@@ -86,7 +87,10 @@ req.session.cart.menu_items= req.body.menu_items;
   //keys are menu_items_id  values are quantities
   res.status(200).json(req.session.cart)
 });
-app.post('/api/orders/:order_id/submit', order_accepted_declined);
+app.post('/api/trucks/orders', send_order_to_the_truck);
+
+
+//app.post('/api/orders/:order_id/submit', order_accepted_declined);
 //app.post('/api/orders/:order_id/revert', revert_order);
 //**************************************************************************
 // Cart Routes
@@ -103,10 +107,12 @@ app.put('/api/cart/:cart_id/cart_items/:cart_item_id', update_cart_item);
 *********STILL TO DO******************************************
 REFACTOR THE CODE OF BACK END
 
-app.put('/api/menu_items/:menu_id', retire_menu_item);//retired menu item boolean colum 
-
-
-
+app.put('/api/trucks/:trucks_id/menu_items', edit_menu);//edit menu here the truck can retire/change the menu items
+app.get('/api/trucks/:truck_id', get_truck_by_id);//search for the truck, this is for the dashboard will need to join trucks, orders, reviews and schedule to give all that data to front end
+app.put('/api/trucks/:truck_id', edit_truck)//truck-owner can change the truck variables
+app.put('/api/trucks/:truck_id/schedule', change_schedule)
+app.get(/api/trucks/:truck_id/inventory', truck_inventory)//can see the inventory
+app.get(/api/trucks/:truck_id/stats', truck_stats)//truck owner could see charts of their sales
 ****************STRETCH*************************************
 /*
 const menu_items_by_label= require('./server/routes/api/get_menu_items_given_food_route'); items by label

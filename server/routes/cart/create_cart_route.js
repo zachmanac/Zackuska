@@ -16,7 +16,8 @@ router.post('/api/cart', (req, res) => {
   req.session.cart = {
     truck_id: truck_id,
     menu_items: items,
-    user_id: user_id,
+    //user_id: user_id,
+    menu_items: menu_items
     // Other properties...
   };
 

@@ -1,21 +1,23 @@
 const db = require('../../connection');
 
-const addNewOrder = async function (customer_id, truck_id, status, menu_items) {
+const addNewOrder = async function (customer_id, truck_id, status, total_amount, total_calories, menu_items) {
   try {
-    const date = new Date(); // Current timestamp
+    //const date = new Date(); // Current timestamp
 
     // Calculate total_amount and total_calories
-    const { total_amount, total_calories } = await calculateTotals(menu_items);
+    //const { total_amount, total_calories } = await calculateTotals(menu_items);
 
     // Insert the order into the orders table
     const orderResult = await db.query(`
       INSERT INTO orders (customer_id, truck_id, status, total_amount, total_calories, date)
       VALUES ($1, $2, $3, $4, $5, now())
-      RETURNING order_id`,
+      RETURNING *`,
       [customer_id, truck_id, status, total_amount, total_calories]
     );
 
-    const order_id = orderResult.rows[0].order_id;
+    const order = orderResult.rows[0];
+    console.log("order after inserted", order);
+    const order_id = order.order_id; // Get the generated order ID
 
     // Insert the order details into the order_details table
     const orderDetailPromises = menu_items.map(async (item) => {
@@ -30,13 +32,13 @@ const addNewOrder = async function (customer_id, truck_id, status, menu_items) {
     await Promise.all(orderDetailPromises);
 
     console.log('New order created successfully');
-    return { order_id };
+    return order;
   } catch (error) {
     console.error('Error creating new order:', error);
     throw error;
   }
 };
-
+/*
 // Helper function to calculate total_amount and total_calories
 async function calculateTotals(menu_items) {
   let total_amount = 0;
@@ -67,7 +69,7 @@ async function getItemData(item_id) {
   );
 
   return result.rows[0];
-}
+}*/
 
 module.exports = addNewOrder;
 
