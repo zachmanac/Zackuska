@@ -68,21 +68,31 @@ function Cart({ cartItems, setCartItems}) {
   };
 
   return (
-    <div>
-      <h1>Your Cart</h1>
+    <div className="cart-container">
+      <h1 className="cart-title">Your Cart</h1>
       {cartItems.map((item, index) => (
-        <div key={index}>
-          <h2>{item.item_name}</h2>
-          <p>Price: {item.price}</p>
-          <p>Quantity: {item.quantity}</p>
-          <button onClick={() => adjustQuantity(index, item.quantity + 1)}>+</button>
-          <button onClick={() => adjustQuantity(index, item.quantity - 1)}>-</button>
-          <button onClick={() => removeFromCart(index)}>Remove from cart</button>
+        <div key={index} className="cart-item">
+          <div className="item-details">
+            <div className="item-table">
+              <div className="item-row">
+                <p className="item-name">{item.item_name}</p>
+                <p className="item-price">$ {item.price}</p>
+                <p className="item-quantity">{item.quantity}</p>
+              </div>
+            </div>
+          </div>
+          <div className="item-actions">
+            <button className="quantity-button minus" onClick={() => adjustQuantity(index, item.quantity - 1)}>-</button>
+            <button className="quantity-button" onClick={() => adjustQuantity(index, item.quantity + 1)}>+</button>
+            <button className="remove-button" onClick={() => removeFromCart(index)}>Remove from cart</button>
+          </div>
         </div>
       ))}
-      <button onClick={checkout}>Checkout</button>
+      <button className="checkout-button">Checkout</button>
     </div>
   );
+  
+  
 }
 
 export default Cart;
