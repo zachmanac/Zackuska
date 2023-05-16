@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+//not sure if we need this
 // POST route to save cart items in the session
 router.post('/api/cart', (req, res) => {
   const { truck_id, menu_items } = req.body;

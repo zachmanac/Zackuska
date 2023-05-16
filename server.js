@@ -59,6 +59,7 @@ const order_declined_by_truck= require('./server/routes/food-truck-app-routes/or
 const pending_orders_for_truck= require('./server/routes/food-truck-app-routes/get_pending_orders_for_truck_route');
 const get_order_status_for_customer= require('./server/routes/customer-app-routes/get_status_order_for_customer');
 const customer_cancel_order= require('./server/routes/customer-app-routes/customer_cancel_order_route');
+const order_ready= require('./server/routes/food-truck-app-routes/order_ready_route');
 //All resource routes
 //user
 app.post('/api/users', new_user);// Add a new user***
@@ -100,6 +101,7 @@ req.session.cart.menu_items= req.body.menu_items;
 app.post('/api/trucks/orders', send_order_to_the_truck);
 app.get('/api/trucks/dashboard', get_truck_by_owner_id);
 app.post('/api/trucks/:truck_id/:order_id/cancelled',customer_cancel_order);
+app.post('/api/trucks/:truck_id/:order_id/ready',order_ready);
 //app.post('/api/orders/:order_id/submit', order_accepted_declined);
 //app.post('/api/orders/:order_id/revert', revert_order);
 
