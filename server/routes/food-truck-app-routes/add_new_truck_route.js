@@ -2,11 +2,11 @@ const express = require('express');
 const router = express.Router();
 const {queryAddNewTruck, queryCheckExistingTruck } = require('../../database/queries/truck/add_new_truck');
 
-
+//NEED TO VALIDATE THAT THE USER_TYPE IS OWNER
 router.post('/api/trucks', async (req, res) => {
   try {
     //const truck_owner_id= req.session.userId;
-    const truck_owner_id= 8;
+    const truck_owner_id= 10;
     console.log("New truck params", req.body);
     const new_truck = req.body;
     //validate only one truck per truck_owner for now

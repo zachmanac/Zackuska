@@ -6,7 +6,7 @@ router.post('/api/trucks/:truck_id/menu_items', async (req, res) => {
   try {
     console.log("new menu item", req.body);
     const truck_id = req.params.truck_id;
-    const { item_name, price, colories, allergens, halal, picture, description, item_label } = req.body;
+    const { item_name, price, colories, allergens, halal, picture, description, item_label, quantity } = req.body;
 
     await query(truck_id, item_name, price, colories, allergens, halal, picture, description, item_label, quantity);
     console.log("Menu Item added successfully");
