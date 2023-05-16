@@ -11,7 +11,7 @@ const Orders = () => {
       try {
         const foodTruckId = 1; 
         //foodtruckid should be from current users(owner) truck i think
-        const orders = await ApiCallsOwner.getCurrentOrders(foodTruckId);
+        const orders = await ApiCallsOwner.getAllOrders(foodTruckId);
         // console.log("ORDERS/FETCHORDERS", orders)
         setOrders(orders);
       } catch (error) {
