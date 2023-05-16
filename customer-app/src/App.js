@@ -6,7 +6,7 @@ import FoodTruckMenu from './Components/FoodTruckMenu';
 import Cart from './Components/Cart';
 import './App.scss';
 import ApiCalls from './ApiCalls';
-import { ModalContext } from './Components//ModalContext';
+import { ModalContext } from './Components/ModalContext';
 
 
 function FoodTruckMenuWrapper({ trucks, cartItems, isLoggedIn, handleAddToCart, handleRemoveFromCart }) {
