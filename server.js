@@ -109,8 +109,7 @@ app.post('/api/trucks/orders', send_order_to_the_truck);
 app.get('/api/trucks/dashboard', get_truck_by_owner_id);
 app.post('/api/trucks/:truck_id/:order_id/cancelled',customer_cancel_order);
 app.post('/api/trucks/:truck_id/:order_id/ready',order_ready);
-//app.post('/api/orders/:order_id/submit', order_accepted_declined);
-//app.post('/api/orders/:order_id/revert', revert_order);
+
 
 //**************************************************************************
 // Cart Routes
@@ -131,10 +130,12 @@ i need to validate the user_type is owner in login for dashboard
 app.put('/api/trucks/menu_items', edit_menu);//edit menu here the truck can retire/change the menu items
 app.put('/api/trucks/:truck_id', edit_truck)//truck-owner can change the truck variables
 app.put('/api/trucks/schedule', change_schedule)
-app.get(/api/trucks/inventory', truck_inventory)//can see the inventory
-app.get(/api/trucks/stats', truck_stats)//truck owner could see charts of their sales
+
+
 ****************STRETCH*************************************
-/*
+//app.post('/api/orders/:order_id/revert', revert_order);
+app.get(/api/trucks/stats', truck_stats)//truck owner could see charts of their sales
+app.get(/api/trucks/inventory', truck_inventory)//can see the inventory
 const menu_items_by_label= require('./server/routes/api/get_menu_items_given_food_route'); items by label
 
 //app.get('/api/:label/menu_items', menu_items_by_label);//STRETCH Fetch menu_items from the database with that label

@@ -88,14 +88,32 @@ curl -X GET http://localhost:8080/api/trucks/1/orders
 app.get('/api/trucks/:truck_id/reviews', reviews_for_truck);//all the reviews of the truck given 
 curl -X GET "http://localhost:8080/api/trucks/1/reviews"
 -------------------------------------------------------------
-WHY IS USER PASSED IN THE QUERY
+WHY IS USER PASSED IN THE QUERY?
 app.get('/api/orders', order_for_user);//all the orders of the user given 
 curl -X GET http://localhost:8080/api/orders?user_id=1
 ------------------------------------------------------------
 app.get('/api/trucks/:truck_id/orders', order_for_truck);//all the orders of the truck given
 curl -X GET http://localhost:8080/api/trucks/1/orders
 -----------------------------------------------------------
+NEED TO JOIN WITH USER TO GET USER NAME
 app.get('/api/trucks/:truck_id/reviews', reviews_for_truck);//all the reviews of the truck given
 curl -X GET http://localhost:8080/api/trucks/3/reviews
 -----------------------------------------------------------
+I THINK WE ALSO NEED TO SEND TO THE TRUCK OWNERS INFO
 app.post('/api/cart/checkout', new_order);//add new order
+
+curl -X POST -H "Content-Type: application/json" -d '{
+  "user_id": 1,
+  "truck_id": 1,
+  "menu_items": [
+    { "item_id": 1, "quantity": 2 },
+    { "item_id": 6, "quantity": 1 }
+  ],
+  "total_amount": 25.99,
+  "total_calories": 1200
+}' http://localhost:8080/api/cart/checkout
+-----------------------------------------------------------
+FOR NOW JUST GETS HARDCODE THE OWNER_ID
+app.get('/api/trucks/dashboard', get_truck_by_owner_id);
+curl -X GET http://localhost:8080/api/trucks/dashboard
+-----------------------------------------------------------

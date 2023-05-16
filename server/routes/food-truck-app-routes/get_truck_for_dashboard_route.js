@@ -4,7 +4,7 @@ const queryTruckDashboard= require('../../database/queries/truck/get_trucks_for_
 const {queryCheckExistingTruck} = require('../../database/queries/truck/add_new_truck');
 
 //get the trucks from the database
-
+//in this case we are getting the owner_id from the session just didnt work for me at the moment so i hardcode for owner_id=2 for now
 router.get('/api/trucks/dashboard', async (req, res) => {
   //const truck_owner_id= req.session.userId;
 const owner_id= 2;//hardcode owner_id until it is stored in session

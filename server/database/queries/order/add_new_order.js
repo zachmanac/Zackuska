@@ -1,6 +1,6 @@
 const db = require('../../connection');
 
-const addNewOrder = async function (customer_id, truck_id, status, total_amount, total_calories, menu_items) {
+const addNewOrder = async function (customer_id, truck_id, status, total_amount, total_calories, menu_items, response) {
   try {
     //const date = new Date(); // Current timestamp
 
@@ -9,10 +9,10 @@ const addNewOrder = async function (customer_id, truck_id, status, total_amount,
 
     // Insert the order into the orders table
     const orderResult = await db.query(`
-      INSERT INTO orders (customer_id, truck_id, status, total_amount, total_calories, date)
-      VALUES ($1, $2, $3, $4, $5, now())
+      INSERT INTO orders (customer_id, truck_id, status, total_amount, total_calories, date,response)
+      VALUES ($1, $2, $3, $4, $5, now(), $6)
       RETURNING *`,
-      [customer_id, truck_id, status, total_amount, total_calories]
+      [customer_id, truck_id, status, total_amount, total_calories, response]
     );
 
     const order = orderResult.rows[0];
