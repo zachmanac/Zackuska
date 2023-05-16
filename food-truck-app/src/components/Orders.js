@@ -66,7 +66,7 @@ const Orders = () => {
               <p>Order Id: {order.order_id}</p>
               <p>{order.status}</p>
               <div className="order-status-buttons">
-              {order.status && (
+              {order.status === 'Pending' && (
                   <div>
                     <Button variant="success" onClick={() => handleAcceptOrder(order.order_id)}>Accept</Button>
                     <Button variant="danger" onClick={() => handleDeclineOrder(order.order_id)}>Decline</Button>
