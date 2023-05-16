@@ -70,7 +70,7 @@ function Navbar() {
             <Modal.Title>Register</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <RegistrationForm handleClose={() => setShowRegistrationModal(false)} />
+            <RegistrationForm handleClose={() => setShowRegistrationModal(false)} user_type= {'owner'} />
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={() => setShowRegistrationModal(false)}>

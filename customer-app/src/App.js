@@ -8,6 +8,7 @@ import './App.scss';
 import ApiCalls from './ApiCalls';
 import { ModalContext } from './Components//ModalContext';
 import Orders from './Components/Orders'; 
+import axios from 'axios';
 
 
 
@@ -42,7 +43,15 @@ const [showRegistrationModal, setShowRegistrationModal] = useState(false);
 const [activeFoodTruck, setActiveFoodTruck] = useState(null);
 
 useEffect(() => {
-  window.localStorage.setItem(`cartItems-${userId}`, JSON.stringify(cartItems));
+  const menu_items = cartItems.reduce ((acc, value) => ({...acc, [value.item_id]: value.quantity}), {});
+  console.log('menu_items:', menu_items)
+  const truck_id = activeFoodTruck.truck_id
+  axios.put(`/api/cart/`, {truck_id, menu_items})
+  .then (
+    (data) => console.log('successful cart update', data)
+  )
+  .catch ( (err) => console.log(err))
+  // window.localStorage.setItem(`cartItems-${userId}`, JSON.stringify(cartItems));
 }, [cartItems, userId]);
 
   

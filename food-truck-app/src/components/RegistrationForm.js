@@ -6,14 +6,13 @@ const server = axios.create({
   baseURL: 'http://localhost:8080',
 });
 
-function RegistrationForm({ handleClose }) {
+function RegistrationForm({ handleClose, user_type}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [name, setName] = useState('');
   const [last_name, setLastName] = useState('');
-  // const [userType, setUserType] = useState('customer');
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -29,7 +28,7 @@ function RegistrationForm({ handleClose }) {
       last_name,
       email,
       password,
-      // user_type: userType
+      user_type: user_type
     };
 
     server
