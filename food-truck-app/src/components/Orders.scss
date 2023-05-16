@@ -1,0 +1,30 @@
+h1 {
+  display: flex;
+  justify-content: center;
+  color: orange;
+}
+
+.orders-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.individual-order {
+  display: flex;
+  margin-top: 50px;
+  color: royalblue;
+  p {
+    margin: 5px 0;
+    width: 400px;
+  }
+}
+
+.order-status-buttons button {
+  margin-right: 10px;
+}
+
+.order-status-buttons {
+  margin-left: 100px;
+}
