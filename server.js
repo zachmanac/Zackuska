@@ -35,9 +35,7 @@ app.use(express.json()); //parse json request bodies
 
 // Separated Routes for each Resource
 
-//Payment
-const paymentRoutes = require('./path/to/paymentRoute');
-app.use('/api/payment', paymentRoutes);
+
 
 //user
 const new_user = require('./server/routes/user/add_new_user_route');
