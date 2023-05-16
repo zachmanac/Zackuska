@@ -3,24 +3,29 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@auth0/auth0-react": "^2.1.0",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@mui/material": "^5.13.0",
-    "@mui/styles": "^5.12.3",
+    "@stripe/react-stripe-js": "^2.1.0",
+    "@stripe/stripe-js": "^1.53.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.4.0",
     "bootstrap": "^5.2.3",
     "cookie-parser": "^1.4.6",
+<<<<<<< HEAD
+    "react": "^18.0.2",
+=======
     "fontawesome-free": "^1.0.4",
     "react": "^18.2.0",
+>>>>>>> d2e191570bd858faf66e07740a09db44daf8b547
     "react-bootstrap": "^2.7.4",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.11.1",
     "react-scripts": "5.0.1",
+    "stripe": "^12.5.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

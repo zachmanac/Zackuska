@@ -56,12 +56,12 @@ useEffect(() => {
       setShowLoginModal(true);
     } else {
       // Add item to cart
-      const existingItem = cartItems.find((item) => item.item_id === menuItem.item_id);
+      const existingItem = cartItems.find((item) => item.item_id === menuItem.item_id && item.truckId === menuItem.truckId);
   
       if (existingItem) {
         // Item already exists in cart, update the quantity
         const updatedCartItems = cartItems.map((item) => {
-          if (item.item_id === menuItem.item_id) {
+          if (item.item_id === menuItem.item_id && item.truckId === menuItem.truckId) {
             return { ...item, quantity: item.quantity + quantity };
           }
           return item;
@@ -75,17 +75,17 @@ useEffect(() => {
     }
   };
   
-  
-
   const handleRemoveFromCart = (itemToRemove) => {
-    const existingItem = cartItems.find(item => item.item_id === itemToRemove.item_id);
+    const existingItem = cartItems.find(item => item.item_id === itemToRemove.item_id && item.truckId === itemToRemove.truckId);
   
     if (existingItem && existingItem.quantity > 1) {
       // Replace the item with the updated one
-      setCartItems(prevItems => prevItems.map(item => item.item_id === existingItem.item_id ? itemToRemove : item));
+      setCartItems(prevItems => prevItems.map(item => 
+        (item.item_id === existingItem.item_id && item.truckId === existingItem.truckId) ? itemToRemove : item
+      ));
     } else {
       // Remove the item completely from the cart
-      setCartItems(prevItems => prevItems.filter(item => item.item_id !== itemToRemove.item_id));
+      setCartItems(prevItems => prevItems.filter(item => item.item_id !== itemToRemove.item_id || item.truckId !== itemToRemove.truckId));
     }
   };
   
