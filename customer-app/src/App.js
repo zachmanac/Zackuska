@@ -6,7 +6,9 @@ import FoodTruckMenu from './Components/FoodTruckMenu';
 import Cart from './Components/Cart';
 import './App.scss';
 import ApiCalls from './ApiCalls';
-import { ModalContext } from './Components/ModalContext';
+import { ModalContext } from './Components//ModalContext';
+import Orders from './Components/Orders'; 
+
 
 
 function FoodTruckMenuWrapper({ trucks, cartItems, isLoggedIn, handleAddToCart, handleRemoveFromCart }) {
@@ -129,6 +131,8 @@ useEffect(() => {
             }
           />
           <Route path="/cart" element={<Cart cartItems={cartItems} setCartItems={setCartItems}  />} />
+          <Route path="/orders" element={<Orders />} />
+
 
         </Routes>
       </div>

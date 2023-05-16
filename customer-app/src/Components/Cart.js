@@ -4,9 +4,10 @@ import "./Cart.scss";
 import PaymentForm from '../Components/PaymentForm';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+import OrderConfirmationModal from './OrderConfirmationModal';  
+
 
 const stripePublicKey = "pk_test_51I6VmWH67yKbwOmGGmpiEitNjqEKh6mpYczMUyTmdW7IMVh3I5uKFFYXreM4OFXzTiLQu9H6PyCFrNWtCAUEnkCn00qoW806h6";
-
 const stripePromise = loadStripe(stripePublicKey);
 
 const server = axios.create({
@@ -15,6 +16,7 @@ const server = axios.create({
 
 function Cart({ cartItems, setCartItems }) {
   const [showPayment, setShowPayment] = useState(false);
+  const [orderId, setOrderId] = useState(null);
   const userId = window.sessionStorage.getItem('userId');
 
   useEffect(() => {
@@ -102,6 +104,7 @@ function Cart({ cartItems, setCartItems }) {
 
       if (orderResponse.status === 200) {
         console.log('Order placed:', orderResponse.data);
+        setOrderId(orderResponse.data.id);
         // Clear the cart
         setCartItems([]);
         window.localStorage.removeItem(`cart-${userId}`);
@@ -182,6 +185,9 @@ function Cart({ cartItems, setCartItems }) {
             </div>
           </Elements>
       )}
+      {orderId && (
+        <OrderConfirmationModal orderId={orderId} onOrderAccepted={() => { /* Your logic here */ }} />
+      )}      
     </div>
   );
 }

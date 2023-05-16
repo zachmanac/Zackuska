@@ -7,9 +7,6 @@ const cors = require('cors');
 const cookieParser= require('cookie-parser');
 const app = express();
 
-// Import routes
-const paymentRoutes = require('./server/routes/customer-app-routes/paymentRoutes');
-
 //app.use(cookieParser());
 app.use(session({
   secret: 'your-secret-key',
@@ -36,8 +33,8 @@ app.use(express.json()); //parse json request bodies
 // Separated Routes for each Resource
 
 //Payment
-const paymentRoutes = require('./path/to/paymentRoute');
-app.use('/api/payment', paymentRoutes);
+const paymentRoutes = require('./server/routes/customer-app-routes/paymentRoutes');
+app.post('/api/payment', paymentRoutes);
 
 //user
 const new_user = require('./server/routes/user/add_new_user_route');

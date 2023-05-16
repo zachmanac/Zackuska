@@ -1,5 +1,5 @@
 import React from 'react';
-import { CardElement, CardNumberElement, CardExpiryElement, CardCvcElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { CardNumberElement, CardExpiryElement, CardCvcElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import axios from 'axios';
 import './PaymentForm.scss';
 
@@ -34,11 +34,13 @@ function PaymentForm({ cartItems }) {
         return;
       }
   
-      const cardElement = elements.getElement(CardElement);
+      const cardNumberElement = elements.getElement(CardNumberElement);
+      const cardExpiryElement = elements.getElement(CardExpiryElement);
+      const cardCvcElement = elements.getElement(CardCvcElement);
 
       const {error, paymentMethod} = await stripe.createPaymentMethod({
         type: 'card',
-        card: cardElement,
+        card: cardNumberElement,
       });
   
       if (error) {
@@ -46,9 +48,11 @@ function PaymentForm({ cartItems }) {
         return;
       }
   
-      const paymentIntentRes = await axios.post('/api/create-payment-intent', {
+      const paymentIntentRes = await axios.post('http://localhost:8080/api/payment/create-payment-intent', {
         items: cartItems,
-      });
+    });
+
+      
 
       const confirmPaymentRes = await stripe.confirmCardPayment(
         paymentIntentRes.data.clientSecret,
@@ -71,10 +75,10 @@ function PaymentForm({ cartItems }) {
           <h1>Payment Form</h1>
           <form onSubmit={handleSubmit}>
             <div>
-            <label>
-              Card Number
-              <CardNumberElement options={CARD_ELEMENT_OPTIONS} />
-            </label>
+              <label>
+                Card Number
+                <CardNumberElement options={CARD_ELEMENT_OPTIONS} />
+              </label>
             </div>
             <label>
               Expiry Date
