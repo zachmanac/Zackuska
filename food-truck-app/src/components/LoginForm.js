@@ -9,7 +9,7 @@ const server = axios.create({
 function LoginForm({ handleClose, handleLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [userType, setUserType] = useState('customer');
+  // const [userType, setUserType] = useState('owner');
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -21,7 +21,7 @@ function LoginForm({ handleClose, handleLogin }) {
       .post('/api/session', {
         email,
         password,
-        user_type: userType,
+        // user_type: userType,
       })
       .then((response) => {
         console.log('Success:', response.data);

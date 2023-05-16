@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 import './Navbar.scss';
 import { Button, Modal, Alert } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import RegistrationForm from './RegistrationForm';
 import LoginForm from './LoginForm';
 import { ModalContext } from './ModalContext';
