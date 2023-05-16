@@ -83,7 +83,7 @@ app.get('/api/trucks/:truck_id/pending_orders', pending_orders_for_truck);
 app.get('/api/order/:order_id/status', get_order_status_for_customer);
 app.get('/api/trucks', trucks);//Fetch all trucks from the database
 app.post('/api/trucks', new_truck);//Create a new truck record in the database
-app.get('/api/trucks/:trucks_id/menu_items', menu);// Get the menu of a given truck
+app.get('/api/trucks/:truck_id/menu_items', menu);// Get the menu of a given truck
 //need to add active and stock for inventory
 app.post('/api/trucks/:truck_id/menu_items', new_menu_item);//Create a new menu item record in the database 
 app.get('/api/orders', order_for_user);//all the orders of the user given 

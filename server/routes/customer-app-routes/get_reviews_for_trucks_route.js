@@ -4,7 +4,7 @@ const queryGetReviewsForTruck= require('../../database/queries/review/get_review
 
 
 router.get('/api/trucks/:truck_id/reviews', (req, res) => {
-  console.log("TRUCK_ID",req.params);
+
 
   queryGetReviewsForTruck(req.params.truck_id)
 
