@@ -38,6 +38,7 @@ const addNewOrder = async function (customer_id, truck_id, status, total_amount,
     throw error;
   }
 };
+//this in case i dont get it from customer-app
 /*
 // Helper function to calculate total_amount and total_calories
 async function calculateTotals(menu_items) {

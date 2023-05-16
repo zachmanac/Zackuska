@@ -1,6 +1,6 @@
 
 
-INSERT INTO orders (customer_id, truck_id, status, total_amount, total_calories, date)
+INSERT INTO orders (customer_id, truck_id, status, total_amount, total_calories, date, response)
 VALUES
   (1, 1, 'Completed', 25.99, 500, '2023-05-01 10:30:00'),
   (4, 2, 'Pending', 15.50, 300, '2023-05-02 12:45:00'),

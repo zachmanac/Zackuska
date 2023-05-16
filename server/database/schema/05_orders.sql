@@ -6,6 +6,7 @@ CREATE TABLE orders (
   status VARCHAR(255) NOT NULL,
   total_amount DECIMAL(10,2) NOT NULL,
   total_calories INTEGER NOT NULL DEFAULT 0,
-  date TIMESTAMP NOT NULL
+  date TIMESTAMP NOT NULL,
+  response VARCHAR(255)
   
 );

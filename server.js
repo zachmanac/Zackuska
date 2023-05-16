@@ -36,23 +36,28 @@ const user_with_id = require('./server/routes/user/get_an_user_with_id_route');
 const loginUser = require('./server/routes/user/login_route');
 const logout = require('./server/routes/user/logout_route');
 //api
-const trucks = require('./server/routes/truck/get_trucks_route');
-const new_truck = require('./server/routes/truck/add_new_truck_route');
-const menu = require('./server/routes/menu/get_menu_route');
-const new_menu_item = require('./server/routes/menu/add_menu_item_route');
-const order_for_user = require('./server/routes/order/get_order_for_users_route');
-const order_for_truck = require('./server/routes/order/get_order_for_trucks_route');
-const reviews_for_truck = require('./server/routes/review/get_reviews_for_trucks_route');
-const add_reviews_for_truck= require('./server/routes/review/add_reviews_for_trucks_route');
-const reviews_for_items = require('./server/routes/review/get_reviews_for_items_route');
-const add_reviews_for_items= require('./server/routes/review/add_reviews_for_items_route');
-const schedule = require('./server/routes/schedule/get_schedule_route');
-const new_schedule = require('./server/routes/schedule/add_schedule_route');
+const trucks = require('./server/routes/food-truck-app-routes/get_trucks_route');
+const new_truck = require('./server/routes/food-truck-app-routes/add_new_truck_route');
+const menu = require('./server/routes/food-truck-app-routes/get_menu_route');
+const new_menu_item = require('./server/routes/food-truck-app-routes/add_menu_item_route');
+const order_for_user = require('./server/routes/customer-app-routes/get_order_for_users_route');
+const order_for_truck = require('./server/routes/food-truck-app-routes/get_order_for_trucks_route');
+const reviews_for_truck = require('./server/routes/customer-app-routes/get_reviews_for_trucks_route');
+const add_reviews_for_truck= require('./server/routes/customer-app-routes/add_reviews_for_trucks_route');
+const reviews_for_items = require('./server/routes/customer-app-routes/get_reviews_for_items_route');
+const add_reviews_for_items= require('./server/routes/customer-app-routes/add_reviews_for_items_route');
+const schedule = require('./server/routes/customer-app-routes/get_schedule_route');
+const new_schedule = require('./server/routes/food-truck-app-routes/add_schedule_route');
 //const order_accepted_declined= require('./server/routes/order/order_accepted_or_declined_by_the_truck_route');
-const new_order= require('./server/routes/order/add_new_order_route');
-const create_cart= require('./server/routes/cart/create_cart_route');
-const revert_order= require('./server/routes/order/revert_order_route');
-const send_order_to_the_truck= require('./server/routes/truck/send_order_to_the_truck');
+const new_order= require('./server/routes/customer-app-routes/add_new_order_route');
+const create_cart= require('./server/routes/customer-app-routes/create_cart_route');
+//const revert_order= require('./server/routes/order/revert_order_route');
+const send_order_to_the_truck= require('./server/routes/food-truck-app-routes/order_accepted_by_truck_route');
+const get_truck_by_owner_id= require('./server/routes/food-truck-app-routes/get_truck_for_dashboard_route');
+const order_accepted_by_truck= require('./server/routes/food-truck-app-routes/order_accepted_by_truck_route');
+const order_declined_by_truck= require('./server/routes/food-truck-app-routes/order_declined_by_truck_route');
+const pending_orders_for_truck= require('./server/routes/food-truck-app-routes/get_pending_orders_for_truck_route');
+const get_order_status_for_customer= require('./server/routes/customer-app-routes/get_status_order_for_customer');
 //All resource routes
 //user
 app.post('/api/users', new_user);// Add a new user***
@@ -61,6 +66,10 @@ app.delete('/api/session', logout);// User logout**
 app.get('/api/me', user_with_id); //get an user with a given id**
 
 //api
+app.post('/api/trucks/:truck_id/:order_id/accepted', order_accepted_by_truck);
+app.post('/api/trucks/:truck_id/:order_id/declined', order_declined_by_truck);
+app.get('/api/trucks/:truck_id/pending_orders', pending_orders_for_truck);
+app.get('/api/order/:order_id/status', get_order_status_for_customer);
 app.get('/api/trucks', trucks);//Fetch all trucks from the database
 app.post('/api/trucks', new_truck);//Create a new truck record in the database
 app.get('/api/trucks/:trucks_id/menu_items', menu);// Get the menu of a given truck
@@ -76,7 +85,7 @@ app.get('/api/trucks/:truck_id/schedules', schedule);// Get the schedule of a gi
 //need to add active and stock for inventory
 app.post('/api/trucks/:truck_id/schedules', new_schedule);//Create a new schedule itenerary record in the database 
 app.post('/api/cart/checkout', new_order);
-app.post('/api/cart', create_cart);
+//app.post('/api/cart', create_cart);
 app.get('/api/cart', (req, res)=>{res.status(200).json(req.session.cart||{})});
 app.put('/api/cart', (req,res)=>{
   if(!req.session.cart){
@@ -88,10 +97,11 @@ req.session.cart.menu_items= req.body.menu_items;
   res.status(200).json(req.session.cart)
 });
 app.post('/api/trucks/orders', send_order_to_the_truck);
-
+app.get('/api/trucks/dashboard', get_truck_by_owner_id);
 
 //app.post('/api/orders/:order_id/submit', order_accepted_declined);
 //app.post('/api/orders/:order_id/revert', revert_order);
+
 //**************************************************************************
 // Cart Routes
 /*const get_cart = require('./server/routes/cart/get_cart_for_user'); //get the cart for a given user_id
@@ -106,13 +116,13 @@ app.put('/api/cart/:cart_id/cart_items/:cart_item_id', update_cart_item);
 
 *********STILL TO DO******************************************
 REFACTOR THE CODE OF BACK END
-
-app.put('/api/trucks/:trucks_id/menu_items', edit_menu);//edit menu here the truck can retire/change the menu items
-app.get('/api/trucks/:truck_id', get_truck_by_id);//search for the truck, this is for the dashboard will need to join trucks, orders, reviews and schedule to give all that data to front end
+MAKE SURE THERE IS ONLY ONE TRUCK PER OWNER IN YOUR DB for now
+i need to validate the user_type is owner in login for dashboard
+app.put('/api/trucks/menu_items', edit_menu);//edit menu here the truck can retire/change the menu items
 app.put('/api/trucks/:truck_id', edit_truck)//truck-owner can change the truck variables
-app.put('/api/trucks/:truck_id/schedule', change_schedule)
-app.get(/api/trucks/:truck_id/inventory', truck_inventory)//can see the inventory
-app.get(/api/trucks/:truck_id/stats', truck_stats)//truck owner could see charts of their sales
+app.put('/api/trucks/schedule', change_schedule)
+app.get(/api/trucks/inventory', truck_inventory)//can see the inventory
+app.get(/api/trucks/stats', truck_stats)//truck owner could see charts of their sales
 ****************STRETCH*************************************
 /*
 const menu_items_by_label= require('./server/routes/api/get_menu_items_given_food_route'); items by label

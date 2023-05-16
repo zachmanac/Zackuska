@@ -14,10 +14,11 @@ const queryAddNewTruck = async function (owner_id, truck_name, phone_number, cui
   }
 };
 
-const queryCheckExistingTruck = async function(owner_id, truck_name, phone_number) {
+const queryCheckExistingTruck = async function(owner_id) {
   try {
-    const result = await db.query(`SELECT * FROM trucks WHERE owner_id = $1 AND truck_name = $2 AND phone_number = $3`, [owner_id, truck_name, phone_number]);
-    return result.rows.length > 0; // Return true if a truck exists, false otherwise
+    const result = await db.query(`SELECT * FROM trucks WHERE owner_id = $1`, [owner_id]);
+    console.log("RESULT", result.rows[0]);
+    return result.rows[0]; // Return truck
   } catch (err) {
     console.log("Error", err);
     return false;
