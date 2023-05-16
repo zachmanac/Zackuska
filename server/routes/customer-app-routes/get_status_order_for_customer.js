@@ -7,7 +7,7 @@ router.get('/api/order/:order_id/status', async (req, res) => {
 
   const order_id=req.params.order_id;
   try {
-   //give the order details to user query: select *from orders where order_id=order_id;
+   //give the order details to user, query: select *from orders where order_id=order_id;
   const order= await getOrderbyId(order_id);
   res.send(order);
   } catch (error) {
