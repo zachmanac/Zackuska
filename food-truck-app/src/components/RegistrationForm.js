@@ -13,7 +13,7 @@ function RegistrationForm({ handleClose }) {
   const [success, setSuccess] = useState('');
   const [name, setName] = useState('');
   const [last_name, setLastName] = useState('');
-  const [userType, setUserType] = useState('customer');
+  // const [userType, setUserType] = useState('customer');
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -29,7 +29,7 @@ function RegistrationForm({ handleClose }) {
       last_name,
       email,
       password,
-      user_type: userType
+      // user_type: userType
     };
 
     server

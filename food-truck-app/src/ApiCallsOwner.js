@@ -2,10 +2,10 @@ import axios from 'axios';
 
 const baseURL = "http://localhost:8080";
 
-const getCurrentOrders = async (foodTruckId) => {
+const getAllOrders = async (foodTruckId) => {
   try {
     // get all orders for an individuals(owners) truck
-    const response = await axios.get(`${baseURL}/api/trucks/${foodTruckId}/orders/`);
+    const response = await axios.get(`${baseURL}/api/trucks/${foodTruckId}/orders`);
     return response.data;
   } catch (error) {
     console.error('Error fetching current orders:', error);
@@ -33,7 +33,7 @@ const declineOrder = async (truckId, orderId) => {
 
 
 const ApiCallsOwner = {
-  getCurrentOrders,
+  getAllOrders,
   acceptOrder,
   declineOrder
 }
