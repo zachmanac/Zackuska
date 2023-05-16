@@ -1,6 +1,5 @@
 import React, { useEffect, useContext } from 'react';
 import './Navbar.scss';
-import SearchBar from './SearchBar';
 import { Button, Modal, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import RegistrationForm from './RegistrationForm';
