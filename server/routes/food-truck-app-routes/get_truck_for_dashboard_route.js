@@ -7,7 +7,7 @@ const {queryCheckExistingTruck} = require('../../database/queries/truck/add_new_
 
 router.get('/api/trucks/dashboard', async (req, res) => {
   console.log("reqsession before ownerid", req.session);
-  const owner_id = req.session.userid;
+  const owner_id = req.session.userId;
   console.log("ownerid", owner_id);
 
 const truck = await queryCheckExistingTruck(owner_id);//get the truck for that owner
