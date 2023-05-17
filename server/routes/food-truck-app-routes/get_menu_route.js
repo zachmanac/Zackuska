@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const queryGetMenu= require('../../database/queries/menu/get_menu');
+const listMenuItems= require('../../database/queries/menu/get_menu');
 
 
 router.get('/api/trucks/:truck_id/menu_items', (req, res) => {
-  console.log("truck_id", req.params.truck_id)
-  queryGetMenu(req.params.truck_id)
+  console.log("truck_id in getmenuitems", req.params.truck_id)
+  listMenuItems(req.params.truck_id)
 
 .then(menu_items=>{
   res.send(menu_items)

@@ -34,19 +34,32 @@ const declineOrder = async (truckId, orderId) => {
 
 const getTruckData = async () => {
   try {
-    await axios.get(`${baseURL}/api/trucks/dashboard`)
+    const response = await axios.get(`${baseURL}/api/trucks/dashboard`);
+    console.log("response gettruckdata", response);
+    return response.data;
   } catch (error) {
     console.error(error);
     throw error;
   }
 }
 
+const getMenuItems = async (truckId) => {
+  try {
+    const response = await axios.get(`${baseURL}/api/trucks/${truckId}/menu_items`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching menu items:', error);
+    throw error;
+  }
+};
+
 
 const ApiCallsOwner = {
   getAllOrders,
   acceptOrder,
   declineOrder,
-  getTruckData
+  getTruckData,
+  getMenuItems
 }
 
 export default ApiCallsOwner;
