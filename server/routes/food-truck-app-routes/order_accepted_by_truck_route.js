@@ -1,21 +1,37 @@
 const express = require('express');
 const router = express.Router();
-const { addNewOrder, updateStatus } = require('../../database/queries/order/order_accepted_declined');
-//trucks handle the post request for the orders and send response
-router.post('/api/trucks/:truck_id/:order_id/accepted', async (req, res) => {
-  const { truck_id, order_id } = req.params;
-  const status = 'accepted';
-  try {
-    //change the status in db accepted add in the column response in orders 
-    const { ready_time } = req.body;
-    const result = await updateStatus(order_id, status, ready_time)
+const { updateStatus } = require('../../database/queries/order/order_accepted_declined');
 
-    // Set a delay of 10 seconds to automatically accept the order
-    setTimeout(async () => {
-      await updateStatus(order_id, 'accepted');
+// Handle the POST request for accepting an order by a food truck
+router.post('/api/trucks/:truck_id/:order_id/accepted', async (req, res) => {
+  const { order_id } = req.params;
+  const status = 'accepted';
+
+  try {
+    const { response } = req.body;
+
+    // Update the status and response in the orders table
+    const result = await updateStatus(order_id, status, response);
+
+    // Set a delay of 10 seconds to check for response, otherwise update to 'accepted'
+    const timeout = setTimeout(async () => {
+      if (!result) {
+        await updateStatus(order_id, status, 'accepted');
+      }
     }, 10000); // 10 seconds
 
-    res.json(result);
+    // Assuming `updateStatus` returns a promise, you can add a timeout to wait for the result
+    const timeoutPromise = new Promise((resolve) => {
+      setTimeout(() => resolve(null), 10000); // Resolve with null after 10 seconds if no response
+    });
+
+    // Wait for either the result or the timeout
+    const finalResult = await Promise.race([result, timeoutPromise]);
+
+    // Clear the timeout to prevent it from executing if a response is received
+    clearTimeout(timeout);
+
+    res.json(finalResult);
   } catch (error) {
     console.error('Failed to process food-truck order:', error);
     res.status(500).json({ error: 'Failed to process food-truck order' });

@@ -54,7 +54,7 @@ curl -X GET "http://localhost:8080/api/trucks"
 NEED TO VALIDATE USER_TYPE TO BE OWNER
 app.post('/api/trucks', new_truck);//Create a new truck record in the database
 curl -X POST -H "Content-Type: application/json" -d '{
-  "owner_id": 9,
+  "owner_id": 10,
   "truck_name": "Food Truck",
   "phone_number": "1234560",
   "cuisine": "Mexican",
@@ -106,14 +106,27 @@ curl -X POST -H "Content-Type: application/json" -d '{
   "user_id": 1,
   "truck_id": 1,
   "menu_items": [
-    { "item_id": 1, "quantity": 2 },
-    { "item_id": 6, "quantity": 1 }
+    { "1": 2 },
+    { "6": 1 }
   ],
   "total_amount": 25.99,
   "total_calories": 1200
 }' http://localhost:8080/api/cart/checkout
 -----------------------------------------------------------
-FOR NOW JUST GETS HARDCODE THE OWNER_ID
 app.get('/api/trucks/dashboard', get_truck_by_owner_id);
 curl -X GET http://localhost:8080/api/trucks/dashboard
 -----------------------------------------------------------
+app.get('/api/trucks/:truck_id/pending_orders', pending_orders_for_truck);//get all pending orders
+curl -X GET http://localhost:8080/api/trucks/1/pending_orders
+------------------------------------------------------------
+app.post('/api/trucks/:truck_id/:order_id/accepted', order_accepted_by_truck);
+
+curl -X POST -H "Content-Type: application/json" -d '{
+  "response": "10 minutes"
+}' http://localhost:8080/api/trucks/1/17/accepted
+-----------------------------------------------------------
+app.post('/api/trucks/:truck_id/:order_id/declined', order_declined_by_truck);
+
+curl -X POST -H "Content-Type: application/json" -d '{
+  "response": "out of stock"
+}' http://localhost:8080/api/trucks/1/16/declined
