@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Form, Alert } from 'react-bootstrap';
 import axios from 'axios';
+axios.defaults.withCredentials = true;
 
 const server = axios.create({
   baseURL: 'http://localhost:8080',

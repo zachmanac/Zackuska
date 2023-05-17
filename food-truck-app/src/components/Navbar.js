@@ -5,6 +5,8 @@ import { Button, Modal, Alert } from 'react-bootstrap';
 import RegistrationForm from './RegistrationForm';
 import LoginForm from './LoginForm';
 import { ModalContext } from './ModalContext';
+import axios from 'axios';
+axios.defaults.withCredentials = true;
 
 function Navbar() {
   const {
@@ -24,6 +26,7 @@ function Navbar() {
   }, []);
 
   const handleLogout = () => {
+    axios.delete('http://localhost:8080/api/session', {withCredentials: true});
     sessionStorage.removeItem('user');
     setIsLoggedIn(false);
   };
@@ -83,7 +86,7 @@ function Navbar() {
             <Modal.Title>Login</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <LoginForm handleClose={() => setShowLoginModal(false)} handleLogin={handleLogin} />
+            <LoginForm handleClose={() => setShowLoginModal(false)} handleLogin={handleLogin} user_type={'owner'} />
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={() => setShowLoginModal(false)}>

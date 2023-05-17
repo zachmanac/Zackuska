@@ -6,9 +6,12 @@ const {queryCheckExistingTruck} = require('../../database/queries/truck/add_new_
 //get the trucks from the database
 //in this case we are getting the owner_id from the session just didnt work for me at the moment so i hardcode for owner_id=2 for now
 router.get('/api/trucks/dashboard', async (req, res) => {
-  const truck_owner_id= req.session.userId;
+  console.log("reqsession before ownerid", req.session);
+  const owner_id = req.session.userid;
+  console.log("ownerid", owner_id);
 // const owner_id= 2;//hardcode owner_id until it is stored in session
-const truck= await queryCheckExistingTruck(owner_id);//get the truck for that owner
+const truck = await queryCheckExistingTruck(owner_id);//get the truck for that owner
+console.log("truck", truck)
 if (truck) {res.status(200).json(truck);}
 else {res.status(400).json({error: 'No truck found for this owner'});}
 // console.log('Truck existing', truck);

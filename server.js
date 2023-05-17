@@ -7,7 +7,7 @@ const cors = require('cors');
 const cookieParser= require('cookie-parser');
 const app = express();
 
-//app.use(cookieParser());
+app.use(cookieParser());
 app.use(session({
   secret: 'your-secret-key',
   resave: false,
@@ -23,7 +23,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(cors());
+app.use(cors({origin: 'http://localhost:3001', credentials: true, methods:['GET','POST','PUT','DELETE']}));
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));

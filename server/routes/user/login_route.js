@@ -29,22 +29,27 @@ console.log('Code is executing...');
 
 router.post('/api/session', (req, res) => {
   const {email, password, user_type} = req.body;
+  req.session.testid = 'test';
+  req.session.save(function(err) {
+
     login(email, password, user_type)
     .then(result => {
-      console.log('Result:', result);
+      console.log('Result: after login', result);
+      req.session.userid = result.user_id
+      console.log("req.sessionafter login", req.session)
       if (result.error) {
-        console.log('Result:', result); 
+        console.log('Result: error', result); 
         res.send(result);
         return;
       }
-      req.session.userId = result.id;
       res.send(result);
     })
     .catch(e => {
     console.error('Error:', e); 
 
     res.send(e)
-});
+    });
+  })
 });
 
 

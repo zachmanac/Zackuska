@@ -1,4 +1,5 @@
 import axios from 'axios';
+axios.defaults.withCredentials = true;
 
 const baseURL = "http://localhost:8080";
 
@@ -31,11 +32,21 @@ const declineOrder = async (truckId, orderId) => {
   }
 };
 
+const getTruckData = async () => {
+  try {
+    await axios.get(`${baseURL}/api/trucks/dashboard`)
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 
 const ApiCallsOwner = {
   getAllOrders,
   acceptOrder,
-  declineOrder
+  declineOrder,
+  getTruckData
 }
 
 export default ApiCallsOwner;
