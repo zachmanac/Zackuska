@@ -2,7 +2,7 @@ const db = require('../../connection');
 
 const addNewOrder = async function (customer_id, truck_id, status, total_amount, total_calories, menu_items, response) {
   /*this is how menu_items look like menu_items=[ { "1": 2 },
-    { "6": 1 }]*/
+    { "6": 1 }] item_id:quantity*/
   try {
     const orderResult = await db.query(`
       INSERT INTO orders (customer_id, truck_id, status, total_amount, total_calories, date, response)

@@ -12,8 +12,8 @@ router.post('/api/trucks/:order_id/declined', async (req, res) => {
    
     res.json(result);
   } catch (error) {
-    console.error('Failed to process food-truck order:', error);
-    res.status(500).json({ error: 'Failed to process food-truck order' });
+    console.error('Failed to decline order:', error);
+    res.status(500).json({ error: 'Failed to decline order' });
   }
 });
 

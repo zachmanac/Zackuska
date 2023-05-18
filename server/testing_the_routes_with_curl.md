@@ -151,3 +151,43 @@ curl -X POST -H "Content-Type: application/json" -d '{
   "response": "ready to pick up"
 }' http://localhost:8080/api/trucks/19/ready
 --------------------------------------------------------------------
+app.put('/api/trucks/menu_items/:item_id', edit_menu);//edit menu here the truck can retire/change the menu items
+
+curl -X PUT \
+  -H "Content-Type: application/json" \
+  -d '{
+    "item_name": "New Name",
+    "price": 9.99,
+    "calories": 500,
+    "allergens": "No allergens",
+    "halal": true,
+    "picture": "new_item.jpg",
+    "description": "Updated item description",
+    "quantity": 100,
+    "active": true
+  }' \
+  http://localhost:8080/api/trucks/menu_items/11
+--------------------------------------------------------------------
+app.put('/api/trucks/:truck_id', edit_truck)//truck-owner can change the truck variables
+curl -X PUT -H "Content-Type: application/json" -d '{
+  
+  "phone_number": "1234567890",
+  "cuisine": "Updated Cuisine",
+  "instagram": "updated_instagram",
+  "facebook": "updated_facebook",
+  "website": "updated_website",
+  "picture": "updated_picture.jpg",
+  "city": "Updated City"
+}' http://localhost:8080/api/trucks/5
+------------------------------------------------------------------
+app.put('/api/trucks/schedules/:schedule_id', change_schedule)//truck can change their schedule
+
+curl -X PUT -H "Content-Type: application/json" -d '{
+  "date": "2023-05-19",
+  "address": "Updated Address",
+  "latitude": 37.7749,
+  "longitude": -122.4194,
+  "start_time": "09:00:00",
+  "end_time": "17:00:00",
+  "place_name": "Updated Place"
+}' http://localhost:8080/api/trucks/schedules/1
