@@ -4,26 +4,37 @@ const morgan = require('morgan');
 const PORT = process.env.PORT || 8080;
 const session = require('express-session');
 const cors = require('cors');
-const cookieParser= require('cookie-parser');
+const pgSession = require('connect-pg-simple')(session);
 const app = express();
+const pool = require('./server/database/connection');
 
-//app.use(cookieParser());
-app.use(session({
-  secret: 'your-secret-key',
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    secure: false, // Set to true if using HTTPS
-    maxAge: 86400000 // Session expiration time (e.g., 24 hours)
-  }
+app.use(cors({
+  origin: 'http://localhost:3000', // replace with your client-side domain
+  credentials: true
 }));
+
+app.use(
+  session({
+    store: new pgSession({
+      pool,
+      tableName: 'session',
+    }),
+    secret: 'your_session_secret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false, // Set to true if using HTTPS
+      maxAge: 24 * 60 * 60 * 1000, // Set the session cookie expiration time
+    },
+  })
+);
+
 app.use((req, res, next) => {
   console.log('Session ID:', req.sessionID);
   console.log('Session:', req.session);
   next();
 });
 
-app.use(cors());
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
@@ -33,8 +44,16 @@ app.use(express.json()); //parse json request bodies
 // Separated Routes for each Resource
 
 //Payment
-const paymentRoutes = require('./server/routes/customer-app-routes/paymentRoutes');
-app.post('/api/payment', paymentRoutes);
+// Set your secret key. Remember to switch to your live secret key in production.
+// See your keys here: https://dashboard.stripe.com/apikeys
+// const stripe = require('stripe')('sk_test_Hrs6SAopgFPF0bZXSN3f6ELN');
+
+// const account = await stripe.accounts.create({
+//   type: 'express',
+// });
+
+// const paymentRoutes = require('./server/routes/customer-app-routes/paymentRoutes');
+// app.post('/api/payment', paymentRoutes);
 
 
 //user
@@ -42,6 +61,8 @@ const new_user = require('./server/routes/user/add_new_user_route');
 const user_with_id = require('./server/routes/user/get_an_user_with_id_route');
 const loginUser = require('./server/routes/user/login_route');
 const logout = require('./server/routes/user/logout_route');
+const user_with_email = require('./server/routes/user/get_an_user_with_email_route');
+const user_session = require('./server/routes/user/get_user_session_route');
 //api
 const trucks = require('./server/routes/food-truck-app-routes/get_trucks_route');
 const new_truck = require('./server/routes/food-truck-app-routes/add_new_truck_route');
@@ -67,12 +88,16 @@ const pending_orders_for_truck= require('./server/routes/food-truck-app-routes/g
 const get_order_status_for_customer= require('./server/routes/customer-app-routes/get_status_order_for_customer');
 const customer_cancel_order= require('./server/routes/customer-app-routes/customer_cancel_order_route');
 const order_ready= require('./server/routes/food-truck-app-routes/order_ready_route');
+const { get } = require('./server/routes/user/add_new_user_route');
+const userRoutes = require('./server/api/userRoutes');
 
 //All resource routes
 //user
 app.post('/api/users', new_user);// Add a new user*
+app.get('/api/user/', user_with_email);// Get an user with a given email*
 app.post('/api/session', loginUser);// User Login*
 app.delete('/api/session', logout);// User logout*
+app.get('/api/session', user_session);// Get the current user session*
 app.get('/api/me', user_with_id); //didnt work for curl Get an user with a given id*
 
 //api
@@ -85,6 +110,10 @@ app.post('/api/trucks', new_truck);//Create a new truck record in the database n
 app.get('/api/trucks/:truck_id/menu_items', menu);// Get the menu of a given truck*
 app.post('/api/trucks/:truck_id/menu_items', new_menu_item);//Create a new menu item record in the database* 
 app.get('/api/orders', order_for_user);//all the orders of the user given* 
+
+//needs to be added
+app.get('/api/trucks/mine/orders', get_truck_by_owner_id);//all the orders of the truck given*
+
 app.get('/api/trucks/:truck_id/orders', order_for_truck);//all the orders of the truck given* 
 app.get('/api/trucks/:truck_id/reviews', reviews_for_truck);//all the reviews of the truck given* 
 app.post('/api/trucks/:truck_id/reviews', add_reviews_for_truck);//new  reviews of the truck 
@@ -109,6 +138,8 @@ app.post('/api/trucks/orders', send_order_to_the_truck);
 app.get('/api/trucks/dashboard', get_truck_by_owner_id);
 app.post('/api/trucks/:truck_id/:order_id/cancelled',customer_cancel_order);
 app.post('/api/trucks/:truck_id/:order_id/ready',order_ready);
+
+
 
 
 //**************************************************************************
@@ -141,6 +172,7 @@ const menu_items_by_label= require('./server/routes/api/get_menu_items_given_foo
 //app.get('/api/:label/menu_items', menu_items_by_label);//STRETCH Fetch menu_items from the database with that label
 app.get('/api/labels/:label_id/trucks', menu_items_by_label);//NOT Fetch menu_items from the database with that label maybe NOT*/
 
+app.use('/api', userRoutes);// Users Routes
 
 
 app.listen(PORT, () => {

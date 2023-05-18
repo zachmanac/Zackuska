@@ -7,10 +7,8 @@ import Cart from './Components/Cart';
 import './App.scss';
 import ApiCalls from './ApiCalls';
 import { ModalContext } from './Components//ModalContext';
-import Orders from './Components/Orders'; 
+import Orders from './Components/Orders';
 import axios from 'axios';
-
-
 
 function FoodTruckMenuWrapper({ trucks, cartItems, isLoggedIn, handleAddToCart, handleRemoveFromCart }) {
   const { truckId } = useParams();
@@ -27,50 +25,48 @@ function FoodTruckMenuWrapper({ trucks, cartItems, isLoggedIn, handleAddToCart, 
   );
 }
 
-
 function App() {
-const userId = window.sessionStorage.getItem('user_id');
-const initialCart = JSON.parse(window.localStorage.getItem(`cartItems-${userId}`)) || [];
-const [cartItems, setCartItems] = useState(() => {
-  const savedCartItems = window.localStorage.getItem(`cartItems-${userId}`);
-  return savedCartItems ? JSON.parse(savedCartItems) : [];
-});
-const [trucks, setTrucks] = useState([]);
-const [isLoggedIn, setIsLoggedIn] = useState(false);
-const [showLoginModal, setShowLoginModal] = useState(false);
-const [showRegistrationModal, setShowRegistrationModal] = useState(false);
+  const [cartItems, setCartItems] = useState([]);
+  const [trucks, setTrucks] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showRegistrationModal, setShowRegistrationModal] = useState(false);
+  const [activeFoodTruck, setActiveFoodTruck] = useState(null);
 
-const [activeFoodTruck, setActiveFoodTruck] = useState(null);
-
-useEffect(() => {
-  const menu_items = cartItems.reduce ((acc, value) => ({...acc, [value.item_id]: value.quantity}), {});
-  console.log('menu_items:', menu_items)
-  const truck_id = activeFoodTruck.truck_id
-  axios.put(`/api/cart/`, {truck_id, menu_items})
-  .then (
-    (data) => console.log('successful cart update', data)
-  )
-  .catch ( (err) => console.log(err))
-  // window.localStorage.setItem(`cartItems-${userId}`, JSON.stringify(cartItems));
-}, [cartItems, userId]);
-
-  
-
-  // Store cartItems in local storage whenever it changes
   useEffect(() => {
-    window.localStorage.setItem(`cartItems-${userId}`, JSON.stringify(cartItems));
+    // Fetch user's cart items from the server session
+    axios
+      .get('/api/cart')
+      .then((response) => {
+        setCartItems(response.data.cartItems);
+      })
+      .catch((error) => {
+        console.error('Error fetching cart items:', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    // Update user's cart items in the server session whenever it changes
+    axios
+      .put('/api/cart', { cartItems })
+      .then(() => {
+        console.log('Cart items updated successfully.');
+      })
+      .catch((error) => {
+        console.error('Error updating cart items:', error);
+      });
   }, [cartItems]);
 
   const handleAddToCart = (menuItem, quantity) => {
-    if (!isLoggedIn) {
-      // Prompt the user to log in or register
-      setShowLoginModal(true);
-    } else {
-      // Add item to cart
-      const existingItem = cartItems.find((item) => item.item_id === menuItem.item_id && item.truckId === menuItem.truckId);
-  
+  if (!isLoggedIn) {
+    setShowLoginModal(true);
+  } else {
+    if (cartItems) {
+      const existingItem = cartItems.find(
+        (item) => item.item_id === menuItem.item_id && item.truckId === menuItem.truckId
+      );
+
       if (existingItem) {
-        // Item already exists in cart, update the quantity
         const updatedCartItems = cartItems.map((item) => {
           if (item.item_id === menuItem.item_id && item.truckId === menuItem.truckId) {
             return { ...item, quantity: item.quantity + quantity };
@@ -79,29 +75,43 @@ useEffect(() => {
         });
         setCartItems(updatedCartItems);
       } else {
-        // Item is new, add it to the cart with the specified quantity
         const newCartItem = { ...menuItem, quantity };
         setCartItems((prevCartItems) => [...prevCartItems, newCartItem]);
       }
-    }
-  };
-  
-  const handleRemoveFromCart = (itemToRemove) => {
-    const existingItem = cartItems.find(item => item.item_id === itemToRemove.item_id && item.truckId === itemToRemove.truckId);
-  
-    if (existingItem && existingItem.quantity > 1) {
-      // Replace the item with the updated one
-      setCartItems(prevItems => prevItems.map(item => 
-        (item.item_id === existingItem.item_id && item.truckId === existingItem.truckId) ? itemToRemove : item
-      ));
     } else {
-      // Remove the item completely from the cart
-      setCartItems(prevItems => prevItems.filter(item => item.item_id !== itemToRemove.item_id || item.truckId !== itemToRemove.truckId));
+      const newCartItem = { ...menuItem, quantity };
+      setCartItems([newCartItem]);
     }
-  };
+  }
+};
+
+  
+  
+  
+  
+  
   
 
-  // Fetch trucks only once when component mounts
+  const handleRemoveFromCart = (itemToRemove) => {
+    const existingItem = cartItems.find(
+      (item) => item.item_id === itemToRemove.item_id && item.truckId === itemToRemove.truckId
+    );
+
+    if (existingItem && existingItem.quantity > 1) {
+      setCartItems((prevItems) =>
+        prevItems.map((item) =>
+          item.item_id === existingItem.item_id && item.truckId === existingItem.truckId ? itemToRemove : item
+        )
+      );
+    } else {
+      setCartItems((prevItems) =>
+        prevItems.filter(
+          (item) => item.item_id !== itemToRemove.item_id || item.truckId !== itemToRemove.truckId
+        )
+      );
+    }
+  };
+
   useEffect(() => {
     const fetchTrucks = async () => {
       const trucksData = await ApiCalls.getTrucks();
@@ -112,42 +122,51 @@ useEffect(() => {
   }, []);
 
   return (
-    <ModalContext.Provider value={{ showRegistrationModal, setShowRegistrationModal, showLoginModal, setShowLoginModal, isLoggedIn, setIsLoggedIn }}>
-    <Router>
-      <div className='App'>
-        <Navbar
-          cartItems={cartItems}
-          onRemoveFromCart={handleRemoveFromCart}
-          onAddToCart={handleAddToCart}
-          isLoggedIn={isLoggedIn}
-          setShowLoginModal={setShowLoginModal}
-          setShowRegistrationModal={setShowRegistrationModal}
-        />
-        <Routes>
-          <Route path="/" element={<FoodTruckList foodTrucks={trucks} setActiveFoodTruck={setActiveFoodTruck} />} />
-          <Route
-            path="/:truckId/menu"
-            element={
-              <FoodTruckMenuWrapper
-              trucks={trucks}
-              handleAddToCart={handleAddToCart}
-              handleRemoveFromCart={handleRemoveFromCart}
-              cartItems={cartItems}
-              isLoggedIn={isLoggedIn}
-              setShowLoginModal={setShowLoginModal}
-              setShowRegistrationModal={setShowRegistrationModal}
-              />
-            }
+    <ModalContext.Provider
+      value={{
+        showRegistrationModal,
+        setShowRegistrationModal,
+        showLoginModal,
+        setShowLoginModal,
+        isLoggedIn,
+        setIsLoggedIn,
+      }}
+    >
+      <Router>
+        <div className='App'>
+          <Navbar
+            cartItems={cartItems}
+            onRemoveFromCart={handleRemoveFromCart}
+            onAddToCart={handleAddToCart}
+            isLoggedIn={isLoggedIn}
+            setShowLoginModal={setShowLoginModal}
+            setShowRegistrationModal={setShowRegistrationModal}
           />
-          <Route path="/cart" element={<Cart cartItems={cartItems} setCartItems={setCartItems}  />} />
-          <Route path="/orders" element={<Orders />} />
-
-
-        </Routes>
-      </div>
-    </Router>
+          <Routes>
+            <Route path='/' element={<FoodTruckList foodTrucks={trucks} setActiveFoodTruck={setActiveFoodTruck} />} />
+            <Route
+              path='/:truckId/menu'
+              element={
+                <FoodTruckMenuWrapper
+                  trucks={trucks}
+                  handleAddToCart={handleAddToCart}
+                  handleRemoveFromCart={handleRemoveFromCart}
+                  cartItems={cartItems}
+                  setCartItems={setCartItems}
+                  isLoggedIn={isLoggedIn}
+                  setShowLoginModal={setShowLoginModal}
+                  setShowRegistrationModal={setShowRegistrationModal}
+                />
+              }
+            />
+            <Route path='/cart' element={<Cart cartItems={cartItems} setCartItems={setCartItems} />} />
+            <Route path='/orders' element={<Orders />} />
+          </Routes>
+        </div>
+      </Router>
     </ModalContext.Provider>
   );
 }
 
 export default App;
+

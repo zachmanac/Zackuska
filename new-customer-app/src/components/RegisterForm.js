@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Button, Form, Alert } from 'react-bootstrap';
+import { AuthContext } from '../contexts/AuthContext';
 import axios from 'axios';
 
-function RegistrationForm({ handleClose, user_type }) {
+function RegisterForm({ handleClose}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -24,11 +25,11 @@ function RegistrationForm({ handleClose, user_type }) {
       last_name,
       email,
       password,
-      user_type,
+      user_type: "customer",
     };
 
     axios
-      .post('/api/users', user)
+      .post('/api/register', user)
       .then((response) => {
         console.log('User registered:', response.data);
         setSuccess('User registered successfully!');
@@ -101,4 +102,4 @@ function RegistrationForm({ handleClose, user_type }) {
           );
         }
         
-        export default RegistrationForm;
+        export default RegisterForm;

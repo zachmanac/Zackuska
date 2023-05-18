@@ -1,10 +1,14 @@
 import React, { useEffect, useContext } from 'react';
 import './Navbar.scss';
 import { Button, Modal, Alert } from 'react-bootstrap';
-// import { Link } from 'react-router-dom';
 import RegistrationForm from './RegistrationForm';
 import LoginForm from './LoginForm';
 import { ModalContext } from './ModalContext';
+import axios from 'axios';
+
+const server = axios.create({
+  baseURL: 'http://localhost:8080',
+});
 
 function Navbar() {
   const {
@@ -17,21 +21,28 @@ function Navbar() {
   } = useContext(ModalContext);
 
   useEffect(() => {
-    const user = sessionStorage.getItem('user');
-    if (user) {
-      setIsLoggedIn(true);
-    }
+    server.get('/api/session', { withCredentials: true })
+      .then((response) => {
+        setIsLoggedIn(true);
+      })
+      .catch((error) => {
+        setIsLoggedIn(false);
+      });
   }, []);
 
-  const handleLogout = () => {
-    sessionStorage.removeItem('user');
-    setIsLoggedIn(false);
+  const handle = () => {
+    server.delete('/api/session')
+      .then((response) => {
+        setIsLoggedIn(false);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
   };
 
   const handleLogin = (user) => {
-    sessionStorage.setItem('user', JSON.stringify(user));
     setIsLoggedIn(true);
-  setShowLoginModal(false); // Close the login modal
+    setShowLoginModal(false); // Close the login modal
   };
 
   return (
@@ -70,7 +81,7 @@ function Navbar() {
             <Modal.Title>Register</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <RegistrationForm handleClose={() => setShowRegistrationModal(false)} user_type= {'owner'} />
+            <RegistrationForm handleClose={() => setShowRegistrationModal(false)} user_type={'owner'} />
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={() => setShowRegistrationModal(false)}>

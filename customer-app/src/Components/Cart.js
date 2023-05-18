@@ -1,27 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import "./Cart.scss";
+import './Cart.scss';
 import PaymentForm from '../Components/PaymentForm';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import OrderConfirmationModal from './OrderConfirmationModal';  
-
+import OrderConfirmationModal from './OrderConfirmationModal';
 
 const stripePublicKey = "pk_test_51I6VmWH67yKbwOmGGmpiEitNjqEKh6mpYczMUyTmdW7IMVh3I5uKFFYXreM4OFXzTiLQu9H6PyCFrNWtCAUEnkCn00qoW806h6";
 const stripePromise = loadStripe(stripePublicKey);
 
-const server = axios.create({
-  baseURL: 'http://localhost:8080',
-});
-
-function Cart({ cartItems, setCartItems }) {
+function Cart({ cartItems = [], setCartItems }) {
   const [showPayment, setShowPayment] = useState(false);
   const [orderId, setOrderId] = useState(null);
-  const userId = window.sessionStorage.getItem('userId');
 
   useEffect(() => {
-    window.localStorage.setItem(`cart-${userId}`, JSON.stringify(cartItems));
-  }, [cartItems, userId]);
+    const fetchCart = async () => {
+      try {
+        const response = await axios.get('/api/cart');
+        console.log(response.data); // Check the value of response.data
+        setCartItems(response.data ? response.data : []);
+      } catch (error) {
+        console.error('Error fetching cart:', error);
+      }
+    };
+  
+    fetchCart();
+  }, [setCartItems]);
+  
+
+  useEffect(() => {
+    const updateCart = async () => {
+      try {
+        await axios.put('/api/cart', {
+          truck_id: cartItems.truck_id, // need to determine the truck_id,
+          menu_items: cartItems, // Use 'menu_items' to match server-side code
+        });
+      } catch (error) {
+        console.error('Error updating cart:', error);
+      }
+    };
+
+    updateCart();
+  }, [cartItems]);
 
   const addToCart = (item) => {
     setCartItems((prevItems) => {
@@ -68,51 +88,50 @@ function Cart({ cartItems, setCartItems }) {
     const totalAmount = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
     const totalCalories = cartItems.reduce((total, item) => total + item.calories * item.quantity, 0); // Assumes each item has a 'calories' property
 
-    const orderResponse = await server
-    .post(`/api/cart/checkout`, {
-      user_id: userId, // Use 'user_id' to match server-side code
-      truck_id: cartItems.truck_id, // need to determine the truck_id,
-      menu_items: cartItems, // Use 'menu_items' to match server-side code
-      total_amount: totalAmount,
-      total_calories: totalCalories
-    });
+    try {
+      const orderResponse = await axios.post(`/api/cart/checkout`, {
+        truck_id: cartItems.truck_id, // need to determine the truck_id,
+        menu_items: cartItems, // Use 'menu_items' to match server-side code
+        total_amount: totalAmount,
+        total_calories: totalCalories
+      });
 
-    if (orderResponse.status === 200) {
-      console.log('Order placed:', orderResponse.data);
-    } else {
-      console.error('Order placement failed');
+      if (orderResponse.status === 200) {
+        console.log('Order placed:', orderResponse.data);
+      } else {
+        console.error('Order placement failed');
+      }
+    } catch (error) {
+      console.error('Error placing order:', error);
     }
   };
 
   const handlePayment = async (paymentData) => {
     // Handle payment submission using paymentData
     // Make the API call to process the payment and create an order
-    const paymentResponse = await server
-      .post(`/api/payments`, {
-        userId,
+    try {
+      const paymentResponse = await axios.post(`/api/payments`, {
         cartItems,
         paymentData,
       });
 
-    if (paymentResponse.status === 200) {
-      const orderResponse = await server
-      .post(`/api/orders`, {
-        userId,
-        cartItems,
-        paymentId: paymentResponse.data.id,
-      })
+      if (paymentResponse.status === 200) {
+        const orderResponse = await axios.post(`/api/orders`, {
+          cartItems,
+          paymentId: paymentResponse.data.id,
+        });
 
-      if (orderResponse.status === 200) {
-        console.log('Order placed:', orderResponse.data);
-        setOrderId(orderResponse.data.id);
-        // Clear the cart
-        setCartItems([]);
-        window.localStorage.removeItem(`cart-${userId}`);
-        setShowPayment(false); // hide the payment form
-
-      }
-    } else {
+        if (orderResponse.status === 200) {
+          console.log('Order placed:', orderResponse.data);
+          setOrderId(orderResponse.data.id);
+          // Clear the cart
+          setCartItems([]);
+        }
+      } else {
         console.error('Payment failed');
+      }
+    } catch (error) {
+      console.error('Error processing payment:', error);
     }
   };
 
@@ -179,18 +198,17 @@ function Cart({ cartItems, setCartItems }) {
       )}
 
       {showPayment && (
-          <Elements stripe={stripePromise}>
-            <div className="payment-section">
+        <Elements stripe={stripePromise}>
+          <div className="payment-section">
             <PaymentForm handlePayment={handlePayment} cartItems={cartItems} />
-            </div>
-          </Elements>
+          </div>
+        </Elements>
       )}
       {orderId && (
         <OrderConfirmationModal orderId={orderId} onOrderAccepted={() => { /* Your logic here */ }} />
-      )}      
+      )}
     </div>
   );
 }
 
 export default Cart;
-
