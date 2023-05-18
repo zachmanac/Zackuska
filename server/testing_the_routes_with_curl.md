@@ -88,18 +88,16 @@ curl -X GET http://localhost:8080/api/trucks/1/orders
 app.get('/api/trucks/:truck_id/reviews', reviews_for_truck);//all the reviews of the truck given 
 curl -X GET "http://localhost:8080/api/trucks/1/reviews"
 -------------------------------------------------------------
-WHY IS USER PASSED IN THE QUERY?
+WHY IS USER PASSED IN THE QUERY? 
 app.get('/api/orders', order_for_user);//all the orders of the user given 
 curl -X GET http://localhost:8080/api/orders?user_id=1
 ------------------------------------------------------------
 app.get('/api/trucks/:truck_id/orders', order_for_truck);//all the orders of the truck given
 curl -X GET http://localhost:8080/api/trucks/1/orders
 -----------------------------------------------------------
-NEED TO JOIN WITH USER TO GET USER NAME
 app.get('/api/trucks/:truck_id/reviews', reviews_for_truck);//all the reviews of the truck given
 curl -X GET http://localhost:8080/api/trucks/3/reviews
 -----------------------------------------------------------
-I THINK WE ALSO NEED TO SEND TO THE TRUCK OWNERS INFO
 app.post('/api/cart/checkout', new_order);//add new order
 
 curl -X POST -H "Content-Type: application/json" -d '{
@@ -123,20 +121,20 @@ app.post('/api/trucks/:order_id/accepted', order_accepted_by_truck);
 
 curl -X POST -H "Content-Type: application/json" -d '{
   "response": "10 minutes"
-}' http://localhost:8080/api/trucks/1/17/accepted
+}' http://localhost:8080/api/trucks/19/accepted
 -----------------------------------------------------------
 app.post('/api/trucks/:order_id/declined', order_declined_by_truck);
 
 curl -X POST -H "Content-Type: application/json" -d '{
   "response": "out of stock"
-}' http://localhost:8080/api/trucks/1/16/declined
+}' http://localhost:8080/api/trucks/21/declined
 --------------------------------------------------------------
-app.get('/api/orders/:order_id/status', get_order_status_for_customer);//get the status of the given order
+app.get('/api/orders/:order_id/status', get_order_status_for_customer);//get a given order
 curl -X GET http://localhost:8080/api/orders/1/status
 ---------------------------------------------------------------
 app.post('/api/trucks/:truck_id/schedules', new_schedule);//Create a new schedule itenerary record in the database 
 curl -X POST -H "Content-Type: application/json" -d '{
-  "date": "2023-05-15",
+  "date": "2023-05-16",
   "address": "12345 Main St",
   "latitude": 40.7128,
   "longitude": -74.0060,
@@ -151,5 +149,5 @@ curl -X GET http://localhost:8080/api/trucks/1/schedules
 app.post('/api/trucks/:order_id/ready',order_ready);
 curl -X POST -H "Content-Type: application/json" -d '{
   "response": "ready to pick up"
-}' http://localhost:8080/api/trucks/1/15/ready
+}' http://localhost:8080/api/trucks/19/ready
 --------------------------------------------------------------------

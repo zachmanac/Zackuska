@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {updateStatus}= require('../../database/queries/order/order_accepted_declined');
 //trucks handle the post request for the orders and send response
-router.post('/api/trucks/:truck_id/:order_id/declined', async (req, res) => {
+router.post('/api/trucks/:order_id/declined', async (req, res) => {
   const { order_id } = req.params;
   const status='declined';
   try {
