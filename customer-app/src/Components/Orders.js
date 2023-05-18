@@ -48,9 +48,10 @@ function Orders() {
       <h1>Your Orders</h1>
       {orders.map((order) => (
         <div key={order.id} style={{ backgroundColor: getStatusColor(order.status) }}>
-          <p>{order.order_id}</p>
-          <p>{order.status}</p>
-          <p>{order.response}</p>
+          <p>Order No. {order.order_id}</p>
+          <p>Status: {order.status}</p>
+          <p>Response: {order.response}</p>
+          <p>Total ${order.total_amount}</p>
         </div>
       ))}
     </div>
