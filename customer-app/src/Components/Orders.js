@@ -9,7 +9,7 @@ function Orders() {
     // Function to retrieve orders
     const fetchOrders = async () => {
       try {
-        const orders = await ApiCalls.getOrders(userId);
+        const orders = await ApiCalls.getOrders();
         setOrders(orders);
       } catch (error) {
         console.error('Error fetching orders:', error);

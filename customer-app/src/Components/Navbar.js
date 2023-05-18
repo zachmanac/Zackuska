@@ -39,6 +39,7 @@ function Navbar() {
   const handleLogout = () => {
     sessionStorage.removeItem('user');
     setIsLoggedIn(false);
+    window.location.href="/";
   };
 
   const handleLogin = (user) => {

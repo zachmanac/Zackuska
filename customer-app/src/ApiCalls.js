@@ -82,11 +82,9 @@ const checkoutCart = function (cartItems, totalAmount, totalCalories, cb) {
     });
 };
 
-const getOrders = async function (userId) {
+const getOrders = async function () {
   return axios.get(`http://localhost:8080/api/orders`, {
-    params: {
-      user_id: userId
-    }
+
   })
     .then(function (response) {
       return response.data;
