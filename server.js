@@ -23,7 +23,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(cors({origin: 'http://localhost:3001', credentials: true, methods:['GET','POST','PUT','DELETE']}));
+app.use(cors({origin: ['http://localhost:3001', 'http://localhost:3000'], credentials: true, methods:['GET','POST','PUT','DELETE']}));
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));

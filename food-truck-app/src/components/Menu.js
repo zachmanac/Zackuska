@@ -7,8 +7,11 @@ const Menu = () => {
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
-        const truckData = await ApiCallsOwner.getTruckData();
-        const menuItems = await ApiCallsOwner.getMenuItems(truckData.truck_id);
+        const truckId = 1;
+        const menuItems = await ApiCallsOwner.getMenuItems(truckId);
+        // commented coded below should work if loggedinuser is an owner
+        // const truckData = await ApiCallsOwner.getTruckData();
+        // const menuItems = await ApiCallsOwner.getMenuItems(truckData.truck_id);
         setMenuItems(menuItems);
       } catch (error) {
         console.error("Error fetching menu items:", error);
@@ -21,16 +24,16 @@ const Menu = () => {
   return (
     <div>
       <h1>Menu Page</h1>
-      {menuItems.map((menuItem) => (
-        <div key={menuItem.id} className="menu-item">
-          <h3>Item: {menuItem.name}</h3>
+      {menuItems.map((menuItem, index) => (
+        <div key={index} className="menu-item">
+          <h3>Item: {menuItem.item_name}</h3>
           <p>Description: {menuItem.description}</p>
           <p>Price: ${menuItem.price}</p>
-          <p>Image: {menuItem.picture}</p>
+          <img src={menuItem.picture} alt="Image" />
           <p>Allergens: {menuItem.allergens}</p>
           <p>calories: {menuItem.calories}</p>
-          <p>Halal: {menuItem.halal}</p>
-          <p>Status: {menuItem.active}</p>
+          <p>Halal: {menuItem.halal.toString()}</p>
+          <p>Status: {menuItem.active.toString()}</p>
         </div>
       ))}
     </div>
