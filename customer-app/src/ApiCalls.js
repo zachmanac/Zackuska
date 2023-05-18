@@ -82,6 +82,26 @@ const checkoutCart = function (cartItems, totalAmount, totalCalories, cb) {
     });
 };
 
+const getOrders = async function (userId) {
+  return axios.get(`http://localhost:8080/api/orders`, {
+    params: {
+      user_id: userId
+    }
+  })
+    .then(function (response) {
+      return response.data;
+    });
+};
+
+const updateOrderCompleted= async function(orderId){
+axios.post(`http://localhost:8080/api/trucks/${orderId}/completed`).then(res => {
+      console.log(res.data);
+    })
+    .catch(error => {
+      console.error('Failed to complete order:', error);
+    });
+};
+
 const ApiCalls = {
   getTrucks,
   getTruck,
@@ -90,7 +110,8 @@ const ApiCalls = {
   sendCart,
   updateCart,
   deleteCartItem,
-  checkoutCart
+  checkoutCart,
+  getOrders
 };
 
 export default ApiCalls;

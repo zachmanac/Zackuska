@@ -52,6 +52,7 @@ function Navbar() {
       <div className="nav-bar-left">
         <p>Logo here</p>
         <a href="/">Home</a>
+        <a href="/orders" style={{ color: 'red' }}>My orders</a>
       </div>
 
       <div className="nav-bar-center">
