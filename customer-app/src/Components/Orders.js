@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ApiCalls from "../ApiCalls"
-
+import "./Orders.scss"
 function Orders() {
   const [orders, setOrders] = useState([]);
   const userId = 1; // hardcoded userId for test until session works
@@ -25,36 +25,46 @@ function Orders() {
     }, 1000);
 
     // Clean up the interval on component unmount
-    return () => clearInterval(interval);
+    return () => {clearInterval(interval);
+    setOrders([]);}
   }, []);
 
   const getStatusColor = (status) => {
     if (status === 'pending') {
-      return 'yellow';
+      return 'rgba(255, 255, 0, 0.3)'; // Light yellow
     } else if (status === 'accepted') {
-      return 'green';
+      return 'rgba(0, 255, 0, 0.3)'; // Light green
     } else if (status === 'declined') {
-      return 'red';
-    } else if (status === 'completed') {
-      return 'blue';
+      return 'rgba(255, 0, 0, 0.3)'; // Light red
+    } else if (status === 'ready') {
+      return 'rgba(0, 0, 255, 0.3)'; // Light blue
     } else {
-      return 'white';
+      return 'rgba(255, 255, 255, 0.3)'; // Light white
     }
   };
+  useEffect(() => {
+    // Clean up orders when user logs out
+    if (!userId) {
+      setOrders([]);
+    }
+  }, []);
 
   // Render the orders with dynamic styling based on status
   return (
     <div>
-      <h1>Your Orders</h1>
-      {orders.map((order) => (
-        <div key={order.id} style={{ backgroundColor: getStatusColor(order.status) }}>
-          <p>Order No. {order.order_id}</p>
-          <p>Status: {order.status}</p>
-          <p>Response: {order.response}</p>
-          <p>Total ${order.total_amount}</p>
-        </div>
+    <h1>Your Orders</h1>
+    <div className="orders-container">
+    {orders.map((order) => (
+  <div key={order.id} className="order-item">
+    <h5>Order No. {order.order_id}</h5>
+    <p className="status" style={{ backgroundColor: getStatusColor(order.status) }}>{order.status}</p>
+    <p>Date: {new Date(order.date).toLocaleDateString()} {new Date(order.date).toLocaleTimeString()}</p>
+    <p>Response: {order.response}</p>    
+    <p>Total: ${order.total_amount}</p>
+  </div>
       ))}
     </div>
+  </div>
   );
 }
 
