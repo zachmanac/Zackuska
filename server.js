@@ -66,6 +66,7 @@ const pending_orders_for_truck= require('./server/routes/food-truck-app-routes/g
 const get_order_status_for_customer= require('./server/routes/customer-app-routes/get_status_order_for_customer');
 const customer_cancel_order= require('./server/routes/customer-app-routes/customer_cancel_order_route');
 const order_ready= require('./server/routes/food-truck-app-routes/order_ready_route');
+const update_menu_item = require('./server/routes/food-truck-app-routes/edit_menu_item_route');
 
 //All resource routes
 //user
@@ -96,6 +97,7 @@ app.get('/api/orders', order_for_user);//all the orders of the given user *
 app.post('/api/trucks/:truck_id/reviews', add_reviews_for_truck);//new  reviews of the truck 
 app.get('/api/menu_items/:item_id/reviews', reviews_for_items);//all the reviews of the menu_item
 app.post('/api/menu_items/:item_id/reviews', add_reviews_for_items);//new reviews of the menu_item
+app.put('/api/menuItems/:item_id', update_menu_item); //edit menuitem
 //need to add active and stock for inventory
 app.post('/api/cart/checkout', new_order);
 //app.post('/api/cart', create_cart);
