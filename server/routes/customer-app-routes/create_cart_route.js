@@ -7,18 +7,22 @@ router.post('/api/cart', (req, res) => {
   const user_id = req.session.userId;
 
   // Convert menu_items to an array of objects
-  const items = Object.entries(menu_items).map(([item_id, quantity]) => ({
+  /*const items = Object.entries(menu_items).map(([item_id, quantity]) => ({
     item_id: parseInt(item_id),
     quantity: parseInt(quantity),
-  }));
-
+  }))
+  //keys are items_id  values are quantities
+  const menu_items = [{"1":2},{"3":1},{"5":3}] json format
+      // item_id: quantity
+    
+  };
+  */
   // Save the cart items in the session
   req.session.cart = {
     truck_id: truck_id,
-    menu_items: items,
-    //user_id: user_id,
     menu_items: menu_items
-    // Other properties...
+    //user_id: user_id
+
   };
 
   res.json({ message: 'Cart items added successfully' });

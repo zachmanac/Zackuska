@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import axios from 'axios';
+axios.defaults.withCredentials = true;
 
 const server = axios.create({
   baseURL: 'http://localhost:8080',
 });
 
-function LoginForm({ handleClose, handleLogin }) {
+function LoginForm({ handleClose, handleLogin, user_type }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   // const [userType, setUserType] = useState('owner');
@@ -21,8 +22,8 @@ function LoginForm({ handleClose, handleLogin }) {
       .post('/api/session', {
         email,
         password,
-        // user_type: userType,
-      })
+        user_type: user_type,
+      }, {withCredentials: true})
       .then((response) => {
         console.log('Success:', response.data);
         setEmail('');

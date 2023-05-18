@@ -1,4 +1,5 @@
 import axios from 'axios';
+axios.defaults.withCredentials = true;
 
 const baseURL = "http://localhost:8080";
 
@@ -31,11 +32,45 @@ const declineOrder = async (truckId, orderId) => {
   }
 };
 
+const getTruckData = async () => {
+  try {
+    const response = await axios.get(`${baseURL}/api/trucks/dashboard`);
+    console.log("response gettruckdata", response);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+const getMenuItems = async (truckId) => {
+  try {
+    const response = await axios.get(`${baseURL}/api/trucks/${truckId}/menu_items`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching menu items:', error);
+    throw error;
+  }
+};
+
+const updateMenuItem = async (itemId, updatedData) => {
+  try {
+    const response = await axios.put(`http://localhost:8080/api/menuItems/${itemId}`, updatedData);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to update menu item:', error);
+    throw error;
+  }
+};
+
 
 const ApiCallsOwner = {
   getAllOrders,
   acceptOrder,
-  declineOrder
+  declineOrder,
+  getTruckData,
+  getMenuItems,
+  updateMenuItem
 }
 
 export default ApiCallsOwner;

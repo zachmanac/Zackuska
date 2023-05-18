@@ -1,5 +1,5 @@
 const db = require('../../connection');
-//need to add active and stock for inventory
+
 const add_new_menu_item = async function (truck_id,
   item_name, price, calories, allergens, halal, picture, description, item_label, quantity) {
     

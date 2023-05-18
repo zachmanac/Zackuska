@@ -13,18 +13,12 @@ function LoginForm({ handleClose, handleLogin, user_type }) {
   };
 
   const loginUser = (email, password) => {
-    axios
-      .post(
-        '/api/session',
-        {
-          email,
-          password,
-          user_type,
-        },
-        {
-          withCredentials: true,
-        }
-      )
+    server
+      .post('/api/session', {
+        email,
+        password,
+        user_type: userType,
+      }, {withCredentials: true})
       .then((response) => {
         console.log('Success:', response.data);
         setEmail('');

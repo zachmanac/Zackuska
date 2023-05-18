@@ -6,15 +6,30 @@ const addNewOrder = require('../../database/queries/order/add_new_order');
 
 
 router.post('/api/cart/checkout', async (req, res) => {
-  try {
-    const { user_id, truck_id, menu_items, total_amount, total_calories } = req.body;
-    const status = 'pending';
-    const response='waiting for the trucks response'
-    // Verify that menu_items is an array and each item has item_id and quantity
-    if (!Array.isArray(menu_items) || menu_items.some(item => !item.item_id || !item.quantity)) {
-      return res.status(400).json({ error: 'Invalid menu_items format' });
-    }
+ /* const user_id = req.session.userId;
+  const cart=req.session.cart;
+  const truck_id=cart.truck_id;
+  const menu_items= cart.session.menu_items;*/
+  const status = 'pending';
+  const response='waiting for the trucks response';
 
+  //hardcode for test until cart works
+  const { user_id, truck_id, menu_items, total_amount, total_calories } = req.body;
+  //const {total_amount, total_calories}=req.body;
+  
+  /*cart has something like this:
+   req.session.cart = {
+    truck_id: truck_id,
+    menu_items: menu_items
+  
+  };
+ /*this is how menu_items look like menu_items=[ { "1": 2 },
+    { "6": 1 }] item_id:quantity
+  */
+
+  try {
+  
+      
     // Call the addNewOrder function to create a new order in the database
     const order = await addNewOrder(user_id, truck_id, status, total_amount, total_calories, menu_items, response);
 

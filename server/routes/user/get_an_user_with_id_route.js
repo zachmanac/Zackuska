@@ -4,10 +4,10 @@ const query = require('../../database/queries/user/get_user_with_id');
 
 // Get user from the database using the userId stored in the session
 router.get("/api/me", async (req, res) => {
+  console.log("SESSION USER ID", req.session);
   try {
-    const userId = req.session.userId;
-    console.log("User ID", userId);
-
+    const userId = req.session.userid;
+  
     if (!userId) {
       return res.status(401).json({ message: "Not logged in" });
     }

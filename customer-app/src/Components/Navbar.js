@@ -44,15 +44,9 @@ function Navbar() {
   };
 
   const handleLogout = () => {
-    console.log('Logging out...');
-
-    axios.delete('/api/session')
-      .then((response) => {
-        setIsLoggedIn(false);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+    sessionStorage.removeItem('user');
+    setIsLoggedIn(false);
+    window.location.href="/";
   };
 
   const handleLogin = (user) => {
@@ -67,7 +61,8 @@ function Navbar() {
       <div className="nav-bar-left">
         <p>Logo here</p>
         <a href="/">Home</a>
-      </div>
+        {isLoggedIn && <a href="/orders" style={{ color: 'red' }}>My orders</a>}
+        </div>
 
       <div className="nav-bar-center">
         <SearchBar />

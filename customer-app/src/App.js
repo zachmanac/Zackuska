@@ -26,12 +26,18 @@ function FoodTruckMenuWrapper({ trucks, cartItems, isLoggedIn, handleAddToCart, 
 }
 
 function App() {
-  const [cartItems, setCartItems] = useState([]);
-  const [trucks, setTrucks] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const [showRegistrationModal, setShowRegistrationModal] = useState(false);
-  const [activeFoodTruck, setActiveFoodTruck] = useState(null);
+const userId = window.sessionStorage.getItem('user_id');
+const initialCart = JSON.parse(window.localStorage.getItem(`cartItems-${userId}`)) || [];
+const [cartItems, setCartItems] = useState(() => {
+  const savedCartItems = window.localStorage.getItem(`cartItems-${userId}`);
+  return savedCartItems ? JSON.parse(savedCartItems) : [];
+});
+const [trucks, setTrucks] = useState([]);
+const [isLoggedIn, setIsLoggedIn] = useState(false);
+const [showLoginModal, setShowLoginModal] = useState(false);
+const [showRegistrationModal, setShowRegistrationModal] = useState(false);
+
+const [activeFoodTruck, setActiveFoodTruck] = useState([]);
 
   useEffect(() => {
     // Fetch user's cart items from the server session

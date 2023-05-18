@@ -6,17 +6,29 @@ import Orders from "./components/Orders";
 import OrderHistory from "./components/OrderHistory";
 import TruckInfo from "./components/TruckInfo";
 import { ModalContext } from "./components/ModalContext";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
-
+import ApiCallsOwner from './ApiCallsOwner';
 
 function App() {
-  const userId = window.sessionStorage.getItem('user_id');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
+  const [userTruck, setUserTruck] = useState();
+  
+  // const userId = window.sessionStorage.getItem('user_id');
+  // const foodTruckId = window.sessionStorage.getItem('foodtruck_id');
 
+  useEffect(() => {
+    const fetchUserTruck = async () => {
+      const trucksData = await ApiCallsOwner.getTruckData();
+      console.log("trucksdata", trucksData);
+      setUserTruck(trucksData);
+    };
 
+    fetchUserTruck();
+  }, []);
+  
 
 
 

@@ -5,10 +5,7 @@ import RegistrationForm from './RegistrationForm';
 import LoginForm from './LoginForm';
 import { ModalContext } from './ModalContext';
 import axios from 'axios';
-
-const server = axios.create({
-  baseURL: 'http://localhost:8080',
-});
+axios.defaults.withCredentials = true;
 
 function Navbar() {
   const {
@@ -30,14 +27,9 @@ function Navbar() {
       });
   }, []);
 
-  const handle = () => {
-    server.delete('/api/session')
-      .then((response) => {
-        setIsLoggedIn(false);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+  const handleLogout = () => {
+    sessionStorage.removeItem('user');
+    setIsLoggedIn(false);
   };
 
   const handleLogin = (user) => {
@@ -94,7 +86,7 @@ function Navbar() {
             <Modal.Title>Login</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <LoginForm handleClose={() => setShowLoginModal(false)} handleLogin={handleLogin} />
+            <LoginForm handleClose={() => setShowLoginModal(false)} handleLogin={handleLogin} user_type={'owner'} />
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={() => setShowLoginModal(false)}>

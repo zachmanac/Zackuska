@@ -25,30 +25,28 @@ const login = async function(email, password, user_type) {
   return user;
 };
 
-router.post('/api/session', async (req, res) => {
-  
-  const { email, password, user_type } = req.body;
-  
-  console.log('Logging in user:', email); // Add this line to log the user email
-  try {
-    const result = await login(email, password, user_type);
+router.post('/api/session', (req, res) => {
+  const {email, password, user_type} = req.body;
+  req.session.testid = 'test';
+  req.session.save(function(err) {
 
-    if (result.error) {
-      console.log('Error:', result); 
-      return res.status(401).send(result);
-    }
-
-    // Store the user ID in the session
-    req.session.userId = result.userId; // Save user ID to the session
-
-    console.log('Updated Session1:', req.session.userId); // Move this line inside the try block
-
-    res.send(result);
-  } catch (e) {
+    login(email, password, user_type)
+    .then(result => {
+      console.log('Result: after login', result);
+      req.session.userId = result.user_id
+      console.log("req.sessionafter login", req.session)
+      if (result.error) {
+        console.log('Result: error', result); 
+        res.send(result);
+        return;
+      }
+      res.send(result);
+    })
+    .catch(e => {
     console.error('Error:', e); 
-    res.status(500).send({ error: 'Server error' });
-  }
-  console.log('Updated Session2:', req.session);
+
+    res.send(e)
+});
 });
 
 

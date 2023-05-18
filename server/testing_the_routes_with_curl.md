@@ -54,7 +54,7 @@ curl -X GET "http://localhost:8080/api/trucks"
 NEED TO VALIDATE USER_TYPE TO BE OWNER
 app.post('/api/trucks', new_truck);//Create a new truck record in the database
 curl -X POST -H "Content-Type: application/json" -d '{
-  "owner_id": 9,
+  "owner_id": 10,
   "truck_name": "Food Truck",
   "phone_number": "1234560",
   "cuisine": "Mexican",
@@ -88,32 +88,106 @@ curl -X GET http://localhost:8080/api/trucks/1/orders
 app.get('/api/trucks/:truck_id/reviews', reviews_for_truck);//all the reviews of the truck given 
 curl -X GET "http://localhost:8080/api/trucks/1/reviews"
 -------------------------------------------------------------
-WHY IS USER PASSED IN THE QUERY?
+WHY IS USER PASSED IN THE QUERY? 
 app.get('/api/orders', order_for_user);//all the orders of the user given 
 curl -X GET http://localhost:8080/api/orders?user_id=1
 ------------------------------------------------------------
 app.get('/api/trucks/:truck_id/orders', order_for_truck);//all the orders of the truck given
 curl -X GET http://localhost:8080/api/trucks/1/orders
 -----------------------------------------------------------
-NEED TO JOIN WITH USER TO GET USER NAME
 app.get('/api/trucks/:truck_id/reviews', reviews_for_truck);//all the reviews of the truck given
 curl -X GET http://localhost:8080/api/trucks/3/reviews
 -----------------------------------------------------------
-I THINK WE ALSO NEED TO SEND TO THE TRUCK OWNERS INFO
 app.post('/api/cart/checkout', new_order);//add new order
 
 curl -X POST -H "Content-Type: application/json" -d '{
   "user_id": 1,
   "truck_id": 1,
   "menu_items": [
-    { "item_id": 1, "quantity": 2 },
-    { "item_id": 6, "quantity": 1 }
+    { "1": 2 },
+    { "6": 1 }
   ],
   "total_amount": 25.99,
   "total_calories": 1200
 }' http://localhost:8080/api/cart/checkout
 -----------------------------------------------------------
-FOR NOW JUST GETS HARDCODE THE OWNER_ID
 app.get('/api/trucks/dashboard', get_truck_by_owner_id);
 curl -X GET http://localhost:8080/api/trucks/dashboard
 -----------------------------------------------------------
+app.get('/api/trucks/:truck_id/pending_orders', pending_orders_for_truck);//get all pending orders
+curl -X GET http://localhost:8080/api/trucks/1/pending_orders
+------------------------------------------------------------
+app.post('/api/trucks/:order_id/accepted', order_accepted_by_truck);
+
+curl -X POST -H "Content-Type: application/json" -d '{
+  "response": "10 minutes"
+}' http://localhost:8080/api/trucks/19/accepted
+-----------------------------------------------------------
+app.post('/api/trucks/:order_id/declined', order_declined_by_truck);
+
+curl -X POST -H "Content-Type: application/json" -d '{
+  "response": "out of stock"
+}' http://localhost:8080/api/trucks/21/declined
+--------------------------------------------------------------
+app.get('/api/orders/:order_id/status', get_order_status_for_customer);//get a given order
+curl -X GET http://localhost:8080/api/orders/1/status
+---------------------------------------------------------------
+app.post('/api/trucks/:truck_id/schedules', new_schedule);//Create a new schedule itenerary record in the database 
+curl -X POST -H "Content-Type: application/json" -d '{
+  "date": "2023-05-16",
+  "address": "12345 Main St",
+  "latitude": 40.7128,
+  "longitude": -74.0060,
+  "start_time": "09:00:00",
+  "end_time": "12:00:00",
+  "place_name": "Example Place"
+}' http://localhost:8080/api/trucks/8/schedules
+-------------------------------------------------------------------
+app.get('/api/trucks/:truck_id/schedules', schedule);// Get the schedule of a given truck
+curl -X GET http://localhost:8080/api/trucks/1/schedules
+--------------------------------------------------------------------
+app.post('/api/trucks/:order_id/ready',order_ready);
+curl -X POST -H "Content-Type: application/json" -d '{
+  "response": "ready to pick up"
+}' http://localhost:8080/api/trucks/19/ready
+--------------------------------------------------------------------
+app.put('/api/trucks/menu_items/:item_id', edit_menu);//edit menu here the truck can retire/change the menu items
+
+curl -X PUT \
+  -H "Content-Type: application/json" \
+  -d '{
+    "item_name": "New Name",
+    "price": 9.99,
+    "calories": 500,
+    "allergens": "No allergens",
+    "halal": true,
+    "picture": "new_item.jpg",
+    "description": "Updated item description",
+    "quantity": 100,
+    "active": true
+  }' \
+  http://localhost:8080/api/trucks/menu_items/11
+--------------------------------------------------------------------
+app.put('/api/trucks/:truck_id', edit_truck)//truck-owner can change the truck variables
+curl -X PUT -H "Content-Type: application/json" -d '{
+  
+  "phone_number": "1234567890",
+  "cuisine": "Updated Cuisine",
+  "instagram": "updated_instagram",
+  "facebook": "updated_facebook",
+  "website": "updated_website",
+  "picture": "updated_picture.jpg",
+  "city": "Updated City"
+}' http://localhost:8080/api/trucks/5
+------------------------------------------------------------------
+app.put('/api/trucks/schedules/:schedule_id', change_schedule)//truck can change their schedule
+
+curl -X PUT -H "Content-Type: application/json" -d '{
+  "date": "2023-05-19",
+  "address": "Updated Address",
+  "latitude": 37.7749,
+  "longitude": -122.4194,
+  "start_time": "09:00:00",
+  "end_time": "17:00:00",
+  "place_name": "Updated Place"
+}' http://localhost:8080/api/trucks/schedules/1
