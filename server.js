@@ -66,7 +66,7 @@ const customer_cancel_order= require('./server/routes/customer-app-routes/custom
 const order_ready= require('./server/routes/food-truck-app-routes/order_ready_route');
 const order_picked_up_by_customer= require('./server/routes/customer-app-routes/order_completed_route');
 const menu_items_by_label= require('./server/routes/customer-app-routes/get_menu_items_by_label_route'); //items by label
-const edit_menu= require('./server/routes/food-truck-app-routes/edit_menu_items_route');
+const update_menu_item = require('./server/routes/food-truck-app-routes/edit_menu_item_route');
 const edit_truck= require('./server/routes/food-truck-app-routes/edit_truck_route');
 const change_schedule= require('./server/routes/food-truck-app-routes/edit_schedule_route');
 
@@ -92,7 +92,7 @@ app.post('/api/trucks/:truck_id/schedules', new_schedule);//Create a new schedul
 app.post('/api/trucks/:order_id/ready',order_ready);
 app.get('/api/trucks/dashboard', get_truck_by_owner_id);//get and specific truck info by truck_id given*
 app.get('/api/trucks/:truck_id/schedules', schedule);// Get the schedule of a given truck*
-app.put('/api/trucks/menu_items/:item_id', edit_menu);//edit menu here the truck can retire/change the menu items
+app.put('/api/menuItems/:item_id', update_menu_item);//edit menu here the truck can retire/change the menu items
 app.put('/api/trucks/:truck_id', edit_truck)//truck-owner can change the truck variables
 app.put('/api/trucks/schedules/:schedule_id', change_schedule)//truck can change their schedule
 
