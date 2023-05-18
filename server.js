@@ -66,7 +66,7 @@ const pending_orders_for_truck= require('./server/routes/food-truck-app-routes/g
 const get_order_status_for_customer= require('./server/routes/customer-app-routes/get_status_order_for_customer');
 const customer_cancel_order= require('./server/routes/customer-app-routes/customer_cancel_order_route');
 const order_ready= require('./server/routes/food-truck-app-routes/order_ready_route');
-
+const order_picked_up_by_customer= require('./server/routes/customer-app-routes/order_completed_route');
 //All resource routes
 //user
 app.post('/api/users', new_user);// Add a new user*
@@ -76,28 +76,29 @@ app.get('/api/me', user_with_id); //Get an user with a given id*
 
 //api
 //food-truck-app
-app.post('/api/trucks/:truck_id/:order_id/accepted', order_accepted_by_truck);
-app.post('/api/trucks/:truck_id/:order_id/declined', order_declined_by_truck);
+app.post('/api/trucks/:order_id/accepted',order_accepted_by_truck);
+app.post('/api/trucks/:order_id/declined',order_declined_by_truck);
 app.get('/api/trucks/:truck_id/pending_orders', pending_orders_for_truck);//get all pending orders for truck*
 app.get('/api/trucks', trucks);//Fetch all trucks from the database*
 app.post('/api/trucks', new_truck);//Create a new truck record in the database needs validate user_type to owner*
 app.get('/api/trucks/:truck_id/menu_items', menu);// Get the menu of a given truck*
 app.post('/api/trucks/:truck_id/menu_items', new_menu_item);//Create a new menu item record in the database* 
-app.get('/api/trucks/:truck_id/orders', order_for_truck);//all the orders of the given truck * 
-app.get('/api/trucks/:truck_id/reviews', reviews_for_truck);//all the reviews of the given truck * 
-app.post('/api/trucks/:truck_id/schedules', new_schedule);//Create a new schedule itenerary record in the database 
-app.post('/api/trucks/:truck_id/:order_id/ready',order_ready);
-app.get('/api/trucks/dashboard', get_truck_by_owner_id);//get and specific truck info by truck_id given
-app.get('/api/trucks/:truck_id/schedules', schedule);// Get the schedule of a given truck
+app.get('/api/trucks/:truck_id/orders', order_for_truck);//all the orders of the given truck* 
+app.get('/api/trucks/:truck_id/reviews', reviews_for_truck);//all the reviews of the given truck* 
+app.post('/api/trucks/:truck_id/schedules', new_schedule);//Create a new schedule itenerary record in the database* 
+app.post('/api/trucks/:order_id/ready',order_ready);
+app.get('/api/trucks/dashboard', get_truck_by_owner_id);//get and specific truck info by truck_id given*
+app.get('/api/trucks/:truck_id/schedules', schedule);// Get the schedule of a given truck*
 
 //customer-app
-app.get('/api/order/:order_id/status', get_order_status_for_customer);//get the status of the given order
+app.get('/api/orders/:order_id/status', get_order_status_for_customer);//get the status of the given order
+app.post('/api/orders/:order_id/completed', order_picked_up_by_customer);
 app.get('/api/orders', order_for_user);//all the orders of the given user * 
 app.post('/api/trucks/:truck_id/reviews', add_reviews_for_truck);//new  reviews of the truck 
 app.get('/api/menu_items/:item_id/reviews', reviews_for_items);//all the reviews of the menu_item
 app.post('/api/menu_items/:item_id/reviews', add_reviews_for_items);//new reviews of the menu_item
 //need to add active and stock for inventory
-app.post('/api/cart/checkout', new_order);
+app.post('/api/cart/checkout', new_order);//*
 //app.post('/api/cart', create_cart);
 app.get('/api/cart', (req, res)=>{res.status(200).json(req.session.cart||{})});
 app.put('/api/cart', (req,res)=>{
@@ -109,7 +110,7 @@ req.session.cart.menu_items= req.body.menu_items;
   //keys are menu_items_id  values are quantities
   res.status(200).json(req.session.cart)
 });
-app.post('/api/trucks/:truck_id/:order_id/cancelled',customer_cancel_order);
+app.post('/api/orders/:order_id/cancelled',customer_cancel_order);
 
 
 

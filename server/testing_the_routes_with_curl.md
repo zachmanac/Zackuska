@@ -119,14 +119,37 @@ curl -X GET http://localhost:8080/api/trucks/dashboard
 app.get('/api/trucks/:truck_id/pending_orders', pending_orders_for_truck);//get all pending orders
 curl -X GET http://localhost:8080/api/trucks/1/pending_orders
 ------------------------------------------------------------
-app.post('/api/trucks/:truck_id/:order_id/accepted', order_accepted_by_truck);
+app.post('/api/trucks/:order_id/accepted', order_accepted_by_truck);
 
 curl -X POST -H "Content-Type: application/json" -d '{
   "response": "10 minutes"
 }' http://localhost:8080/api/trucks/1/17/accepted
 -----------------------------------------------------------
-app.post('/api/trucks/:truck_id/:order_id/declined', order_declined_by_truck);
+app.post('/api/trucks/:order_id/declined', order_declined_by_truck);
 
 curl -X POST -H "Content-Type: application/json" -d '{
   "response": "out of stock"
 }' http://localhost:8080/api/trucks/1/16/declined
+--------------------------------------------------------------
+app.get('/api/orders/:order_id/status', get_order_status_for_customer);//get the status of the given order
+curl -X GET http://localhost:8080/api/orders/1/status
+---------------------------------------------------------------
+app.post('/api/trucks/:truck_id/schedules', new_schedule);//Create a new schedule itenerary record in the database 
+curl -X POST -H "Content-Type: application/json" -d '{
+  "date": "2023-05-15",
+  "address": "12345 Main St",
+  "latitude": 40.7128,
+  "longitude": -74.0060,
+  "start_time": "09:00:00",
+  "end_time": "12:00:00",
+  "place_name": "Example Place"
+}' http://localhost:8080/api/trucks/8/schedules
+-------------------------------------------------------------------
+app.get('/api/trucks/:truck_id/schedules', schedule);// Get the schedule of a given truck
+curl -X GET http://localhost:8080/api/trucks/1/schedules
+--------------------------------------------------------------------
+app.post('/api/trucks/:order_id/ready',order_ready);
+curl -X POST -H "Content-Type: application/json" -d '{
+  "response": "ready to pick up"
+}' http://localhost:8080/api/trucks/1/15/ready
+--------------------------------------------------------------------
