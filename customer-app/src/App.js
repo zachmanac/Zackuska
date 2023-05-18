@@ -40,7 +40,7 @@ const [isLoggedIn, setIsLoggedIn] = useState(false);
 const [showLoginModal, setShowLoginModal] = useState(false);
 const [showRegistrationModal, setShowRegistrationModal] = useState(false);
 
-const [activeFoodTruck, setActiveFoodTruck] = useState(null);
+const [activeFoodTruck, setActiveFoodTruck] = useState([]);
 
 useEffect(() => {
   const menu_items = cartItems.reduce ((acc, value) => ({...acc, [value.item_id]: value.quantity}), {});
