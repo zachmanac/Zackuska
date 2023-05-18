@@ -22,7 +22,7 @@ function LoginForm({ handleClose, handleLogin }) {
         email,
         password,
         user_type: userType,
-      })
+      }, {withCredentials: true})
       .then((response) => {
         console.log('Success:', response.data);
         setEmail('');
