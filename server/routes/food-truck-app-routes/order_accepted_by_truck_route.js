@@ -3,7 +3,7 @@ const router = express.Router();
 const { updateStatus } = require('../../database/queries/order/order_accepted_declined');
 
 // Handle the POST request for accepting an order by a food truck
-router.post('/api/trucks/:truck_id/:order_id/accepted', async (req, res) => {
+router.post('/api/trucks/:order_id/accepted', async (req, res) => {
   const { order_id } = req.params;
   const status = 'accepted';
 

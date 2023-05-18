@@ -55,10 +55,8 @@ const reviews_for_items = require('./server/routes/customer-app-routes/get_revie
 const add_reviews_for_items= require('./server/routes/customer-app-routes/add_reviews_for_items_route');
 const schedule = require('./server/routes/customer-app-routes/get_schedule_route');
 const new_schedule = require('./server/routes/food-truck-app-routes/add_schedule_route');
-//const order_accepted_declined= require('./server/routes/order/order_accepted_or_declined_by_the_truck_route');
 const new_order= require('./server/routes/customer-app-routes/add_new_order_route');
 const create_cart= require('./server/routes/customer-app-routes/create_cart_route');
-//const revert_order= require('./server/routes/order/revert_order_route');
 const get_truck_by_owner_id= require('./server/routes/food-truck-app-routes/get_truck_for_dashboard_route');
 const order_accepted_by_truck= require('./server/routes/food-truck-app-routes/order_accepted_by_truck_route');
 const order_declined_by_truck= require('./server/routes/food-truck-app-routes/order_declined_by_truck_route');
@@ -77,30 +75,31 @@ app.get('/api/me', user_with_id); //Get an user with a given id*
 
 //api
 //food-truck-app
-app.post('/api/trucks/:truck_id/:order_id/accepted', order_accepted_by_truck);
-app.post('/api/trucks/:truck_id/:order_id/declined', order_declined_by_truck);
+app.post('/api/trucks/:order_id/accepted',order_accepted_by_truck);
+app.post('/api/trucks/:order_id/declined',order_declined_by_truck);
 app.get('/api/trucks/:truck_id/pending_orders', pending_orders_for_truck);//get all pending orders for truck*
 app.get('/api/trucks', trucks);//Fetch all trucks from the database*
 app.post('/api/trucks', new_truck);//Create a new truck record in the database needs validate user_type to owner*
 app.get('/api/trucks/:truck_id/menu_items', menu);// Get the menu of a given truck*
 app.post('/api/trucks/:truck_id/menu_items', new_menu_item);//Create a new menu item record in the database* 
-app.get('/api/trucks/:truck_id/orders', order_for_truck);//all the orders of the given truck * 
-app.get('/api/trucks/:truck_id/reviews', reviews_for_truck);//all the reviews of the given truck * 
-app.post('/api/trucks/:truck_id/schedules', new_schedule);//Create a new schedule itenerary record in the database 
-app.post('/api/trucks/:truck_id/:order_id/ready',order_ready);
-app.get('/api/trucks/dashboard', get_truck_by_owner_id);//get and specific truck info by truck_id given
-app.get('/api/trucks/:truck_id/schedules', schedule);// Get the schedule of a given truck
+app.get('/api/trucks/:truck_id/orders', order_for_truck);//all the orders of the given truck* 
+app.get('/api/trucks/:truck_id/reviews', reviews_for_truck);//all the reviews of the given truck* 
+app.post('/api/trucks/:truck_id/schedules', new_schedule);//Create a new schedule itenerary record in the database* 
+app.post('/api/trucks/:order_id/ready',order_ready);
+app.get('/api/trucks/dashboard', get_truck_by_owner_id);//get and specific truck info by truck_id given*
+app.get('/api/trucks/:truck_id/schedules', schedule);// Get the schedule of a given truck*
 
 //customer-app
-app.get('/api/order/:order_id/status', get_order_status_for_customer);//get the status of the given order
+app.get('/api/orders/:order_id/status', get_order_status_for_customer);//get the status of the given order
+app.post('/api/orders/:order_id/completed', order_picked_up_by_customer);
 app.get('/api/orders', order_for_user);//all the orders of the given user * 
 app.post('/api/trucks/:truck_id/reviews', add_reviews_for_truck);//new  reviews of the truck 
 app.get('/api/menu_items/:item_id/reviews', reviews_for_items);//all the reviews of the menu_item
 app.post('/api/menu_items/:item_id/reviews', add_reviews_for_items);//new reviews of the menu_item
 app.put('/api/menuItems/:item_id', update_menu_item); //edit menuitem
 //need to add active and stock for inventory
-app.post('/api/cart/checkout', new_order);
-//app.post('/api/cart', create_cart);
+app.post('/api/cart/checkout', new_order);//*
+app.post('/api/cart', create_cart);
 app.get('/api/cart', (req, res)=>{res.status(200).json(req.session.cart||{})});
 app.put('/api/cart', (req,res)=>{
   if(!req.session.cart){
@@ -111,7 +110,8 @@ req.session.cart.menu_items= req.body.menu_items;
   //keys are menu_items_id  values are quantities
   res.status(200).json(req.session.cart)
 });
-app.post('/api/trucks/:truck_id/:order_id/cancelled',customer_cancel_order);
+app.post('/api/orders/:order_id/cancelled',customer_cancel_order);
+app.get('/api/menu_items/:label', menu_items_by_label);//STRETCH Fetch menu_items from the database with that label
 
 
 
@@ -133,17 +133,15 @@ MAKE SURE THERE IS ONLY ONE TRUCK PER OWNER IN YOUR DB for now
 i need to validate the user_type is owner in login for dashboard
 app.put('/api/trucks/menu_items', edit_menu);//edit menu here the truck can retire/change the menu items
 app.put('/api/trucks/:truck_id', edit_truck)//truck-owner can change the truck variables
-app.put('/api/trucks/schedule', change_schedule)
+app.put('/api/trucks/schedule', change_schedule)//truck can change their schedule
 
 
 ****************STRETCH*************************************
+//const revert_order= require('./server/routes/order/revert_order_route');
 //app.post('/api/orders/:order_id/revert', revert_order);
 app.get(/api/trucks/stats', truck_stats)//truck owner could see charts of their sales
 app.get(/api/trucks/inventory', truck_inventory)//can see the inventory
-const menu_items_by_label= require('./server/routes/api/get_menu_items_given_food_route'); items by label
-
-//app.get('/api/:label/menu_items', menu_items_by_label);//STRETCH Fetch menu_items from the database with that label
-app.get('/api/labels/:label_id/trucks', menu_items_by_label);//NOT Fetch menu_items from the database with that label maybe NOT*/
+*/
 
 
 
