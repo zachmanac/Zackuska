@@ -103,7 +103,7 @@ app.get('/api/orders', order_for_user);//all the orders of the given user *
 app.post('/api/trucks/:truck_id/reviews', add_reviews_for_truck);//new  reviews of the truck 
 app.get('/api/menu_items/:item_id/reviews', reviews_for_items);//all the reviews of the menu_item
 app.post('/api/menu_items/:item_id/reviews', add_reviews_for_items);//new reviews of the menu_item
-//need to add active and stock for inventory
+//app.put('/api/menuItems/:item_id', update_menu_item); //edit menuitem
 app.post('/api/cart/checkout', new_order);//*
 app.post('/api/cart', create_cart);
 app.get('/api/cart', (req, res)=>{res.status(200).json(req.session.cart||{})});

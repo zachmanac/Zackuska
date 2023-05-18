@@ -2,7 +2,17 @@ const db = require('../../connection');
 
 const update_menu_item = async function (item_id, updated_item) {
   
-  const queryParam = [updated_item.item_name, updated_item.price, updated_item.calories, updated_item.allergens, updated_item.halal, updated_item.picture, updated_item.description, updated_item.item_label, updated_item.quantity, updated_item.active, item_id];
+  const queryParam = [updated_item.item_name,
+     updated_item.price, 
+     updated_item.calories, 
+     updated_item.allergens, 
+     updated_item.halal, 
+     updated_item.picture, 
+     updated_item.description, 
+     updated_item.item_label, 
+     updated_item.quantity, 
+     updated_item.active, 
+     item_id];
 
   try {
    const result= await db.query(` UPDATE menu_items

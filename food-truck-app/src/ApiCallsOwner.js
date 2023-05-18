@@ -53,13 +53,24 @@ const getMenuItems = async (truckId) => {
   }
 };
 
+const updateMenuItem = async (itemId, updatedData) => {
+  try {
+    const response = await axios.put(`http://localhost:8080/api/menuItems/${itemId}`, updatedData);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to update menu item:', error);
+    throw error;
+  }
+};
+
 
 const ApiCallsOwner = {
   getAllOrders,
   acceptOrder,
   declineOrder,
   getTruckData,
-  getMenuItems
+  getMenuItems,
+  updateMenuItem
 }
 
 export default ApiCallsOwner;
