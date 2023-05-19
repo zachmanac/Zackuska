@@ -16,7 +16,7 @@ const getAllOrders = async (foodTruckId) => {
 
 const acceptOrder = async (truckId, orderId) => {
   try {
-    await axios.post(`${baseURL}/api/trucks/${truckId}/${orderId}/accepted`);
+    await axios.post(`${baseURL}/api/trucks/${orderId}/accepted`);
   } catch (error) {
     console.error('Error accepting order:', error);
     throw error;
@@ -25,7 +25,7 @@ const acceptOrder = async (truckId, orderId) => {
 
 const declineOrder = async (truckId, orderId) => {
   try {
-    await axios.post(`${baseURL}/api/trucks/${truckId}/${orderId}/declined`);
+    await axios.post(`${baseURL}/api/trucks/${orderId}/declined`);
   } catch (error) {
     console.error('Error declining order:', error);
     throw error;

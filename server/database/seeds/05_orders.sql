@@ -7,3 +7,4 @@ VALUES
   (4, 3, 'Completed', 10.75, 200, '2023-05-03 17:15:00', '20 minutes'),
   (4, 1, 'Cancelled', 8.99, 150, '2023-05-04 09:00:00', 'waiting for the trucks response'),
   (1, 2, 'Completed', 12.25, 250, '2023-05-05 14:20:00', '10 minutes');
+  

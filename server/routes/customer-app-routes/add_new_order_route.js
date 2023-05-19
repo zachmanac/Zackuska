@@ -14,7 +14,8 @@ router.post('/api/cart/checkout', async (req, res) => {
   const response='waiting for the trucks response';
 
   //hardcode for test until cart works
-  const { user_id, truck_id, menu_items, total_amount, total_calories } = req.body;
+  const { user_id, menu_items, total_amount, total_calories, truck_id } = req.body;
+  // const truck_id = menu_items[0].truck_id;
   //const {total_amount, total_calories}=req.body;
   
   /*cart has something like this:

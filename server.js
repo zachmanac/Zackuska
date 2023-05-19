@@ -34,7 +34,7 @@ app.use(express.json()); //parse json request bodies
 
 //Payment
 const paymentRoutes = require('./server/routes/customer-app-routes/paymentRoutes');
-app.post('/api/payment', paymentRoutes);
+app.use('/api/payment', paymentRoutes);
 
 
 //user

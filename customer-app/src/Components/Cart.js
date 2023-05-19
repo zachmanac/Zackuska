@@ -17,7 +17,9 @@ const server = axios.create({
 function Cart({ cartItems, setCartItems }) {
   const [showPayment, setShowPayment] = useState(false);
   const [orderId, setOrderId] = useState(null);
-  const userId = window.sessionStorage.getItem('userId');
+  const user = window.sessionStorage.getItem('user');
+  const userId = JSON.parse(user).user_id;
+  console.log("userid", userId)
 
   useEffect(() => {
     window.localStorage.setItem(`cart-${userId}`, JSON.stringify(cartItems));
@@ -64,15 +66,20 @@ function Cart({ cartItems, setCartItems }) {
   const checkout = async () => {
     setShowPayment(true);
     console.log('Checkout clicked, showPayment:', showPayment);
+    console.log("cartitems in checkout", cartItems);
 
     const totalAmount = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
     const totalCalories = cartItems.reduce((total, item) => total + item.calories * item.quantity, 0); // Assumes each item has a 'calories' property
+    console.log("userid", userId);
 
+    const menu_items = cartItems.map((item) => {
+      return {[item.item_id]: item.quantity};
+    })
     const orderResponse = await server
     .post(`/api/cart/checkout`, {
       user_id: userId, // Use 'user_id' to match server-side code
-      truck_id: cartItems.truck_id, // need to determine the truck_id,
-      menu_items: cartItems, // Use 'menu_items' to match server-side code
+      truck_id: cartItems[0].truck_id, // need to determine the truck_id,
+      menu_items: menu_items, // Use 'menu_items' to match server-side code
       total_amount: totalAmount,
       total_calories: totalCalories
     });

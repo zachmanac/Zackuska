@@ -5,7 +5,7 @@ const db = require('../../database/connection');
 
 router.post('/create-payment-intent', async (req, res) => {
   const { amount, truckId, items } = req.body;
-
+  console.log("inside createpaymentinten", req.body);
   if (items) {
     // If items are provided, calculate total price
     const totalPrice = calculateTotalPrice(items);

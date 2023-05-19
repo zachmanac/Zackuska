@@ -8,12 +8,13 @@ const addNewOrder = async function (customer_id, truck_id, status, total_amount,
       INSERT INTO orders (customer_id, truck_id, status, total_amount, total_calories, date, response)
       VALUES ($1, $2, $3, $4, $5, now(), $6)
       RETURNING *`,
-      [customer_id, truck_id, status, total_amount, total_calories, response]
+      [customer_id, truck_id, status, Number(total_amount), total_calories, response]
     );
 
     const order = orderResult.rows[0];
     console.log("order after inserted", order);
     const order_id = order.order_id;
+    console.log("menuitems", menu_items);
 
     const orderDetailPromises = menu_items.map(async (item) => {
       const item_id = parseInt(Object.keys(item)[0]); // Get the item_id as an integer

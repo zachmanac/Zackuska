@@ -9,7 +9,7 @@ const Orders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const foodTruckId = 1; 
+        const foodTruckId = 4; 
         //foodtruckid should be from current users(owner) truck i think
         const orders = await ApiCallsOwner.getAllOrders(foodTruckId);
         // console.log("ORDERS/FETCHORDERS", orders)
@@ -66,7 +66,7 @@ const Orders = () => {
               <p>Order Id: {order.order_id}</p>
               <p>{order.status}</p>
               <div className="order-status-buttons">
-              {order.status === 'Pending' && (
+              {order.status === 'pending' && (
                   <div>
                     <Button variant="success" onClick={() => handleAcceptOrder(order.order_id)}>Accept</Button>
                     <Button variant="danger" onClick={() => handleDeclineOrder(order.order_id)}>Decline</Button>
