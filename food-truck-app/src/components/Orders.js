@@ -36,7 +36,7 @@ const Orders = () => {
     try {
       const foodTruckId = 1;
       await ApiCallsOwner.declineOrder(foodTruckId, orderId);
-      updateOrderStatus(orderId, 'Cancelled');
+      updateOrderStatus(orderId, 'Declined');
     } catch (error) {
       console.error('Error declining order:', error);
     }

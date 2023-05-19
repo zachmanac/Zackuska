@@ -12,6 +12,7 @@ const existingOrder = async function (order_id) {
 
 const updateStatus = async function (order_id, status, response) {
   const results= await db.query('UPDATE orders SET status = $2, response=$3 WHERE order_id = $1 RETURNING *', [order_id, status, response]);
+  console.log("results.rows after updating status i think", results.rows);
   return results.rows;
 };
 

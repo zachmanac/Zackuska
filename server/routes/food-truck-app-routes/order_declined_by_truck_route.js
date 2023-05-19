@@ -4,11 +4,11 @@ const {updateStatus}= require('../../database/queries/order/order_accepted_decli
 //trucks handle the post request for the orders and send response
 router.post('/api/trucks/:order_id/declined', async (req, res) => {
   const { order_id } = req.params;
-  const status='declined';
+  const status = 'Declined';
   try {
    //change the orders status in db declined and in the column response 
-   const {response} = req.body;
-   const result= await updateStatus(order_id, status, response)
+   const response = 'Your order has been declined.';
+   const result = await updateStatus(order_id, status, response)
    
     res.json(result);
   } catch (error) {
