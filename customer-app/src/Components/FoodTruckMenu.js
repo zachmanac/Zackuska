@@ -5,12 +5,23 @@ import ApiCalls from '../ApiCalls';
 import MapGoogle from './MapGoogle';
 import { ModalContext } from './ModalContext';
 import { useContext } from 'react';
-import axios from 'axios';
 
-function FoodTruckMenu({ onAddToCart, onRemoveFromCart, truckId, trucks, cartItems, isLoggedIn, setShowLoginModal }) {
+
+
+function FoodTruckMenu({ 
+  onAddToCart, 
+  onRemoveFromCart, 
+  truckId, 
+  trucks, 
+  cartItems, 
+  isLoggedIn, 
+  setShowLoginModal 
+}) {
   const [allergensOpenIndex, setAllergensOpenIndex] = useState(-1);
   const [menuItems, setMenuItems] = useState([]);
   const { setShowRegistrationModal } = useContext(ModalContext);
+
+
 
   const foodTruck = trucks.find((truck) => truck.truck_id === Number(truckId));
 
@@ -32,38 +43,28 @@ function FoodTruckMenu({ onAddToCart, onRemoveFromCart, truckId, trucks, cartIte
     return <div>Loading...</div>;
   }
 
-  const handleAddToCartClick = async (menuItem) => {
-    try {
-      const response = await axios.put('/api/cart', {
-        truck_id: truckId,
-        menu_items: [{ ...menuItem, quantity: 1 }], // Pass the quantity as 1
-      });
-      if (response.status === 200) {
-        onAddToCart(menuItem, 1);
-      } else {
-        console.error('Failed to add item to cart');
-      }
-    } catch (error) {
-      console.error('Error adding item to cart:', error);
+  const handleAddToCartClick = (menuItem) => {
+    if (!isLoggedIn) {
+      setShowRegistrationModal(true); // Show the registration modal
+    } else {
+      onAddToCart(menuItem, 1); // Assuming a quantity of 1, you can modify this as per your requirement
+    }
+
+  };
+  const handleRemoveFromCartClick = (menuItem) => {
+    const existingItem = cartItems.find((item) => item.item_id === menuItem.item_id);
+    
+    if (existingItem && existingItem.quantity > 1) {
+      // If item quantity is more than 1, decrease the quantity
+      const updatedCartItem = { ...existingItem, quantity: existingItem.quantity - 1 };
+      onRemoveFromCart(updatedCartItem);
+    } else {
+      // If item quantity is 1 or item does not exist in the cart, remove it
+      onRemoveFromCart(menuItem);
     }
   };
   
-  const handleRemoveFromCartClick = async (menuItem) => {
-    try {
-      const response = await axios.put('/api/cart', {
-        truck_id: truckId,
-        menu_items: [{ ...menuItem, quantity: 1 }], // Pass the quantity as 1
-      });
-      if (response.status === 200) {
-        onRemoveFromCart(menuItem);
-      } else {
-        console.error('Failed to remove item from cart');
-      }
-    } catch (error) {
-      console.error('Error removing item from cart:', error);
-    }
-  };
-  
+
   
 
   return (
@@ -86,8 +87,8 @@ function FoodTruckMenu({ onAddToCart, onRemoveFromCart, truckId, trucks, cartIte
       </div>
       <div className="menu-right-side">
         {menuItems.map((menuItem, index) => {
-const cartItem = cartItems && cartItems.find((item) => item.item_id === menuItem.item_id);
-const quantityInCart = cartItem ? cartItem.quantity : 0;
+          const cartItem = cartItems.find((item) => item.item_id === menuItem.item_id);
+          const quantityInCart = cartItem ? cartItem.quantity : 0;
 
           return (
             <div key={index} className="menu-item-individual">
@@ -101,7 +102,9 @@ const quantityInCart = cartItem ? cartItem.quantity : 0;
                         <p>{menuItem.calories} Calories</p>
                         <Button
                           variant="primary"
-                          onClick={() => setAllergensOpenIndex(allergensOpenIndex === index ? -1 : index)}
+                          onClick={() =>
+                            setAllergensOpenIndex(allergensOpenIndex === index ? -1 : index)
+                          }
                         >
                           Allergens
                         </Button>
@@ -115,23 +118,27 @@ const quantityInCart = cartItem ? cartItem.quantity : 0;
                       </div>
                     </div>
                     <div className="menu-price-and-cart">
-                      {quantityInCart > 0 && (
-                        <Button variant="danger" onClick={() => handleRemoveFromCartClick(menuItem)}>
-                          Remove -1
-                        </Button>
-                      )}
-                      <p>${menuItem.price}</p>
+                        {quantityInCart > 0 && (
+                    <Button 
+                      variant="danger"
+                      onClick={() => handleRemoveFromCartClick(menuItem)}
+                    >
+                      Remove -1
+                    </Button>
+                  )}
+                    <p>${menuItem.price}</p>
                       <div className="cart-button-container">
                         <span>{quantityInCart} in Cart</span>
-                        <Button variant="primary" onClick={() => handleAddToCartClick(menuItem)}>
+                        <Button 
+                          variant="primary" 
+                          onClick={() => handleAddToCartClick(menuItem)}
+                        >
                           Add to Cart
                         </Button>
                       </div>
                     </div>
                   </div>
-                  <p className={`menu-item-description ${allergensOpenIndex === index ? 'allergens-open' : ''}`}>
-                    {menuItem.description}
-                  </p>
+                  <p className={`menu-item-description ${allergensOpenIndex === index ? 'allergens-open' : ''}`}>{menuItem.description}</p>
                 </div>
               </div>
             </div>
@@ -140,6 +147,7 @@ const quantityInCart = cartItem ? cartItem.quantity : 0;
       </div>
     </div>
   );
-}
+};
 
 export default FoodTruckMenu;
+

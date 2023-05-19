@@ -7,8 +7,6 @@ export const ModalProvider = ({ children }) => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  console.log('ModalContext isLoggedIn:', isLoggedIn);
-
   return (
     <ModalContext.Provider
       value={{
@@ -16,8 +14,8 @@ export const ModalProvider = ({ children }) => {
         setShowRegistrationModal,
         showLoginModal,
         setShowLoginModal,
-        // isLoggedIn,
-        // setIsLoggedIn
+        isLoggedIn,
+        setIsLoggedIn
       }}
     >
       {children}

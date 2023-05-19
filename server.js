@@ -4,30 +4,8 @@ const morgan = require('morgan');
 const PORT = process.env.PORT || 8080;
 const session = require('express-session');
 const cors = require('cors');
-const pgSession = require('connect-pg-simple')(session);
+const cookieParser= require('cookie-parser');
 const app = express();
-const pool = require('./server/database/connection');
-
-app.use(cors({
-  origin: 'http://localhost:3000', // replace with your client-side domain
-  credentials: true
-}));
-
-app.use(
-  session({
-    store: new pgSession({
-      pool,
-      tableName: 'session',
-    }),
-    secret: 'your_session_secret',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: false, // Set to true if using HTTPS
-      maxAge: 24 * 60 * 60 * 1000, // Set the session cookie expiration time
-    },
-  })
-);
 
 app.use(cookieParser());
 app.use(session({
@@ -45,7 +23,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(cors());
+app.use(cors({origin: ['http://localhost:3001', 'http://localhost:3000'], credentials: true, methods:['GET','POST','PUT','DELETE']}));
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
@@ -64,8 +42,6 @@ const new_user = require('./server/routes/user/add_new_user_route');
 const user_with_id = require('./server/routes/user/get_an_user_with_id_route');
 const loginUser = require('./server/routes/user/login_route');
 const logout = require('./server/routes/user/logout_route');
-const user_with_email = require('./server/routes/user/get_an_user_with_email_route');
-const user_session = require('./server/routes/user/get_user_session_route');
 //api
 const trucks = require('./server/routes/food-truck-app-routes/get_trucks_route');
 const new_truck = require('./server/routes/food-truck-app-routes/add_new_truck_route');
@@ -88,14 +64,18 @@ const pending_orders_for_truck= require('./server/routes/food-truck-app-routes/g
 const get_order_status_for_customer= require('./server/routes/customer-app-routes/get_status_order_for_customer');
 const customer_cancel_order= require('./server/routes/customer-app-routes/customer_cancel_order_route');
 const order_ready= require('./server/routes/food-truck-app-routes/order_ready_route');
+const order_picked_up_by_customer= require('./server/routes/customer-app-routes/order_completed_route');
+const menu_items_by_label= require('./server/routes/customer-app-routes/get_menu_items_by_label_route'); //items by label
+const update_menu_item = require('./server/routes/food-truck-app-routes/edit_menu_item_route');
+const edit_truck= require('./server/routes/food-truck-app-routes/edit_truck_route');
+const change_schedule= require('./server/routes/food-truck-app-routes/edit_schedule_route');
 
 //All resource routes
 //user
 app.post('/api/users', new_user);// Add a new user*
-app.get('/api/user/', user_with_email);// Get an user with a given email*
 app.post('/api/session', loginUser);// User Login*
 app.delete('/api/session', logout);// User logout*
-app.get('/api/me', user_with_id); //didnt work for curl Get an user with a given id*
+app.get('/api/me', user_with_id); //Get an user with a given id*
 
 //api
 //food-truck-app
@@ -106,9 +86,20 @@ app.get('/api/trucks', trucks);//Fetch all trucks from the database*
 app.post('/api/trucks', new_truck);//Create a new truck record in the database needs validate user_type to owner*
 app.get('/api/trucks/:truck_id/menu_items', menu);// Get the menu of a given truck*
 app.post('/api/trucks/:truck_id/menu_items', new_menu_item);//Create a new menu item record in the database* 
-app.get('/api/orders', order_for_user);//all the orders of the user given* 
-app.get('/api/trucks/:truck_id/orders', order_for_truck);//all the orders of the truck given* 
-app.get('/api/trucks/:truck_id/reviews', reviews_for_truck);//all the reviews of the truck given* 
+app.get('/api/trucks/:truck_id/orders', order_for_truck);//all the orders of the given truck* 
+app.get('/api/trucks/:truck_id/reviews', reviews_for_truck);//all the reviews of the given truck* 
+app.post('/api/trucks/:truck_id/schedules', new_schedule);//Create a new schedule itenerary record in the database* 
+app.post('/api/trucks/:order_id/ready',order_ready);
+app.get('/api/trucks/dashboard', get_truck_by_owner_id);//get and specific truck info by truck_id given*
+app.get('/api/trucks/:truck_id/schedules', schedule);// Get the schedule of a given truck*
+app.put('/api/menuItems/:item_id', update_menu_item);//edit menu here the truck can retire/change the menu items
+app.put('/api/trucks/:truck_id', edit_truck)//truck-owner can change the truck variables
+app.put('/api/trucks/schedules/:schedule_id', change_schedule)//truck can change their schedule
+
+//customer-app
+app.get('/api/orders/:order_id/status', get_order_status_for_customer);//get the status of the given order
+app.post('/api/orders/:order_id/completed', order_picked_up_by_customer);
+app.get('/api/orders', order_for_user);//all the orders of the given user * 
 app.post('/api/trucks/:truck_id/reviews', add_reviews_for_truck);//new  reviews of the truck 
 app.get('/api/menu_items/:item_id/reviews', reviews_for_items);//all the reviews of the menu_item
 app.post('/api/menu_items/:item_id/reviews', add_reviews_for_items);//new reviews of the menu_item
@@ -125,10 +116,9 @@ req.session.cart.menu_items= req.body.menu_items;
   //keys are menu_items_id  values are quantities
   res.status(200).json(req.session.cart)
 });
-app.post('/api/trucks/orders', send_order_to_the_truck);
-app.get('/api/trucks/dashboard', get_truck_by_owner_id);
-app.post('/api/trucks/:truck_id/:order_id/cancelled',customer_cancel_order);
-app.post('/api/trucks/:truck_id/:order_id/ready',order_ready);
+app.post('/api/orders/:order_id/cancelled',customer_cancel_order);
+app.get('/api/menu_items/:label', menu_items_by_label);//Fetch menu_items from the database with that label
+
 
 
 //**************************************************************************
@@ -155,7 +145,6 @@ app.get(/api/trucks/stats', truck_stats)//truck owner could see charts of their 
 app.get(/api/trucks/inventory', truck_inventory)//can see the inventory
 */
 
-app.use('/api', userRoutes);// Users Routes
 
 
 app.listen(PORT, () => {

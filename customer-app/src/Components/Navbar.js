@@ -7,7 +7,6 @@ import RegistrationForm from './RegistrationForm';
 import LoginForm from './LoginForm';
 import { ModalContext } from './ModalContext';
 import Cart from './Cart';
-import axios from 'axios';
 
 function Navbar() {
   const {
@@ -21,17 +20,11 @@ function Navbar() {
     onAddToCart
   } = useContext(ModalContext);
 
-  console.log('Navbar isLoggedIn:', isLoggedIn);
-
   useEffect(() => {
-    axios.get('/api/session')
-    .then((response) => {
-        console.log('useEffect Response:', response.data);
-        setIsLoggedIn(response.data.isLoggedIn);
-      })
-      .catch((error) => {
-        setIsLoggedIn(false);
-      });
+    const user = sessionStorage.getItem('user');
+    if (user) {
+      setIsLoggedIn(true);
+    }
   }, []);
 
   const handleSendCarttoBackEnd = (event) => {
@@ -50,13 +43,12 @@ function Navbar() {
   };
 
   const handleLogin = (user) => {
-    //need to use user
+    sessionStorage.setItem('user', JSON.stringify(user));
     setIsLoggedIn(true);
-    setShowLoginModal(false); // Close the login modal
+  setShowLoginModal(false); // Close the login modal
   };
 
   return (
-    <ModalContextProvider>
     <nav className="nav-bar">
       <div className="nav-bar-left">
         <p>Logo here</p>
@@ -104,7 +96,7 @@ function Navbar() {
             <Modal.Title>Register</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <RegistrationForm handleClose={() => setShowRegistrationModal(false)} user_type={'customer'} />
+            <RegistrationForm handleClose={() => setShowRegistrationModal(false)} />
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={() => setShowRegistrationModal(false)}>
@@ -117,7 +109,7 @@ function Navbar() {
             <Modal.Title>Login</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <LoginForm handleClose={() => setShowLoginModal(false)} handleLogin={handleLogin} user_type={'customer'} />
+            <LoginForm handleClose={() => setShowLoginModal(false)} handleLogin={handleLogin} />
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={() => setShowLoginModal(false)}>
@@ -127,8 +119,6 @@ function Navbar() {
         </Modal>
       </div>
     </nav>
-    </ModalContextProvider>
-
   );
 }
 

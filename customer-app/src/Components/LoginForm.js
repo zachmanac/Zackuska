@@ -1,11 +1,15 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 
+const server = axios.create({
+  baseURL: 'http://localhost:8080',
+});
 
-function LoginForm({ handleClose, handleLogin, user_type }) {
+function LoginForm({ handleClose, handleLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [userType, setUserType] = useState('customer');
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -24,14 +28,12 @@ function LoginForm({ handleClose, handleLogin, user_type }) {
         setEmail('');
         setPassword('');
         handleLogin(response.data);
-        handleClose();
       })
       .catch((error) => {
         console.error('Error:', error);
       });
     console.log(`Logging in user with email ${email} and password ${password}`);
   };
-  
 
   return (
     <Form onSubmit={handleSubmit}>

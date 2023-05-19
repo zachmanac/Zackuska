@@ -12,15 +12,16 @@ router.get("/api/me", async (req, res) => {
       return res.status(401).json({ message: "Not logged in" });
     }
 
-    // Get user from the database using the user ID
-    const retrievedUser = await query(userId);
-    console.log("User", retrievedUser);
+    // Get user from the database
+    const user = await query(userId);
+    console.log("User", user);
 
-    if (!retrievedUser) {
+    if (!user) {
       return res.status(404).json({ error: "No user with that id" });
     }
 
-    res.json(retrievedUser); // Send user
+    
+    res.json(user); // Send user
   } catch (error) {
     console.error("Failed to retrieve user from the database", error);
     res.status(500).json({ error: "Failed to retrieve user" });

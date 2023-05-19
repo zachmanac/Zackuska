@@ -2,13 +2,18 @@ import React, { useState } from 'react';
 import { Button, Form, Alert } from 'react-bootstrap';
 import axios from 'axios';
 
-function RegistrationForm({ handleClose, user_type }) {
+const server = axios.create({
+  baseURL: 'http://localhost:8080',
+});
+
+function RegistrationForm({ handleClose }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [name, setName] = useState('');
   const [last_name, setLastName] = useState('');
+  const [userType, setUserType] = useState('customer');
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -24,10 +29,10 @@ function RegistrationForm({ handleClose, user_type }) {
       last_name,
       email,
       password,
-      user_type,
+      user_type: userType
     };
 
-    axios
+    server
       .post('/api/users', user)
       .then((response) => {
         console.log('User registered:', response.data);
@@ -35,7 +40,6 @@ function RegistrationForm({ handleClose, user_type }) {
         setEmail('');
         setPassword('');
         setError('');
-        handleClose();
       })
       .catch((error) => {
         console.error('Error registering user:', error);
@@ -102,3 +106,4 @@ function RegistrationForm({ handleClose, user_type }) {
         }
         
         export default RegistrationForm;
+        
