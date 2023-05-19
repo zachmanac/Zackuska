@@ -6,25 +6,23 @@ const session = require('express-session');
 
 console.log('Code is executing...');
 
+// Check if a user exists with a given username, userType and password
+const login = async function(email, password, user_type) {
+  const user = await queryCheckUser(email);
 
-//Check if a user exists with a given username, userType and password
+  if (!user) {
+    return { error: 'There is no user with that email' };
+  }
   
-  const login = async function(email, password, user_type) {
-    const user = await queryCheckUser(email);
+  if (!bcrypt.compareSync(password, user.password)) {
+    return { error: "Wrong password" };
+  }
   
-    if (!user) {
-      return { error: 'There is no user with that email' };
-    }
-    
-    if (!bcrypt.compareSync(password, user.password)) {
-      return { error: "Wrong password" };
-    }
-    
-    if (user.user_type !== user_type) {
-      return { error: "Wrong user type" };
-    }
-    
-    return user;
+  if (user.user_type !== user_type) {
+    return { error: "Wrong user type" };
+  }
+  
+  return user;
 };
 
 router.post('/api/session', (req, res) => {
@@ -48,8 +46,7 @@ router.post('/api/session', (req, res) => {
     console.error('Error:', e); 
 
     res.send(e)
-    });
-  })
+});
 });
 
 

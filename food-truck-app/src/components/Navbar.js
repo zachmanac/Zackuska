@@ -1,7 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import './Navbar.scss';
 import { Button, Modal, Alert } from 'react-bootstrap';
-// import { Link } from 'react-router-dom';
 import RegistrationForm from './RegistrationForm';
 import LoginForm from './LoginForm';
 import { ModalContext } from './ModalContext';
@@ -19,22 +18,23 @@ function Navbar() {
   } = useContext(ModalContext);
 
   useEffect(() => {
-    const user = sessionStorage.getItem('user');
-    if (user) {
-      setIsLoggedIn(true);
-    }
+    server.get('/api/session', { withCredentials: true })
+      .then((response) => {
+        setIsLoggedIn(true);
+      })
+      .catch((error) => {
+        setIsLoggedIn(false);
+      });
   }, []);
 
   const handleLogout = () => {
-    axios.delete('http://localhost:8080/api/session', {withCredentials: true});
     sessionStorage.removeItem('user');
     setIsLoggedIn(false);
   };
 
   const handleLogin = (user) => {
-    sessionStorage.setItem('user', JSON.stringify(user));
     setIsLoggedIn(true);
-  setShowLoginModal(false); // Close the login modal
+    setShowLoginModal(false); // Close the login modal
   };
 
   return (
@@ -73,7 +73,7 @@ function Navbar() {
             <Modal.Title>Register</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <RegistrationForm handleClose={() => setShowRegistrationModal(false)} user_type= {'owner'} />
+            <RegistrationForm handleClose={() => setShowRegistrationModal(false)} user_type={'owner'} />
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={() => setShowRegistrationModal(false)}>

@@ -2,12 +2,10 @@ import React, { createContext, useState } from 'react';
 
 export const ModalContext = createContext();
 
-export const ModalProvider = ({ children }) => {
+const ModalContextProvider = ({ children }) => {
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  console.log('ModalContext isLoggedIn:', isLoggedIn);
 
   return (
     <ModalContext.Provider
@@ -16,12 +14,13 @@ export const ModalProvider = ({ children }) => {
         setShowRegistrationModal,
         showLoginModal,
         setShowLoginModal,
-        // isLoggedIn,
-        // setIsLoggedIn
+        
       }}
     >
       {children}
     </ModalContext.Provider>
   );
 };
+
+export default ModalContextProvider;
 

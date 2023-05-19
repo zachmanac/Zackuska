@@ -1,37 +1,17 @@
-import React, { useState} from 'react';
-import { Button, Form } from 'react-bootstrap';
-import axios from 'axios';
+import React, { useContext, useState } from 'react';
+import { Form, Button } from 'react-bootstrap';
+import { AuthContext } from '../contexts/AuthContext';
 
-
-function LoginForm({ handleClose, handleLogin, user_type }) {
+const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const { login } = useContext(AuthContext);
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    loginUser(email, password);
+    login(email, password);
   };
-
-  const loginUser = (email, password) => {
-    server
-      .post('/api/session', {
-        email,
-        password,
-        user_type: userType,
-      }, {withCredentials: true})
-      .then((response) => {
-        console.log('Success:', response.data);
-        setEmail('');
-        setPassword('');
-        handleLogin(response.data);
-        handleClose();
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-    console.log(`Logging in user with email ${email} and password ${password}`);
-  };
-  
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -62,6 +42,6 @@ function LoginForm({ handleClose, handleLogin, user_type }) {
       </Button>
     </Form>
   );
-}
+};
 
 export default LoginForm;
