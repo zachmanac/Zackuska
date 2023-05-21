@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import ApiCalls from "../ApiCalls"
-import "./Orders.scss"
+import ApiCalls from '../ApiCalls';
+import './Orders.scss';
+
 function Orders() {
   const [orders, setOrders] = useState([]);
   const userId = 1; // hardcoded userId for test until session works
@@ -25,8 +26,10 @@ function Orders() {
     }, 1000);
 
     // Clean up the interval on component unmount
-    return () => {clearInterval(interval);
-    setOrders([]);}
+    return () => {
+      clearInterval(interval);
+      setOrders([]);
+    };
   }, []);
 
   const getStatusColor = (status) => {
@@ -42,6 +45,7 @@ function Orders() {
       return 'rgba(255, 255, 255, 0.3)'; // Light white
     }
   };
+
   useEffect(() => {
     // Clean up orders when user logs out
     if (!userId) {
@@ -54,25 +58,45 @@ function Orders() {
     <div>
       <h1>Your Orders</h1>
       <div className="orders-container">
-        {orders.map((order) => (
-          <div key={order.id} className="order-item">
-            <h5>Order No. {order.order_id}</h5>
-            <p className="status" style={{ backgroundColor: getStatusColor(order.status) }}>{order.status}</p>
-            <p>Date: {new Date(order.date).toLocaleDateString()} {new Date(order.date).toLocaleTimeString()}</p>
-            <p>Response: {order.response}</p>
-            <p>Total: ${order.total_amount}</p>
-            <p>Truck Name: {order.truck.name}</p> {/* Display truck name */}
-            <p>Truck Photo: <img src={order.truck.picture} alt="Truck Photo" /></p> {/* Display truck photo */}
-            <p>Truck Phone: {order.truck.phone_number}</p> {/* Display truck phone */}
-            <div>
-              {order.menu_items.map((menuItem) => (
-                <p key={menuItem.item_id}>
-                  {menuItem.item_name} - Quantity: {menuItem.quantity} - Price: ${menuItem.price}
+        {orders.map((order) => {
+          let total = 0; // Initialize total amount for each order
+          let tax = 0; // Initialize tax amount for each order
+
+          return (
+            <div key={order.id} className="order-item">
+              <div className="order-column">
+                <h5>Order No. {order.order_id}</h5>
+                <p className="status" style={{ backgroundColor: getStatusColor(order.status) }}>
+                  {order.status}
                 </p>
-              ))}
+                <p>Truck: {order.truck.name}</p> {/* Display truck name */}
+               
+              </div>
+              <div className="order-column">
+                <p>
+                  Date: {new Date(order.date).toLocaleDateString()} {new Date(order.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
+                </p>
+                <div>
+                  {order.menu_items.map((menuItem) => {
+                    const itemTotal = menuItem.quantity * menuItem.price; // Calculate total amount for each item
+                    total += itemTotal; // Accumulate the total amount
+                    return (
+                      <p key={menuItem.item_id}>
+                        {menuItem.item_name} - {menuItem.quantity} x ${menuItem.price}
+                      </p>
+                    );
+                  })}
+                </div>
+                {total > 0 && (
+                  <div>
+                    <p>Tax: ${(total * 0.1).toFixed(2)}</p>
+                    <p>Total: ${(total + total * 0.1).toFixed(2)}</p>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
