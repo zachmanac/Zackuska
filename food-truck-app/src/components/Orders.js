@@ -24,7 +24,7 @@ const Orders = () => {
 
   const handleAcceptOrder = async (orderId) => {
     try {
-      const foodTruckId = 1;
+      const foodTruckId = 4;
       await ApiCallsOwner.acceptOrder(foodTruckId, orderId);
       updateOrderStatus(orderId, 'Accepted');
     } catch (error) {
@@ -34,7 +34,7 @@ const Orders = () => {
   
   const handleDeclineOrder = async (orderId) => {
     try {
-      const foodTruckId = 1;
+      const foodTruckId = 4;
       await ApiCallsOwner.declineOrder(foodTruckId, orderId);
       updateOrderStatus(orderId, 'Declined');
     } catch (error) {
@@ -66,7 +66,7 @@ const Orders = () => {
               <p>Order Id: {order.order_id}</p>
               <p>{order.status}</p>
               <div className="order-status-buttons">
-              {order.status === 'pending' && (
+              {order.status === 'Pending' && (
                   <div>
                     <Button variant="success" onClick={() => handleAcceptOrder(order.order_id)}>Accept</Button>
                     <Button variant="danger" onClick={() => handleDeclineOrder(order.order_id)}>Decline</Button>

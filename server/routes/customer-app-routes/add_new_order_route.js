@@ -10,7 +10,7 @@ router.post('/api/cart/checkout', async (req, res) => {
   const cart=req.session.cart;
   const truck_id=cart.truck_id;
   const menu_items= cart.session.menu_items;*/
-  const status = 'pending';
+  const status = 'Pending';
   const response='waiting for the trucks response';
 
   //hardcode for test until cart works

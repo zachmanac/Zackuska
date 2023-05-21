@@ -102,8 +102,8 @@ curl -X GET http://localhost:8080/api/trucks/3/reviews
 app.post('/api/cart/checkout', new_order);//add new order
 
 curl -X POST -H "Content-Type: application/json" -d '{
-  "user_id": 1,
-  "truck_id": 1,
+  "user_id": 12,
+  "truck_id": 4,
   "menu_items": [
     { "1": 2 },
     { "6": 1 }

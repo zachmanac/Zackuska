@@ -30,11 +30,11 @@ function Orders() {
   }, []);
 
   const getStatusColor = (status) => {
-    if (status === 'pending') {
+    if (status === 'Pending') {
       return 'rgba(255, 255, 0, 0.3)'; // Light yellow
-    } else if (status === 'accepted') {
+    } else if (status === 'Accepted') {
       return 'rgba(0, 255, 0, 0.3)'; // Light green
-    } else if (status === 'declined') {
+    } else if (status === 'Declined') {
       return 'rgba(255, 0, 0, 0.3)'; // Light red
     } else if (status === 'ready') {
       return 'rgba(0, 0, 255, 0.3)'; // Light blue

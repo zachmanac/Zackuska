@@ -6,7 +6,7 @@ const queryGetOrdersForUser = require('../../database/queries/order/get_order_fo
 
 router.get('/api/orders', async (req, res) => {
   try {
-    const userId=1;
+    const userId=12;
     //const userId = req.session.userId;
     //console.log("USER_ID", req.query);
     const orders = await queryGetOrdersForUser(userId);
