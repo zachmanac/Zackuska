@@ -93,7 +93,7 @@ function FoodTruckMenu({
           return (
             <div key={index} className="menu-item-individual">
               <div className="menu-item-content">
-                <img src={menuItem.image} alt="Item Image" className="menu-item-image" />
+                <img src={menuItem.picture} alt="Item Image" className="menu-item-image" />
                 <div className="menu-item-details">
                   <div className="menu-item-title-price">
                     <div>
