@@ -52,19 +52,29 @@ function Orders() {
   // Render the orders with dynamic styling based on status
   return (
     <div>
-    <h1>Your Orders</h1>
-    <div className="orders-container">
-    {orders.map((order) => (
-  <div key={order.id} className="order-item">
-    <h5>Order No. {order.order_id}</h5>
-    <p className="status" style={{ backgroundColor: getStatusColor(order.status) }}>{order.status}</p>
-    <p>Date: {new Date(order.date).toLocaleDateString()} {new Date(order.date).toLocaleTimeString()}</p>
-    <p>Response: {order.response}</p>    
-    <p>Total: ${order.total_amount}</p>
-  </div>
-      ))}
+      <h1>Your Orders</h1>
+      <div className="orders-container">
+        {orders.map((order) => (
+          <div key={order.id} className="order-item">
+            <h5>Order No. {order.order_id}</h5>
+            <p className="status" style={{ backgroundColor: getStatusColor(order.status) }}>{order.status}</p>
+            <p>Date: {new Date(order.date).toLocaleDateString()} {new Date(order.date).toLocaleTimeString()}</p>
+            <p>Response: {order.response}</p>
+            <p>Total: ${order.total_amount}</p>
+            <p>Truck Name: {order.truck.name}</p> {/* Display truck name */}
+            <p>Truck Photo: <img src={order.truck.picture} alt="Truck Photo" /></p> {/* Display truck photo */}
+            <p>Truck Phone: {order.truck.phone_number}</p> {/* Display truck phone */}
+            <div>
+              {order.menu_items.map((menuItem) => (
+                <p key={menuItem.item_id}>
+                  {menuItem.item_name} - Quantity: {menuItem.quantity} - Price: ${menuItem.price}
+                </p>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
-  </div>
   );
 }
 
