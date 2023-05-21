@@ -25,24 +25,12 @@ const addNewOrder = async function (customer_id, truck_id, status, total_amount,
         VALUES ($1, $2, $3)`,
         [order_id, item_id, quantity]
       );
-      const itemDataResult = await db.query(`
-      SELECT item_name, price
-      FROM menu_items
-      WHERE item_id = $1`,
-      [item_id]);
-      const itemData = itemDataResult.rows[0];
-
-      // Add additional properties to the item object
-      item.item_name = itemData.item_name;
-      item.total_price = itemData.price*quantity;
     });
 
     await Promise.all(orderDetailPromises);
 
     console.log('New order created successfully');
-     order.menu_items= menu_items;
-     console.log('order with menu items', order)
-     return order;
+    return order;
   } catch (error) {
     console.error('Error creating new order:', error);
     throw error;

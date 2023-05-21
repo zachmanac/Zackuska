@@ -91,6 +91,7 @@ curl -X GET "http://localhost:8080/api/trucks/1/reviews"
 WHY IS USER PASSED IN THE QUERY? 
 app.get('/api/orders', order_for_user);//all the orders of the user given 
 curl -X GET http://localhost:8080/api/orders?user_id=1
+curl -X GET http://localhost:8080/api/orders
 ------------------------------------------------------------
 app.get('/api/trucks/:truck_id/orders', order_for_truck);//all the orders of the truck given
 curl -X GET http://localhost:8080/api/trucks/1/orders
