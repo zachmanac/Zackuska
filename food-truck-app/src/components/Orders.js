@@ -20,6 +20,18 @@ const Orders = () => {
     };
 
     fetchOrders();
+  
+  
+    // Set up an interval to periodically update orders every second
+    const interval = setInterval(() => {
+      fetchOrders();
+    }, 1000);
+
+    // Clean up the interval on component unmount
+    return () => {
+      clearInterval(interval);
+      setOrders([]);
+    };
   }, []);
 
   const handleAcceptOrder = async (orderId) => {
@@ -55,31 +67,36 @@ const Orders = () => {
 
   return (
     <div>
-      <h1>Navbar here with login/logout</h1>
-      <h1>Orders page</h1>
-      <div className="orders-container">
-        {console.log("ALL ORDERS BEFORE MAP", orders)}
-        {orders.map((order) => (
-          <div>
-            <div key={order.order_id} className="individual-order">
-              {console.log("ONE ORDER AFTER MAP", order)}
-              <p>Order Id: {order.order_id}</p>
-              <p>{order.status}</p>
-              <div className="order-status-buttons">
-              {order.status === 'Pending' && (
-                  <div>
-                    <Button variant="success" onClick={() => handleAcceptOrder(order.order_id)}>Accept</Button>
-                    <Button variant="danger" onClick={() => handleDeclineOrder(order.order_id)}>Decline</Button>
-                  </div>
-                )}
+    <h1>Navbar here with login/logout</h1>
+    <h1>Orders page</h1>
+    <div className="orders-container">
+      {orders.map((order) => (
+        <div key={order.order_id} className="individual-order">
+
+          <p>Order Id: {order.order_id}</p>
+          <p>Date: {new Date(order.date).toLocaleDateString()}</p>
+          <p>{new Date(order.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</p>
+          <div className="menu-items">
+            {order.menu_items.map((menuItem) => (
+              <div key={menuItem.item_id}>
+                <p>{menuItem.item_name} -   {menuItem.quantity}</p>
               </div>
-            </div>
-            <p>example individual items listed here, with quantity</p>
-            <p>example 2nd item here, with quantity</p>
+            ))}
           </div>
-        ))}
-      </div>
+          <p>{order.status}</p>
+          <div className="order-status-buttons">
+            {order.status === 'Pending' && (
+              <div>
+                <Button variant="success" onClick={() => handleAcceptOrder(order.order_id)}>Accept</Button>
+                <Button variant="danger" onClick={() => handleDeclineOrder(order.order_id)}>Decline</Button>
+              </div>
+            )}
+          </div>
+          
+        </div>
+      ))}
     </div>
+  </div>
   );
 };
 
