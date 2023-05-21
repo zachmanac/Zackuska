@@ -40,13 +40,24 @@ function Navbar() {
   return (
     <nav className="nav-bar">
       <div className="nav-bar-left">
-        <p>Logo here</p>
+        <a href="/">
+          <img src="../../logo.png" alt="Logo" className='logo'/>
+        </a>
         <a href="/">Home</a>
       </div>
 
       {!isLoggedIn && (
         <div className="prompt-login">
           <Alert variant="warning">Please log in or sign up to view your truck information.</Alert>
+        </div>
+      )}
+
+      {isLoggedIn && (
+        <div className='nav-bar-middle'>
+          <a href="/orders">Current Orders</a>
+          <a href="/order-history">Order History</a>
+          <a href="/menu">Menu</a>
+          <a href="/truck-info">Truck Info</a>
         </div>
       )}
 

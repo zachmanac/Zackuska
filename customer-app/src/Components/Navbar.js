@@ -51,7 +51,9 @@ function Navbar() {
   return (
     <nav className="nav-bar">
       <div className="nav-bar-left">
-        <p>Logo here</p>
+        <a href="/">
+          <img src="../../logo.png" alt="Logo" className='logo'/>
+        </a>
         <a href="/">Home</a>
         {isLoggedIn && <a href="/orders" style={{ color: 'red' }}>My orders</a>}
         </div>

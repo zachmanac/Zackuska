@@ -8,6 +8,10 @@
   box-sizing: border-box;
   margin-bottom: 50px;
   margin-top: 20px;
+
+  .logo {
+    height: 100px;
+  }
 }
 
 .nav-bar-left {
@@ -30,6 +34,20 @@
   display: flex;
   align-items: center;
   padding: 20px;
+
+  a {
+    color: orange;
+    font-size: 20px;
+    text-decoration: none;
+  }
+}
+
+.nav-bar-middle {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: orange;
+  gap: 100px;
 
   a {
     color: orange;
