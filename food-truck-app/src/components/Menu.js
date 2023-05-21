@@ -10,7 +10,7 @@ const Menu = () => {
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
-        const truckId = 1;
+        const truckId = 4;
         const menuItems = await ApiCallsOwner.getMenuItems(truckId);
         const menuItemsWithFlippedState = menuItems.map(item => ({ ...item, isFlipped: false }));
       setMenuItems(menuItemsWithFlippedState);
@@ -83,7 +83,9 @@ const Menu = () => {
             <h3>Item: {menuItem.item_name}</h3>
             <p>Description: {menuItem.description}</p>
             <p>Price: ${menuItem.price}</p>
-            <img src={menuItem.picture} alt="Image" />
+            <div>
+              <img src={menuItem.picture} alt="Image" />
+            </div>
             <p>Allergens: {menuItem.allergens}</p>
             <p>calories: {menuItem.calories}</p>
             <p>Halal: {menuItem.halal.toString()}</p>
