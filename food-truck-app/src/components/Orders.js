@@ -67,7 +67,7 @@ const Orders = () => {
 
   return (
     <div>
-      <h2>My orders</h2>
+      <h2>My Orders</h2>
       <div className="orders-container">
         {orders.map((order) => (
           <div key={order.order_id} className="individual-order">
