@@ -1,6 +1,7 @@
 const MapGoogle = (props) => {
-  const { address, city } = props;
+  const { address } = props;
 
+  const city = 'Toronto';
   const addressAndCity = `${address}, ${city}`;
 // const addressAndCity = '8649 Ligula Street, Toronto'
   // const address = '407 Swift St #100, Victoria, BC V8W 1S2';

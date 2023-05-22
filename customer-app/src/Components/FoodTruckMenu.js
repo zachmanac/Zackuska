@@ -75,13 +75,13 @@ function FoodTruckMenu({
         <p>{foodTruck.phone_number}</p>
         <p>Facebook: {foodTruck.facebook}</p>
         <p>Instagram: {foodTruck.instagram}</p>
-        <p>Da cuisine: {foodTruck.cuisine}</p>
+        <p>Cuisine: {foodTruck.cuisine}</p>
         <h2>Food truck description</h2>
         <p>Reviews</p>
         <div className="hours-container">
           <p className="hours-title">Hours of operation</p>
-          <p className="hours">Start time: {foodTruck.start_time}</p>
-          <p className="hours end">End time: {foodTruck.end_time}</p>
+          <p className="hours">Opens At: {foodTruck.start_time.slice(0, 5)}</p>
+          <p className="hours end">Closes at: {foodTruck.end_time.slice(0, 5)}</p>
         </div>
         <MapGoogle address={foodTruck.address} />
       </div>
@@ -115,19 +115,20 @@ function FoodTruckMenu({
                             ))}
                           </div>
                         )}
+                        {menuItem.halal ? <div className='halal'>Halal</div> : <div className='halal'>Not Halal</div>}
                       </div>
                     </div>
                     <div className="menu-price-and-cart">
-                        {quantityInCart > 0 && (
-                    <Button 
-                      variant="danger"
-                      onClick={() => handleRemoveFromCartClick(menuItem)}
-                    >
-                      Remove -1
-                    </Button>
-                  )}
-                    <p>${menuItem.price}</p>
+                    <p className='price'>${menuItem.price}</p>
                       <div className="cart-button-container">
+                        {quantityInCart > 0 && (
+                          <Button 
+                            variant="danger"
+                            onClick={() => handleRemoveFromCartClick(menuItem)}
+                          >
+                            Remove 1
+                          </Button>
+                        )}
                         <span>{quantityInCart} in Cart</span>
                         <Button 
                           variant="primary" 
