@@ -81,7 +81,7 @@ function FoodTruckMenu({
         <div className="hours-container">
           <p className="hours-title">Hours of operation</p>
           <p className="hours">Opens At: {foodTruck.start_time.slice(0, 5)}</p>
-          <p className="hours end">Closes at: {foodTruck.end_time.slice(0, 5)}</p>
+          <p className="hours end">Closes At: {foodTruck.end_time.slice(0, 5)}</p>
         </div>
         <MapGoogle address={foodTruck.address} />
       </div>
