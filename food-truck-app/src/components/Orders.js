@@ -72,9 +72,9 @@ const Orders = () => {
         {orders.map((order) => (
           <div key={order.order_id} className="individual-order">
             <div className="order-column">
-              <p>Order Id: {order.order_id}</p>
+              <p>Order ID: {order.order_id}</p>
               <p>Date: {new Date(order.date).toLocaleDateString()}</p>
-              <p>{new Date(order.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</p>
+              <p>Created At: {new Date(order.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</p>
             </div>
             <div className="order-column">
               <div className="menu-items">
