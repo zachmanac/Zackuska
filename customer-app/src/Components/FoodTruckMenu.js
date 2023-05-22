@@ -71,7 +71,7 @@ function FoodTruckMenu({
     <div className="food-truck-menu">
       <div className="menu-left-side">
         <img src={foodTruck.picture} alt={foodTruck.truck_name} />
-        <h1>{foodTruck.truck_name}</h1>
+        <h1 className='food-truck-title'>{foodTruck.truck_name}</h1>
         <p>{foodTruck.phone_number}</p>
         <p>Facebook: {foodTruck.facebook}</p>
         <p>Instagram: {foodTruck.instagram}</p>

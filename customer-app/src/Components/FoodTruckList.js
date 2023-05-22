@@ -48,7 +48,7 @@ function FoodTruckList(props) {
                     <img src={truck.picture} alt={truck.truck_name} />
                     <p>Facebook: {truck.facebook}</p>
                     <p>Instagram: {truck.instagram}</p>
-                    <p>Da cuisine: {truck.cuisine}</p>
+                    <p>Cuisine: {truck.cuisine}</p>
                   </Link>
                     <div className="map-container">
                       <MapGoogle address={truck.address} city={truck.city} />

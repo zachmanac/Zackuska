@@ -45,7 +45,7 @@ function Navbar() {
   const handleLogin = (user) => {
     sessionStorage.setItem('user', JSON.stringify(user));
     setIsLoggedIn(true);
-  setShowLoginModal(false); // Close the login modal
+    setShowLoginModal(false); // Close the login modal
   };
 
   return (
@@ -55,8 +55,8 @@ function Navbar() {
           <img src="../../logo.png" alt="Logo" className='logo'/>
         </a>
         <a href="/">Home</a>
-        {isLoggedIn && <a href="/orders" style={{ color: 'orange' }}>My orders</a>}
-        </div>
+        {isLoggedIn && <a href="/orders" style={{ color: 'orange', marginLeft: '20px' }}>My orders</a>}
+      </div>
 
       <div className="nav-bar-center">
         <SearchBar />
