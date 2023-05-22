@@ -10,6 +10,7 @@ const updateMenuItem = async (itemId, updatedData) => {
     updatedData.halal,
     updatedData.picture,
     updatedData.description,
+    updatedData.active,
     itemId
   ];
 
@@ -22,8 +23,9 @@ const updateMenuItem = async (itemId, updatedData) => {
           allergens = $4,
           halal = $5,
           picture = $6,
-          description = $7
-      WHERE item_id = $8
+          description = $7,
+          active = $8
+      WHERE item_id = $9
       RETURNING *
     `, queryParams);
 

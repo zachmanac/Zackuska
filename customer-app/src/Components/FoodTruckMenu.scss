@@ -54,6 +54,7 @@
     padding-left: 20px;
     padding-right: 20px;
     border-radius: 10px;
+    margin-bottom: 10px;
   }
 
   .menu-item-individual:hover {
@@ -88,7 +89,7 @@
   }
 
   .menu-item-description {
-    color: lightgray;
+    color: gray;
     margin-top: 0;
     max-height: none;
     text-align: left;
@@ -107,11 +108,21 @@
   .menu-calories-and-allergens {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    // margin-bottom: 10px;
     
     p {
       margin: 0;
       padding-right: 10px;
     }
+
+    .halal {
+      margin-left: 10px;
+    }
+
   }
+}
+
+.price {
+  font-size: 24px;
+  margin: 3px;
 }

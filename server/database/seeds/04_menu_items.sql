@@ -8,7 +8,7 @@ VALUES
 
   (3,'Earth and Sea',10,272,'crab, lobster','False', 'Anchovy, bass, bluefish, carp, catfish, char, cod, flounder, haddock, halibut, herring, orange roughy, mahi-mahi, sardines, salmon, trout and tuna', 'seafood', 'True', 100, 'https://images.pexels.com/photos/566345/pexels-photo-566345.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
 
-  (4,'Bean Soup',12,266,'seasame, soybeans','False', 'A small amount of an acidic ingredient like lemon juice added at the end of cooking brightens flavors, especially in long-simmered bean soups or rich meat-based soups','soup', 'True', 100, 'https://images.pexels.com/photos/13474338/pexels-photo-13474338.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+  (4,'Bean Soup',12,266,'sesame, soybeans','False', 'A small amount of an acidic ingredient like lemon juice added at the end of cooking brightens flavors, especially in long-simmered bean soups or rich meat-based soups','soup', 'True', 100, 'https://images.pexels.com/photos/13474338/pexels-photo-13474338.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
 
   (5,'Buen Taco',10,32,'mustard, egg','False', 'Tortilla (generalmente de maíz), seguido de un guiso, acompañado con cebolla, cilantro picado y limón, así como alguna salsa, la cual varía en su picor al gusto del comensal', 'tacos', 'True', 100, 'https://images.pexels.com/photos/3642718/pexels-photo-3642718.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
 

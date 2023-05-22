@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ApiCallsOwner from "../ApiCallsOwner";
 import ReactCardFlip from 'react-card-flip';
+import { Button } from 'react-bootstrap';
 import './Menu.scss';
 
 const Menu = () => {
@@ -69,9 +70,14 @@ const Menu = () => {
     setMenuItems(updatedMenuItems);
   };
 
+  const firstCharCapital = function (string) {
+    const stringTwo = string.charAt(0).toUpperCase() + string.slice(1);
+    return stringTwo;
+  }
+
   return (
     <div className="menu-container">
-      <h1>Menu Page</h1>
+      <h1>Menu</h1>
       {menuItems.map((menuItem, index) => (
         <ReactCardFlip
           key={index}
@@ -83,12 +89,14 @@ const Menu = () => {
             <h3>Item: {menuItem.item_name}</h3>
             <p>Description: {menuItem.description}</p>
             <p>Price: ${menuItem.price}</p>
-            <img src={menuItem.picture} alt="Image" />
+            <div>
+              <img src={menuItem.picture} alt="Image" />
+            </div>
             <p>Allergens: {menuItem.allergens}</p>
-            <p>calories: {menuItem.calories}</p>
-            <p>Halal: {menuItem.halal.toString()}</p>
-            <p>Item Status: {menuItem.active.toString()}</p>
-            <button onClick={() => handleEditClick(index)}>Edit</button>
+            <p>Calories: {menuItem.calories}</p>
+            <p>Halal: {firstCharCapital(menuItem.halal.toString())}</p>
+            <p>Item Availability: {firstCharCapital(menuItem.active.toString())}</p>
+            <Button variant="primary" onClick={() => handleEditClick(index)}>Edit</Button>
           </div>
 
           {/* Back Side */}
@@ -121,14 +129,20 @@ const Menu = () => {
                 </label>
                 <label>
                   Halal: 
-                  <input type="text" value={menuItem.halal.toString()} onChange={(e) => handleInputChange(index, 'halal', e.target.value)} />
+                  <select value={menuItem.halal} onChange={(e) => handleInputChange(index, 'halal', e.target.value)}>
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                  </select>
                 </label>
                 <label>
-                  Item Status: 
-                  <input type="text" value={menuItem.active.toString()} onChange={(e) => handleInputChange(index, 'active', e.target.value)} />
+                  Item Availability: 
+                  <select value={menuItem.active} onChange={(e) => handleInputChange(index, 'active', e.target.value)}>
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                  </select>
                 </label>
               </form>
-            <button onClick={() => handleSaveClick(index)}>Save</button>
+              <Button variant="success" onClick={() => handleSaveClick(index)}>Save</Button>
           </div>
         </ReactCardFlip>
       ))}
