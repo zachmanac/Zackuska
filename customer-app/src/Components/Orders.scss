@@ -15,6 +15,52 @@
   box-sizing: border-box;
   padding: 10px;
 }
+h1,h2,h3 {
+  display: flex;
+  justify-content: center;
+  color: orange;
+}
+/* Orders.scss */
+
+.orders-container {
+  
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 20px;
+}
+
+.order-item {
+  border: 1px solid #ccc;
+  padding: 20px;
+}
+
+.status {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: #070606;
+  font-weight: bold;
+}
+
+/* Define colors for different statuses */
+.status--pending {
+  background-color: rgba(255, 255, 0, 0.3); /* Light yellow */
+}
+
+.status--accepted {
+  background-color: rgba(0, 255, 0, 0.3); /* Light green */
+}
+
+.status--declined {
+  background-color: rgba(255, 0, 0, 0.3); /* Light red */
+}
+
+.status--ready {
+  background-color: rgba(0, 0, 255, 0.3); /* Light blue */
+}
+
+.status--default {
+  background-color: rgba(255, 255, 255, 0.3); /* Light white */
+}
 
 @media (max-width: 768px) {
   .order-column {

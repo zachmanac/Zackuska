@@ -56,7 +56,7 @@ function Orders() {
   // Render the orders with dynamic styling based on status
   return (
     <div>
-      <h1>Your Orders</h1>
+      <h3>My orders</h3>
       <div className="orders-container">
         {orders.map((order) => {
           let total = 0; // Initialize total amount for each order

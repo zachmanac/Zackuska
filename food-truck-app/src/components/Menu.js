@@ -10,7 +10,7 @@ const Menu = () => {
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
-        const truckId = 1;
+        const truckId = 4;
         const menuItems = await ApiCallsOwner.getMenuItems(truckId);
         const menuItemsWithFlippedState = menuItems.map(item => ({ ...item, isFlipped: false }));
       setMenuItems(menuItemsWithFlippedState);

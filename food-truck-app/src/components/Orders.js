@@ -67,36 +67,43 @@ const Orders = () => {
 
   return (
     <div>
-    <h1>Navbar here with login/logout</h1>
-    <h1>Orders page</h1>
-    <div className="orders-container">
-      {orders.map((order) => (
-        <div key={order.order_id} className="individual-order">
-
-          <p>Order Id: {order.order_id}</p>
-          <p>Date: {new Date(order.date).toLocaleDateString()}</p>
-          <p>{new Date(order.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</p>
-          <div className="menu-items">
-            {order.menu_items.map((menuItem) => (
-              <div key={menuItem.item_id}>
-                <p>{menuItem.item_name} -   {menuItem.quantity}</p>
+      <h2>My orders</h2>
+      <div className="orders-container">
+        {orders.map((order) => (
+          <div key={order.order_id} className="individual-order">
+            <div className="order-column">
+              <p>Order Id: {order.order_id}</p>
+              <p>Date: {new Date(order.date).toLocaleDateString()}</p>
+              <p>{new Date(order.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</p>
+            </div>
+            <div className="order-column">
+              <div className="menu-items">
+                {order.menu_items.map((menuItem) => (
+                  <div key={menuItem.item_id}>
+                    <p>{menuItem.item_name} - {menuItem.quantity}</p>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-          <p>{order.status}</p>
-          <div className="order-status-buttons">
-            {order.status === 'Pending' && (
-              <div>
-                <Button variant="success" onClick={() => handleAcceptOrder(order.order_id)}>Accept</Button>
-                <Button variant="danger" onClick={() => handleDeclineOrder(order.order_id)}>Decline</Button>
+            </div>
+            <div className="order-column">
+              <p>
+                <span className={`status status--${order.status.toLowerCase()}`}>
+                  {order.status}
+                </span>
+              </p>
+              <div className="order-status-buttons">
+                {order.status === 'Pending' && (
+                  <div>
+                    <Button variant="success" onClick={() => handleAcceptOrder(order.order_id)}>Accept</Button>
+                    <Button variant="danger" onClick={() => handleDeclineOrder(order.order_id)}>Decline</Button>
+                  </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
-          
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
-  </div>
   );
 };
 

@@ -116,7 +116,8 @@ function Cart({ cartItems, setCartItems }) {
         setCartItems([]);
         window.localStorage.removeItem(`cart-${userId}`);
         setShowPayment(false); // hide the payment form
-
+        // Redirect to Orders page
+        //mhistory.push('/orders');
       }
     } else {
         console.error('Payment failed');
