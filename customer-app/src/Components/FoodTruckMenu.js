@@ -92,6 +92,7 @@ function FoodTruckMenu({
 
           return (
             <div key={index} className="menu-item-individual">
+              {console.log("menuItem.active", menuItem.active)}
               <div className="menu-item-content">
                 <img src={menuItem.picture} alt="Item Image" className="menu-item-image" />
                 <div className="menu-item-details">
@@ -130,11 +131,13 @@ function FoodTruckMenu({
                           </Button>
                         )}
                         <span>{quantityInCart} in Cart</span>
-                        <Button 
-                          variant="primary" 
+                        <Button
+                          variant="primary"
                           onClick={() => handleAddToCartClick(menuItem)}
+                          disabled={!menuItem.active}
+                          key={index}
                         >
-                          Add to Cart
+                          {menuItem.active ? 'Add to Cart' : 'Item Not Available'}
                         </Button>
                       </div>
                     </div>

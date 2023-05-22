@@ -129,14 +129,14 @@ const Menu = () => {
                 </label>
                 <label>
                   Halal: 
-                  <select value={menuItem.halal.toString()} onChange={(e) => handleInputChange(index, 'halal', e.target.value)}>
+                  <select value={menuItem.halal} onChange={(e) => handleInputChange(index, 'halal', e.target.value)}>
                     <option value="true">True</option>
                     <option value="false">False</option>
                   </select>
                 </label>
                 <label>
                   Item Availability: 
-                  <select value={menuItem.active.toString()} onChange={(e) => handleInputChange(index, 'active', e.target.value)}>
+                  <select value={menuItem.active} onChange={(e) => handleInputChange(index, 'active', e.target.value)}>
                     <option value="true">True</option>
                     <option value="false">False</option>
                   </select>
