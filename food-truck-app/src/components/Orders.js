@@ -76,7 +76,7 @@ const Orders = () => {
               <p>Date: {new Date(order.date).toLocaleDateString()}</p>
               <p>Created At: {new Date(order.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</p>
             </div>
-            <div className="order-column">
+            <div className="order-column middle">
               <div className="menu-items">
                 {order.menu_items.map((menuItem) => (
                   <div key={menuItem.item_id}>
@@ -85,7 +85,7 @@ const Orders = () => {
                 ))}
               </div>
             </div>
-            <div className="order-column">
+            <div className="order-column status-right">
               <p>
                 <span className={`status status--${order.status.toLowerCase()}`}>
                   {order.status}

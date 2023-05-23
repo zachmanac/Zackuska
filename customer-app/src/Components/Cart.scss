@@ -7,6 +7,7 @@
 .cart-title {
   text-align: center;
   margin-bottom: 20px;
+  color: orange;
 }
 
 .cart-item {
@@ -60,7 +61,7 @@
   margin-left: 10px;
   padding: 5px 10px;
   border: none;
-  background-color: royalblue;
+  background-color: #0d6efd;
   color: white;
   cursor: pointer;
   border-radius: 4px;
@@ -68,13 +69,14 @@
 
 .quantity-button.minus {
   background-color: red;
+  width: 30px;
 }
 
 .remove-button {
   margin-left: 10px;
   padding: 5px 10px;
   border: none;
-  background-color: royalblue;
+  background-color: #0d6efd;
   color: white;
   cursor: pointer;
   border-radius: 4px;
@@ -84,7 +86,7 @@
   margin-top: 20px;
   padding: 15px 30px;
   border: none;
-  background-color: royalblue;
+  background-color: #0d6efd;
   color: white;
   cursor: pointer;
   font-size: 16px;
@@ -93,7 +95,7 @@
 }
 
 .checkout-button:hover {
-  background-color: darkblue;
+  background-color: royalblue;
 }
 
 .remove-button:hover {
@@ -110,4 +112,8 @@
 .item-quantity {
   margin: 0 10px;
   font-size: 18px;
+}
+
+p {
+  color: royalblue;
 }
