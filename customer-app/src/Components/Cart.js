@@ -86,7 +86,7 @@ function Cart({ cartItems, setCartItems }) {
 
     if (orderResponse.status === 200) {
       console.log('Order placed:', orderResponse.data);
-      setCartItems([]); // Clear the cart
+      //setCartItems([]); // Clear the cart
     } else {
       console.error('Order placement failed');
     }
@@ -95,6 +95,7 @@ function Cart({ cartItems, setCartItems }) {
   const handlePayment = async (paymentData) => {
     // Handle payment submission using paymentData
     // Make the API call to process the payment and create an order
+    
     const paymentResponse = await server
       .post(`/api/payments`, {
         userId,
@@ -103,13 +104,14 @@ function Cart({ cartItems, setCartItems }) {
       });
 
     if (paymentResponse.status === 200) {
+      
       const orderResponse = await server
       .post(`/api/orders`, {
         userId,
         cartItems,
         paymentId: paymentResponse.data.id,
       })
-      setCartItems([]);
+      //setCartItems([]);
       if (orderResponse.status === 200) {
         console.log('Order placed:', orderResponse.data);
         setOrderId(orderResponse.data.id);
@@ -121,7 +123,7 @@ function Cart({ cartItems, setCartItems }) {
         //mhistory.push('/orders');
       }
     } else {
-      setCartItems([]);
+      
         console.error('Payment failed');
     }
   };

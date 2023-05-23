@@ -29,6 +29,7 @@ function PaymentForm({ cartItems }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    localStorage.clear();
 
     if (!stripe || !elements) {
       window.location.href = "/orders";;
