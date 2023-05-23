@@ -86,6 +86,7 @@ function Cart({ cartItems, setCartItems }) {
 
     if (orderResponse.status === 200) {
       console.log('Order placed:', orderResponse.data);
+      setCartItems([]); // Clear the cart
     } else {
       console.error('Order placement failed');
     }
@@ -108,7 +109,7 @@ function Cart({ cartItems, setCartItems }) {
         cartItems,
         paymentId: paymentResponse.data.id,
       })
-
+      setCartItems([]);
       if (orderResponse.status === 200) {
         console.log('Order placed:', orderResponse.data);
         setOrderId(orderResponse.data.id);
@@ -120,6 +121,7 @@ function Cart({ cartItems, setCartItems }) {
         //mhistory.push('/orders');
       }
     } else {
+      setCartItems([]);
         console.error('Payment failed');
     }
   };
