@@ -7,7 +7,7 @@ function SearchBar() {
 
   return (
     <form className="search-bar-form">
-      <input type="text" placeholder="Search function" className="search-bar-text"/>
+      <input type="text" placeholder="Search" className="search-bar-text"/>
       <Button variant="primary" type="submit" className="search-bar-button">Search</Button>
     </form>
   );
