@@ -47,7 +47,7 @@ function FoodTruckMenu({
     if (!isLoggedIn) {
       setShowRegistrationModal(true); // Show the registration modal
     } else {
-      onAddToCart(menuItem, 1); // Assuming a quantity of 1, you can modify this as per your requirement
+      onAddToCart(menuItem, 1); // Assuming a quantity of 1
     }
 
   };
