@@ -6,8 +6,8 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import OrderConfirmationModal from './OrderConfirmationModal';  
 
-const stripePublicKey = process.env.stripePublicKey;
 
+const stripePublicKey = "pk_test_51I6VmWH67yKbwOmGGmpiEitNjqEKh6mpYczMUyTmdW7IMVh3I5uKFFYXreM4OFXzTiLQu9H6PyCFrNWtCAUEnkCn00qoW806h6";
 const stripePromise = loadStripe(stripePublicKey);
 
 const server = axios.create({
@@ -24,6 +24,21 @@ function Cart({ cartItems, setCartItems }) {
   useEffect(() => {
     window.localStorage.setItem(`cart-${userId}`, JSON.stringify(cartItems));
   }, [cartItems, userId]);
+
+  const addToCart = (item) => {
+    setCartItems((prevItems) => {
+      const existingItemIndex = prevItems.findIndex((prevItem) => prevItem.item_id === item.item_id);
+      if (existingItemIndex !== -1) {
+        // If item exists in cart, update the quantity
+        return prevItems.map((prevItem, i) =>
+          i === existingItemIndex ? { ...prevItem, quantity: prevItem.quantity + 1 } : prevItem
+        );
+      } else {
+        // If item does not exist in cart, add it
+        return [...prevItems, item];
+      }
+    });
+  };
 
   const removeFromCart = (itemIndex) => {
     setCartItems((prevItems) => {
@@ -43,11 +58,6 @@ function Cart({ cartItems, setCartItems }) {
   };
 
   const adjustQuantity = (index, newQuantity) => {
-    
-    if (newQuantity === 0) {
-      removeFromCart(index);
-    }
-
     setCartItems((prevItems) =>
       prevItems.map((item, i) => (i === index ? { ...item, quantity: newQuantity } : item))
     );
@@ -101,7 +111,7 @@ function Cart({ cartItems, setCartItems }) {
         cartItems,
         paymentId: paymentResponse.data.id,
       })
-
+      //setCartItems([]);
       if (orderResponse.status === 200) {
         console.log('Order placed:', orderResponse.data);
         setOrderId(orderResponse.data.id);
@@ -113,7 +123,8 @@ function Cart({ cartItems, setCartItems }) {
         //mhistory.push('/orders');
       }
     } else {
-      console.error('Payment failed');
+      
+        console.error('Payment failed');
     }
   };
 

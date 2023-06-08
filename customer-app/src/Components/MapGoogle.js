@@ -1,9 +1,9 @@
 const MapGoogle = (props) => {
-  // const { address } = props;
+  const { address } = props;
 
-  // const city = 'Toronto';
-  // const addressAndCity = `${address}, ${city}`;
-const addressAndCity = '800 Griffiths Way, Vancouver';
+  const city = 'Toronto';
+  const addressAndCity = `${address}, ${city}`;
+// const addressAndCity = '8649 Ligula Street, Toronto'
   // const address = '407 Swift St #100, Victoria, BC V8W 1S2';
 
   const handleClick = () => {
@@ -13,7 +13,7 @@ const addressAndCity = '800 Griffiths Way, Vancouver';
 
   return (
     <a href="#" onClick={handleClick}>
-      {addressAndCity}
+      {address}
     </a>
   );
 };

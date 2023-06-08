@@ -86,7 +86,7 @@ const Menu = () => {
         >
           {/* Front Side */}
           <div className="front-side">
-            <h3>{menuItem.item_name}</h3>
+            <h3>Item: {menuItem.item_name}</h3>
             <p>Description: {menuItem.description}</p>
             <p>Price: ${menuItem.price}</p>
             <div>
