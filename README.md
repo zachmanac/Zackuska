@@ -1,77 +1,24 @@
-# Food Truck Tracking App
+# Zackuska
 
-## User Stories
+Welcome to Zackuska, the ultimate app for food lovers and food truck enthusiasts! Our app allows customers to view food trucks in their city and explore their delectable menus. With a simple and intuitive interface, you can browse through a variety of food trucks and discover exciting culinary experiences near you.
 
-### As a customer, I want to:
+## Features
 
-- View a list of food trucks and their menus
-- Sort the list of food trucks by location, name, and ratings
-- View the details of a food truck, including its menu, location, and hours of operation
-- Place an order from a food truck's menu
-- Make a payment for my order
-- View my order history
-- Write a review for a food truck
+### Customer Side
 
-### As a food truck owner, I want to:
+1. **Discover Food Trucks**: On our home page, you can view the list of food trucks in your city. Clicking on a truck will take you to their respective menu. You can click on the truck's address to get the Google Maps directions link to the food truck.
 
-- Create a profile for my food truck
-- Update my food truck's menu, location, and hours of operation
-- Receive customer orders through the app
-- View my order history
-- View customer reviews of my food truck
+2. **Menu**: On a truck's menu page, you can view the menu and the truck's information. Once logged in, you can add and remove items from your cart. You can find detailed information about each food item, such as the description, calories, and allergens in the dropdown menu once clicked.
 
-## Database Structure
+3. **Cart and Payment**: On the cart page, you can view your current cart and update the quantities of the items. Once you're satisfied with your order, you can proceed to checkout, which will bring up the Stripe payment form.
 
-### User Table:
+4. **Orders**: On the orders page, you can see your current pending orders as well as your order history. The status of pending orders will change once a truck accepts or declines your order.
 
-- UserID (PK)
-- FirstName
-- LastName
-- Email
-- Password
-- UserType (Customer, Food Truck Owner)
+### Owner Side
 
-### Food Truck Table:
+1. **Owner Dashboard**: From the owner dashboard, you can navigate to your current orders, order history, menu, or edit truck info pages.
 
-- TruckID (PK)
-- TruckName
-- Description
-- Menu
-- Location
-- OpenHours
-- OwnerID (FK)
+2. **Current Orders**: The current orders page displays your list of orders for the day. For incoming orders, you can choose to accept or decline, which will send the updated status to the customer.
 
-### Order Table:
+3. **Menu**: On the menu page, you can update all fields for each of your menu items.
 
-- OrderID (PK)
-- CustomerID (FK)
-- TruckID (FK)
-- OrderDate
-- TotalAmount
-- Status (Pending, Confirmed, Completed, Cancelled)
-
-### Order Detail Table:
-
-- OrderDetailID (PK)
-- OrderID (FK)
-- MenuItemName
-- MenuItemPrice
-- Quantity
-
-### Review Table:
-
-- ReviewID (PK)
-- CustomerID (FK)
-- TruckID (FK)
-- Rating
-- Comment
-
-## Possible Additions:
-
-- Allow customers to save their favorite food trucks or menu items for quick access in the future.
-- Provide an option for customers to customize their order by adding notes or special requests.
-- Allow food truck owners to specify the availability of menu items (e.g., some items may only be available on certain days or times).
-- Provide a map view of food trucks based on their location, allowing customers to easily find nearby food trucks.
-- Allow customers to track the status of their order (e.g., order confirmed, being prepared, on its way).
-- Allow customers to rate their overall experience with a food truck (e.g., quality of food, service, value for money).
-- Allow food truck owners to view analytics and insights into their business performance (e.g., number of orders, total revenue, popular menu items).
