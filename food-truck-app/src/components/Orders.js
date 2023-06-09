@@ -21,7 +21,6 @@ const Orders = () => {
 
     fetchOrders();
   
-  
     // Set up an interval to periodically update orders every second
     const interval = setInterval(() => {
       fetchOrders();
@@ -87,7 +86,7 @@ const Orders = () => {
             </div>
             <div className="order-column status-right">
               <p>
-                <span className={`status status--${order.status.toLowerCase()}`}>
+                <span className={`status status--${order.status.toLowerCase()} pending`}>
                   {order.status}
                 </span>
               </p>

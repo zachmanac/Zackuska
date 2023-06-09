@@ -34,7 +34,7 @@ function Navbar() {
   const handleLogin = (user) => {
     sessionStorage.setItem('user', JSON.stringify(user));
     setIsLoggedIn(true);
-  setShowLoginModal(false); // Close the login modal
+    setShowLoginModal(false); // Close the login modal
   };
 
   return (

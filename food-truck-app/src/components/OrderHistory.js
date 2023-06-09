@@ -7,7 +7,7 @@ const OrderHistory = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const foodTruckId = 1; // hardcoded in, need it based off user(owner) who is logged in i think
+        const foodTruckId = 4; // hardcoded in, need it based off user(owner) who is logged in i think
         const fetchedOrders = await ApiCallsOwner.getAllOrders(foodTruckId);
         setOrders(fetchedOrders);
       } catch (error) {

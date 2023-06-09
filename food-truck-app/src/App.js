@@ -28,15 +28,11 @@ function App() {
 
     fetchUserTruck();
   }, []);
-  
-
-
 
   return (
     <ModalContext.Provider value={{ showRegistrationModal, setShowRegistrationModal, showLoginModal, setShowLoginModal, isLoggedIn, setIsLoggedIn }}>
     <Router>
       <div className='App'>
-        {/* Navbar here */}
         <Navbar
           isLoggedIn={isLoggedIn}
           setShowLoginModal={setShowLoginModal}
