@@ -10,6 +10,7 @@ function LoginForm({ handleClose, handleLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [userType, setUserType] = useState('customer');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -27,7 +28,13 @@ function LoginForm({ handleClose, handleLogin }) {
         console.log('Success:', response.data);
         setEmail('');
         setPassword('');
-        handleLogin(response.data);
+
+        if (response.data.error) {
+          console.log('Error:', response.data.error);
+          setErrorMessage(response.data.error);
+        } else {
+          handleLogin(response.data);
+        }
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -37,6 +44,7 @@ function LoginForm({ handleClose, handleLogin }) {
 
   return (
     <Form onSubmit={handleSubmit}>
+      {errorMessage && <p style={{color: 'red'}}>{errorMessage}</p>}
       <Form.Group controlId="formBasicEmail">
         <Form.Label>Email address</Form.Label>
         <Form.Control
@@ -59,7 +67,7 @@ function LoginForm({ handleClose, handleLogin }) {
         />
       </Form.Group>
 
-      <Button variant="primary" type="submit">
+      <Button variant="primary" type="submit" style={{ marginTop: '10px'}}>
         Login
       </Button>
     </Form>
