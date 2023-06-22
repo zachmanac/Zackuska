@@ -5,22 +5,44 @@ import "./Orders.scss";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
+  const [userTruckId, setUserTruckId] = useState(null);
+
+  useEffect(() => {
+    const fetchUserTruckId = async () => {
+      try {
+        const truckData = await ApiCallsOwner.getTruckData();
+        
+        const truckId = truckData ? truckData.truck_id : null;
+        
+        setUserTruckId(truckId);
+      } catch (error) {
+        console.error('Error fetching user truck:', error);
+      }
+    };
+
+    fetchUserTruckId();
+  }, []);
 
   useEffect(() => {
     const fetchOrders = async () => {
+      console.log("usertruckid in fetchorders", userTruckId);
       try {
-        const foodTruckId = 4; 
+        // const foodTruckId = 1; 
         //foodtruckid should be from current users(owner) truck i think
-        const orders = await ApiCallsOwner.getAllOrders(foodTruckId);
-        // console.log("ORDERS/FETCHORDERS", orders)
-        setOrders(orders);
+        if(userTruckId) {
+          const orders = await ApiCallsOwner.getAllOrders(userTruckId);
+          console.log("ORDERS/FETCHORDERS", orders);
+          setOrders(orders);
+        }
       } catch (error) {
         console.error('Error fetching orders:', error);
       }
     };
 
-    fetchOrders();
-  
+    if(userTruckId) {
+      fetchOrders();
+    }
+
     // Set up an interval to periodically update orders every second
     const interval = setInterval(() => {
       fetchOrders();
@@ -31,12 +53,12 @@ const Orders = () => {
       clearInterval(interval);
       setOrders([]);
     };
-  }, []);
+  }, [userTruckId]);
 
   const handleAcceptOrder = async (orderId) => {
     try {
-      const foodTruckId = 4;
-      await ApiCallsOwner.acceptOrder(foodTruckId, orderId);
+      // const foodTruckId = 1;
+      await ApiCallsOwner.acceptOrder(userTruckId, orderId);
       updateOrderStatus(orderId, 'Accepted');
     } catch (error) {
       console.error('Error accepting order:', error);
@@ -45,8 +67,8 @@ const Orders = () => {
   
   const handleDeclineOrder = async (orderId) => {
     try {
-      const foodTruckId = 4;
-      await ApiCallsOwner.declineOrder(foodTruckId, orderId);
+      // const foodTruckId = 1;
+      await ApiCallsOwner.declineOrder(userTruckId, orderId);
       updateOrderStatus(orderId, 'Declined');
     } catch (error) {
       console.error('Error declining order:', error);
@@ -68,7 +90,7 @@ const Orders = () => {
     <div>
       <h2>My Orders</h2>
       <div className="orders-container">
-        {orders.map((order) => (
+        {orders.length > 0 && orders.map((order) => (
           <div key={order.order_id} className="individual-order">
             <div className="order-column">
               <p>Order ID: {order.order_id}</p>

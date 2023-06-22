@@ -4,20 +4,16 @@ const queryGetOrdersForTruck= require('../../database/queries/order/get_order_fo
 
 //will get all the orders of a given truck
 router.get('/api/trucks/:truck_id/orders', (req, res) => {
-  console.log("TRUCK_ID",req.params);
+  console.log("TRUCK_ID", req.params);
 
-  queryGetOrdersForTruck(req.params.truck_id)
-
-.then(orders=>{
-  res.send(orders)
-  
-})
-
-     .catch(e => {
-      console.error("Get Order Error",e);
-      res.send(e)
-    });
-
+queryGetOrdersForTruck(req.params.truck_id)
+  .then(orders=>{
+    res.send(orders);
+  })
+  .catch(e => {
+    console.error("Get Order Error",e);
+    res.send(e)
+  });
 
 });
 

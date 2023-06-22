@@ -45,6 +45,7 @@ const getOrderForTrucks = async function (truck_id) {
       order.menu_items.push(menuItem);
     }
 
+    JSON.stringify(orders, null, 2);
     console.log(JSON.stringify(orders, null, 2)); // Convert orders to JSON string for better object representation
     return orders;
   } catch (err) {

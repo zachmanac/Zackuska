@@ -6,25 +6,44 @@ const session = require('express-session');
 
 console.log('Code is executing...');
 
-
 //Check if a user exists with a given username, userType and password
   
-  const login = async function(email, password, user_type) {
-    const user = await queryCheckUser(email);
+const login = async function(email, password, user_type) {
+  const user = await queryCheckUser(email);
   
-    if (!user) {
-      return { error: 'There is no user with that email' };
-    }
-    
-    if (!bcrypt.compareSync(password, user.password)) {
-      return { error: "Wrong password" };
-    }
-    
-    if (user.user_type !== user_type) {
-      return { error: "Wrong user type" };
-    }
-    
+  //user from initial user seeds
+  if (isSpecialUser(user) && password === 'password') {
     return user;
+  }
+
+  if (!user) {
+    return { error: 'There is no user with that email' };
+  }
+    
+  if (!bcrypt.compareSync(password, user.password)) {
+    return { error: "Wrong password" };
+  }
+    
+  if (user.user_type !== user_type) {
+    return { error: "Wrong user type" };
+  }
+    
+  return user;
+};
+
+const isSpecialUser = function(user) {
+  // Check if the user is one of the pre-defined special users
+  const specialUserEmails = [
+    'sed.eget@outlook.org',
+    'vitae.diam@yahoo.org',
+    'integer@google.couk',
+    'imperdiet.non@google.ca',
+    'ac.turpis@google.edu',
+    'ken@yahoo.org',
+    'minumun@google.ca'
+  ];
+
+  return specialUserEmails.includes(user.email);
 };
 
 router.post('/api/session', (req, res) => {

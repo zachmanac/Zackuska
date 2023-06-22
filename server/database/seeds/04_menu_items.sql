@@ -1,5 +1,3 @@
-
-
 INSERT INTO menu_items (truck_id,item_name,price,calories,allergens,halal, description, item_label, active, quantity, picture)
 VALUES
   (1,'Butter Chicken',13,129,'peanut, celery','False', 'An onion, a can of crushed tomatoes, garlic and ginger, and some added spices', 'chicken', 'True', 100, 'https://images.pexels.com/photos/12842119/pexels-photo-12842119.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
@@ -43,4 +41,3 @@ VALUES
   (6, 'Onion Rings', 7, 350, 'gluten', 'True', 'Breaded and deep-fried rings of onion, served as a tasty side dish', 'side', 'True', 100, 'https://images.pexels.com/photos/6941029/pexels-photo-6941029.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
   (6, 'Root Beer Float', 6, 250, 'dairy', 'True', 'A classic soda fountain treat made with root beer and vanilla ice cream', 'beverage', 'True', 100, 'https://images.pexels.com/photos/15537206/pexels-photo-15537206/free-photo-of-hand-holding-disposable-cup-with-soda.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
   (6, 'Chicken Caesar Wrap', 10, 400, 'dairy, gluten', 'True', 'A flavorful wrap filled with grilled chicken, romaine lettuce, Parmesan cheese, and Caesar dressing', 'chicken', 'True', 100, 'https://images.pexels.com/photos/9624298/pexels-photo-9624298.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
-
