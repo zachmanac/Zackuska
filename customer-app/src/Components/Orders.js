@@ -1,36 +1,40 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import ApiCalls from '../ApiCalls';
 import './Orders.scss';
+import { ModalContext } from './ModalContext';
 
 function Orders() {
   const [orders, setOrders] = useState([]);
-  const [userId, setUserId] = useState(null);
+  const { isLoggedIn } = useContext(ModalContext);
+
 
   useEffect(() => {
-    // Function to retrieve orders
-    const fetchOrders = async () => {
-      try {
-        const orders = await ApiCalls.getOrders();
-        setOrders(orders);
-      } catch (error) {
-        console.error('Error fetching orders:', error);
-      }
-    };
+    if(isLoggedIn) {
+      // Function to retrieve orders
+      const fetchOrders = async () => {
+        try {
+          const orders = await ApiCalls.getOrders();
+          setOrders(orders);
+        } catch (error) {
+          console.error('Error fetching orders:', error);
+        }
+      };
 
-    // Fetch initial orders
-    fetchOrders();
-
-    // Set up an interval to periodically update orders every second
-    const interval = setInterval(() => {
+      // Fetch initial orders
       fetchOrders();
-    }, 1000);
 
-    // Clean up the interval on component unmount
-    return () => {
-      clearInterval(interval);
-      setOrders([]);
-    };
-  }, [userId]);
+      // Set up an interval to periodically update orders every second
+      const interval = setInterval(() => {
+        fetchOrders();
+      }, 1000);
+
+      // Clean up the interval on component unmount
+      return () => {
+        clearInterval(interval);
+        setOrders([]);
+      };
+    }
+  }, [isLoggedIn]);
 
   const getStatusColor = (status) => {
     if (status === 'Pending') {
@@ -62,7 +66,7 @@ function Orders() {
                 <p className="status" style={{ backgroundColor: getStatusColor(order.status) }}>
                   {order.status}
                 </p>
-                <p>Truck: {order.truck.name}</p> {/* Display truck name */}
+                <p>Truck: {order.truck.name}</p>
                
               </div>
               <div className="order-column">
