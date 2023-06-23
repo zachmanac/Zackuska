@@ -140,9 +140,7 @@ useEffect(() => {
             }
           />
           <Route path="/cart" element={<Cart cartItems={cartItems} setCartItems={setCartItems}  />} />
-          <Route path="/orders" element={<Orders />} />
-
-
+          <Route path="/orders" element={<Orders userId={userId} />} />
         </Routes>
       </div>
     </Router>

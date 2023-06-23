@@ -4,7 +4,7 @@ import './Orders.scss';
 
 function Orders() {
   const [orders, setOrders] = useState([]);
-  const userId = 1; // hardcoded userId for test until session works
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     // Function to retrieve orders
@@ -30,7 +30,7 @@ function Orders() {
       clearInterval(interval);
       setOrders([]);
     };
-  }, []);
+  }, [userId]);
 
   const getStatusColor = (status) => {
     if (status === 'Pending') {
@@ -45,13 +45,6 @@ function Orders() {
       return 'rgba(255, 255, 255, 0.3)'; // Light white
     }
   };
-
-  useEffect(() => {
-    // Clean up orders when user logs out
-    if (!userId) {
-      setOrders([]);
-    }
-  }, []);
 
   // Render the orders with dynamic styling based on status
   return (

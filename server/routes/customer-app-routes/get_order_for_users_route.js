@@ -2,13 +2,12 @@ const express = require('express');
 const router = express.Router();
 const queryGetOrdersForUser = require('../../database/queries/order/get_order_for_users');
 
-//this userId is passed in the query like this: http://localhost:8080/api/orders?user_id=1
 
 router.get('/api/orders', async (req, res) => {
   try {
-    const userId=12;
-    //const userId = req.session.userId;
-    //console.log("USER_ID", req.query);
+    const userId = req.session.userId;
+    console.log("reqsessionuserid", req.session.userId);
+
     const orders = await queryGetOrdersForUser(userId);
     res.send(orders);
   } catch (e) {

@@ -3,7 +3,8 @@ const router = express.Router();
 
 router.delete('/api/session', (req, res) => {
   console.log("req.session logout", req.session);
-  req.session.userId = null;
+  delete req.session.userId;
+  req.session.destroy();
   res.send("logged out");
 });
 

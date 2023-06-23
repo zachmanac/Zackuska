@@ -84,9 +84,10 @@ const checkoutCart = function (cartItems, totalAmount, totalCalories, cb) {
 
 const getOrders = async function () {
   return axios.get(`http://localhost:8080/api/orders`, {
-
+    withCredentials: true
   })
     .then(function (response) {
+      console.log("response.data", response.data);
       return response.data;
     });
 };

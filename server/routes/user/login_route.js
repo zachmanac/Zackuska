@@ -54,8 +54,8 @@ router.post('/api/session', (req, res) => {
     login(email, password, user_type)
     .then(result => {
       console.log('Result: after login', result);
-      req.session.userId = result.user_id
-      console.log("req.sessionafter login", req.session)
+      req.session.userId = result.user_id;
+      console.log("req.sessionafter login", req.session.userId);
       if (result.error) {
         console.log('Result: error', result); 
         res.send(result);
