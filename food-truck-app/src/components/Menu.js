@@ -7,21 +7,39 @@ import './Menu.scss';
 const Menu = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [isFlipped, setIsFlipped] = useState(false);
+  const [userTruckId, setUserTruckId] = useState(null);
+
+  useEffect(() => {
+    const fetchUserTruckId = async () => {
+      try {
+        const truckData = await ApiCallsOwner.getTruckData();
+        const truckId = truckData ? truckData.truck_id : null;
+        setUserTruckId(truckId);
+      } catch (error) {
+        console.error('Error fetching user truck:', error);
+      }
+    };
+
+    fetchUserTruckId();
+  }, []);
 
   useEffect(() => {
     const fetchMenuItems = async () => {
-      try {
-        const truckId = 4;
-        const menuItems = await ApiCallsOwner.getMenuItems(truckId);
-        const menuItemsWithFlippedState = menuItems.map(item => ({ ...item, isFlipped: false }));
-      setMenuItems(menuItemsWithFlippedState);
-      } catch (error) {
-        console.error("Error fetching menu items:", error);
+      console.log("usertruckid in fetchorder", userTruckId);
+
+      if(userTruckId) {
+        try {
+          const menuItems = await ApiCallsOwner.getMenuItems(userTruckId);
+          const menuItemsWithFlippedState = menuItems.map(item => ({ ...item, isFlipped: false }));
+        setMenuItems(menuItemsWithFlippedState);
+        } catch (error) {
+          console.error("Error fetching menu items:", error);
+        }
       }
     };
 
     fetchMenuItems();
-  }, []);
+  }, [userTruckId]);
 
   const handleEditClick = (index) => {
     setMenuItems((prevMenuItems) => {

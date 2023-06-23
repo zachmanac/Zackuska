@@ -29,6 +29,7 @@ function Navbar() {
     axios.delete('http://localhost:8080/api/session', {withCredentials: true});
     sessionStorage.removeItem('user');
     setIsLoggedIn(false);
+    window.location.href="/";
   };
 
   const handleLogin = (user) => {
