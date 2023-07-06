@@ -10,11 +10,13 @@ We created this app using Javascript, ReactJS, NodeJS, Express Server, and Postg
 To get started with Zackuska, please follow the steps below:
 
 1. **Clone the repository**
+
 ```
 git clone https://github.com/zachmanac/Zackuska.git
 ```
 
 2. **Install Dependancies**
+
 Install dependancies in each of these folders: Zakuska(main directory), customer-app, and food-truck-app.
 ```
 cd Zackuska
@@ -22,12 +24,14 @@ npm install
 ```
 
 3. **Setup the DataBase**
+
 Initialize the database. This also resets it.
 ```
 npm run db:reset
 ```
 
 4. **Start the servers**
+
 Have 3 terminals open to run one for each of: API server, customer-app server, and food-truck-app server.
 
 ```
@@ -42,6 +46,7 @@ npm start
 ```
 
 5. **Access the Application**
+
 Open your web browser and navigate to `http://localhost:3000` to access the customer application.
 Navigate to `http://localhost:3001` to access the owner-side application.
 The API server runs on port 8000.
